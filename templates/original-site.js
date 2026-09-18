@@ -27,21 +27,18 @@ const entries = [
   {title:'Beyond the checklist', subtitle:'Wellness isn’t another thing to accomplish.', paragraphs:['When even our quiet moments become things to track and complete, care can begin to feel like another obligation. A perfect morning routine is still a routine to keep up with.','What if wellness began with a question instead of a plan? What would feel good today? What would make a little more room? The answer need not look the same every day.','Some days it might be movement. On others, stillness or company. There is room for all of it. There is room for you, as you are.']},
   {title:'The modern woman', subtitle:'Ambitious, nurturing, independent, evolving.', paragraphs:['A founder. A mother. A leader. A daughter. A partner. A friend. Each role can hold something meaningful, and each can ask something of us.','Beyond every role, there is a person whose curiosity, needs and wishes are still unfolding. You do not have to choose a single definition of yourself, or stay the woman you were yesterday.','The Sphere was created for the woman behind all those roles. Come as you are. Stay for what you discover.']}
 ];
-document.querySelectorAll('[data-entry]').forEach(button => {
+const journalList = document.querySelector('.journal-list');
+entries.forEach((entry, index) => {
+  const button = document.createElement('button');
+  button.className = 'journal-entry';
+  button.innerHTML = `<span class="journal-number">0${index + 1}</span><span class="journal-title">${entry.title}</span><span class="journal-subtitle">${entry.subtitle}</span><span class="journal-arrow" aria-hidden="true">↗</span>`;
+  button.setAttribute('aria-label', `Read ${entry.title}`);
   button.addEventListener('click', () => {
-    const entry = entries[Number(button.dataset.entry)];
     document.querySelector('#article-title').textContent = entry.title;
     const body = document.querySelector('#article-body');
     body.replaceChildren(...entry.paragraphs.map(text => {const p = document.createElement('p'); p.textContent = text; return p;}));
     document.querySelector('#article-dialog').showModal();
   });
-});
-document.addEventListener('keydown', event => {
-  if (event.key === 'Escape' && !mobileNav.hidden) {
-    mobileNav.hidden = true;
-    menuButton.setAttribute('aria-expanded', 'false');
-    menuButton.querySelector('span').textContent = '+';
-    menuButton.focus();
-  }
+  journalList.append(button);
 });
 document.querySelector('#year').textContent = new Date().getFullYear();

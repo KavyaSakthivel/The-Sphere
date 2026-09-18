@@ -18,7 +18,8 @@ def norm(s):return re.sub(r'[^a-z0-9]','',s.lower())
 source=(ROOT/'notes/content.txt').read_text()
 pages={}
 for path in sorted((ROOT/'dist').rglob('*.html')):
- p=Content();p.feed(path.read_text());pages[str(path.relative_to(ROOT/'dist'))]=' '.join(p.text)
+ p=Content();p.feed(path.read_text())
+ if p.text:pages[str(path.relative_to(ROOT/'dist'))]=' '.join(p.text)
  for link in p.links:
   if not link.startswith('/') or link.startswith('//'):continue
   target=ROOT/'dist'/link.split('#')[0].lstrip('/')
@@ -32,7 +33,9 @@ for line in source.splitlines():
  coverage.append({'source':line.strip(),'pages':found})
 assert not missing,'Missing source content: '+repr(missing)
 allcopy=' '.join(pages.values())
-for removed in ['A little more room for you','It begins with a hello','Try leaving a small part of your day unclaimed','A circle with room to know one another']:
- assert norm(removed) not in norm(allcopy),f'Unapproved copy remains: {removed}'
+for restored in ['A little more room for you', 'Room for thought']:
+ assert norm(restored) in norm(allcopy), f'Original design headline missing: {restored}'
+assert 'data-entry' in (ROOT/'dist/index.html').read_text()
+assert 'Try leaving a small part of your day unclaimed' in (ROOT/'dist/site.js').read_text()
 (ROOT/'notes/content-coverage.json').write_text(json.dumps(coverage,indent=2,ensure_ascii=False)+'\n')
-print(f'PASS: {len(coverage)} source lines are present across {len(pages)} pages; local links and assets resolve; added copy removed.')
+print(f'PASS: {len(coverage)} source lines are present across {len(pages)} pages; local links and assets resolve; original headlines and journal interactions restored.')
