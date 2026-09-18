@@ -68,3 +68,10 @@ The authored HTML, CSS, JavaScript, images and fonts are in `dist/`; no build de
 - Responsive forest WebP files reduce hero transfer size by approximately 60–85% compared with the existing JPEG. This is an asset-size comparison, not a measured Core Web Vitals claim.
 - Content coverage and SEO tests pass; desktop/mobile article layouts, homepage journal dialog and mobile navigation checked with no horizontal overflow or console errors.
 - notes/SEO-HANDOFF.md records domain connection, public launch, canonical migration, Search Console and eligibility-aware local discovery steps for the marketer.
+
+## Persistent navigation and reference-inspired footer
+- Navigation remains visible throughout scrolling and becomes a compact ivory bar after the first 48px. Reserved document space keeps the content from jumping; anchor offsets leave section headings below the bar.
+- Mobile navigation opens beneath the measured header, with a scrollable panel on shorter screens. Existing menu closing and Escape behavior remain.
+- Replaced the dark footer with an airy ivory four-column layout: supplied wordmark, existing brand/location copy, section links, Instagram and an underlined invitation link. It rearranges into two link columns on mobile.
+- Used the existing membership destination rather than adding an unconnected newsletter form. Footer and persistent navigation are shared by all five journal pages.
+- Verified desktop and mobile scrolling, header position, section clearance, menu interaction, footer layout, no horizontal overflow and no console errors. Existing content and SEO checks pass.

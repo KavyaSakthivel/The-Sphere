@@ -1,5 +1,12 @@
 const menuButton = document.querySelector('.menu-toggle');
 const mobileNav = document.querySelector('#mobile-nav');
+const header = document.querySelector('.header');
+const updateHeader = () => header.classList.toggle('is-scrolled', window.scrollY > 48);
+updateHeader();
+window.addEventListener('scroll', updateHeader, { passive: true });
+new ResizeObserver(() => {
+  document.documentElement.style.setProperty('--navigation-height', `${header.getBoundingClientRect().height}px`);
+}).observe(header);
 menuButton.addEventListener('click', () => {
   const expanded = menuButton.getAttribute('aria-expanded') === 'true';
   menuButton.setAttribute('aria-expanded', String(!expanded));

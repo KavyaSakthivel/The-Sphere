@@ -10,11 +10,12 @@
   <link rel="preload" href="assets/fonts/Allura-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="assets/fonts.css?v=nunito-allura">
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="brand.css?v=coimbatore-journal">
-  <script src="site.js?v=coimbatore-journal" defer></script>
+  <link rel="stylesheet" href="brand.css?v=footer-navigation">
+  <script src="site.js?v=footer-navigation" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
+<div class="navigation-space" aria-hidden="true"></div>
 <header class="header">
   <a class="wordmark" href="#" aria-label="The Sphere home"><img src="assets/brand/wordmark-sage.svg" alt="The Sphere — Crafted calm for the modern women" width="594" height="251"></a>
   <nav class="desktop-nav" aria-label="Main navigation"><a href="#philosophy">Our philosophy</a><a href="#experiences">The experience</a><a href="#journal">Journal</a></nav>
@@ -40,7 +41,15 @@
   <section id="journal" class="journal section-pad"><div class="section-heading"><div><p class="eyebrow">04 / THE SPHERE JOURNAL</p><h2>Room for <em>thought.</em></h2></div><p>Conversations and ideas<br>around modern womanhood.</p></div><div class="journal-list"></div></section>
   <section class="note section-pad"><p class="eyebrow">A NOTE FROM THE SPHERE</p><h2>“We wanted to create<br>a space to <em>simply be.</em>”</h2><p>There are so many spaces created for women to work harder, look better, achieve more and become more. We wanted something different.</p><p>A space to pause. A space to connect. Somewhere to discover something new, and take a breath without feeling guilty for it.</p><p class="note-signoff">Come as you are. Stay for what you discover.</p><span class="signature">The Sphere</span></section>
 </main>
-<footer><div class="footer-top"><a class="wordmark" href="#" aria-label="The Sphere home"><img src="assets/brand/wordmark-ivory.svg" alt="The Sphere — Crafted calm for the modern women" width="594" height="251"></a><p>Crafted calm for the modern woman.<br><span class="footer-location">Coimbatore, Tamil Nadu, India</span></p><a href="https://www.instagram.com/thespherewomen/" target="_blank" rel="noopener noreferrer">Find us on Instagram ↗</a></div><div class="footer-bottom"><span>© <span id="year">2026</span> The Sphere</span><span>PEACE. PURPOSE. CONNECTION.</span><a href="#">Back to the beginning ↑</a></div></footer>
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand"><a class="wordmark" href="#" aria-label="The Sphere home"><img src="assets/brand/wordmark-sage.svg" alt="The Sphere — Crafted calm for the modern women" width="594" height="251"></a><p>Crafted calm for the modern woman.</p><p class="footer-location">Coimbatore, Tamil Nadu, India</p></div>
+    <nav class="footer-links" aria-label="Explore The Sphere"><a href="#experiences">The experience</a><a href="#journal">Journal</a><a href="#philosophy">Our philosophy</a></nav>
+    <nav class="footer-links" aria-label="Connect with The Sphere"><a href="#invitation">A private circle</a><a href="https://www.instagram.com/thespherewomen/" target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">↗</span></a></nav>
+    <div class="footer-invitation"><p class="eyebrow">YOUR PLACE IN THE CIRCLE</p><p>Your first step into The Sphere.</p><a href="#invitation">Request an invitation <span aria-hidden="true">↗</span></a></div>
+  </div>
+  <div class="footer-bottom"><span>© <span id="year">2026</span> The Sphere</span><span>PEACE. PURPOSE. CONNECTION.</span><a href="#">Back to the beginning ↑</a></div>
+</footer>
 <dialog id="invitation-dialog" aria-labelledby="invitation-title"><button class="dialog-close" aria-label="Close invitation">×</button><p class="eyebrow">YOUR PLACE IN THE CIRCLE</p><h2 id="invitation-title">It begins with<br><em>a hello.</em></h2><p>Tell us a little about yourself and what brings you to The Sphere. Connect with our team on Instagram to enquire about membership and upcoming gatherings.</p><a class="button button-dark" href="https://www.instagram.com/thespherewomen/" target="_blank" rel="noopener noreferrer">Meet us on Instagram <span aria-hidden="true">↗</span></a><p class="dialog-small">Opens @thespherewomen in a new tab.<br>No details are collected on this website.</p></dialog>
 <dialog id="article-dialog" aria-labelledby="article-title"><button class="dialog-close" aria-label="Close journal entry">×</button><p class="eyebrow">THE SPHERE JOURNAL · A SHORT REFLECTION</p><h2 id="article-title"></h2><div id="article-body"></div><p class="signature">The Sphere</p></dialog>
 </body></html>
