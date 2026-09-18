@@ -51,3 +51,11 @@ The authored HTML, CSS, JavaScript, images and fonts are in `dist/`; no build de
 - Original editorial structure, complete PDF source copy, invitation behavior and five restored journal reflections remain.
 - scripts/prepare_brand.py reproduces web-ready SVGs from the provided originals.
 - QA: desktop (1309 CSS px) and mobile (354 CSS px) screenshots reviewed; no horizontal overflow. All seven image instances load. Invitation dialog, mobile menu, journal dialog and experience accordion checked. No browser console errors. Content audit passes all 103 source lines; JavaScript syntax and diff checks pass.
+
+## Approved free typography alternatives
+- User selected free alternatives to the guideline's commercial Avenir Next and Florelie fonts.
+- Nunito Sans now supplies primary body, navigation and headings; Allura supplies handwritten accents, replacing the serif fallback. Font stacks no longer depend on locally installed brand fonts.
+- Six actual TTF webfonts downloaded from the official Google Fonts CSS API / fonts.gstatic.com: Nunito Sans Regular, Medium, SemiBold, Bold, Italic, plus Allura Regular. Source URLs and the SIL Open Font License texts are included in dist/assets/fonts.
+- Direct versioned font CSS and hero font preloads replace the old nested CSS import to prevent stale fallback rendering on returning browsers. Script uses natural non-italic style, zero letter spacing, and adjusted sizing/line heights.
+- Verified font resource responses, desktop and mobile screenshots (1309 / 354 CSS px), no horizontal overflow, no console errors, and mobile journal and invitation dialogs. All 103 brief lines remain covered by the existing content check.
+- Personal-use Florelie demo remains outside deployment output in font-review and is not included in the website.

@@ -1,42 +1,7 @@
-@font-face {
-  font-family: 'Cormorant Garamond';
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-  src: url(font-0.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'Cormorant Garamond';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(font-1.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'Cormorant Garamond';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url(font-2.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(font-3.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url(font-4.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url(font-5.ttf) format('truetype');
-}
+/* Self-hosted Google Fonts, distributed under the SIL Open Font License. */
+@font-face{font-family:'Allura';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/Allura-Regular.ttf') format('truetype')}
+@font-face{font-family:'Nunito Sans';font-style:italic;font-weight:400;font-display:swap;src:url('fonts/NunitoSans-Italic.ttf') format('truetype')}
+@font-face{font-family:'Nunito Sans';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/NunitoSans-Regular.ttf') format('truetype')}
+@font-face{font-family:'Nunito Sans';font-style:normal;font-weight:500;font-display:swap;src:url('fonts/NunitoSans-Medium.ttf') format('truetype')}
+@font-face{font-family:'Nunito Sans';font-style:normal;font-weight:600;font-display:swap;src:url('fonts/NunitoSans-SemiBold.ttf') format('truetype')}
+@font-face{font-family:'Nunito Sans';font-style:normal;font-weight:700;font-display:swap;src:url('fonts/NunitoSans-Bold.ttf') format('truetype')}
