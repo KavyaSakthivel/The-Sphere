@@ -1,0 +1,79 @@
+/* BrandGuideline.pdf: exact brand palette and supplied vector artwork. */
+@font-face{font-family:'Sphere Script';src:local('Florelie DEMO'),local('Florelie');font-display:swap;font-weight:400}
+:root{--paper:#fff8ec;--sage:#9ab7a8;--blue:#93b0c2;--beige:#dfc6b6;--coral:#d2776e;--terracotta:#834c4d;--olive:#7e8571;--ink:#393e35;--muted:#565b4e;--light-sage:#9ab7a8;--rule:#dfc6b6;--sans:'Avenir Next',Avenir,'DM Sans',Arial,sans-serif;--script:'Sphere Script','Cormorant Garamond',Georgia,serif}
+::selection{background:var(--sage);color:var(--ink)}
+h1,h2,h3{font-family:var(--sans);font-weight:400;letter-spacing:-.045em;line-height:1.15}
+h2{font-size:clamp(38px,3.5vw,56px)}
+h3{font-size:32px}
+h1 em,h2 em,h3 em,.image-note em,.signature{font-family:var(--script);font-style:italic;font-weight:400;letter-spacing:-.035em}
+.header{min-height:216px;height:auto;gap:40px;margin:0 5.2%;padding:72px 0 72px 72px}
+.wordmark{display:block;width:172px;min-width:172px;line-height:0;letter-spacing:normal;flex-shrink:0}
+.wordmark img{display:block;width:100%;height:auto}
+.desktop-nav{gap:32px}.header-invite{border-color:var(--terracotta);color:var(--terracotta)}
+.hero{padding-top:48px;gap:6%;grid-template-columns:1.05fr 1fr;min-height:690px}
+.hero-copy{padding-top:24px}.hero h1{font-size:clamp(58px,5.8vw,88px);line-height:1.08;letter-spacing:-.06em;margin:30px 0 26px;color:var(--terracotta)}
+.hero h1 em{color:var(--terracotta);font-size:1.18em}
+.hero-description{color:var(--muted);max-width:440px}
+.button-dark{background:var(--terracotta);border-color:var(--terracotta);color:var(--paper)}
+.button:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.hero-visual>img:not(.brand-orbit){filter:saturate(.55) brightness(.7)}
+.hero-visual>.brand-orbit{position:absolute;width:133%;height:auto;aspect-ratio:1;left:-16%;top:8%;object-fit:contain;opacity:.45;filter:none;transform:rotate(-12deg);pointer-events:none}
+.hero-image-label,.image-note{color:var(--paper)}
+.hero-image-label{z-index:1}.image-note{font-family:var(--sans);font-size:39px;line-height:1.2;z-index:1}
+.image-note em{font-size:1.3em}.tiny-circle,.tiny-circle:after{border-color:var(--olive)}
+.quiet-line{color:var(--terracotta)}.eyebrow{font-weight:500;letter-spacing:.14em}
+.club-introduction h2{font-size:clamp(28px,2.8vw,42px);line-height:1.35;max-width:940px}
+.ritual-lines p{color:var(--terracotta)}
+.philosophy-main h2{color:var(--terracotta)}
+.why{background:var(--sage);position:relative;overflow:hidden}
+.why h2{font-size:clamp(30px,3.4vw,52px);line-height:1.25}
+.why h2 em{color:var(--ink);font-size:1.15em}
+.why .why-subtitle{font-family:var(--sans);font-size:18px;line-height:1.7;color:var(--ink)}
+.why>p:not(.eyebrow):not(.why-subtitle){color:var(--ink)}
+.pillar-number{font-family:var(--sans);font-style:normal;font-size:14px;color:var(--terracotta)}
+.pillars h3{font-size:30px;color:var(--terracotta);margin-top:26px}
+.more-wellness h3{font-size:37px}.experience-detail h3{font-size:40px}
+.experience-detail img{filter:saturate(.5)}
+.more-wellness .prose p:last-child{color:var(--terracotta)}
+.necessity{background:var(--beige)}
+.necessity-copy h2{font-size:clamp(33px,3vw,46px);line-height:1.2;color:var(--terracotta)}
+.necessity .source-statement{font-family:var(--sans);font-size:18px!important;line-height:1.6}
+.community h2{color:var(--terracotta)}.values{color:var(--terracotta)}
+.invitation{background:var(--sage);gap:11%;padding-left:8.3%;padding-right:8.3%}
+.invitation-brand{text-align:center}.invitation-brand img{display:block;width:100%;height:auto}
+.invitation-brand p{font-family:var(--script);font-style:italic;font-size:32px;line-height:1.4;margin:28px 0 0}
+.invitation-copy p{color:var(--ink)}
+.journal .section-heading h2{color:var(--terracotta)}
+.journal-title{font-family:var(--sans);font-size:23px;letter-spacing:-.025em;line-height:1.3}
+.journal-entry:hover .journal-title{color:var(--terracotta)}
+.journal-entry:hover{background:rgba(223,198,182,.15)}
+.journal-number{color:var(--terracotta)}
+.note{background:var(--blue);border-top:0}.note h2{font-size:clamp(36px,3.8vw,58px)}
+.note>p:not(.eyebrow){color:var(--ink)}.note .note-pause{font-family:var(--script)}
+footer{background:var(--terracotta);color:var(--paper);padding-top:0}
+.footer-top{min-height:258px;padding:76px 0 76px 76px;gap:76px}
+.footer-top .wordmark{width:180px}.footer-top>a:last-child:hover{border-color:var(--paper)}
+.footer-bottom{border-color:var(--coral)}
+dialog{border-color:var(--beige)}dialog::backdrop{background:#393e35d9}
+dialog h2{font-size:42px;color:var(--terracotta)}
+.signature{font-size:36px}
+@media(min-width:1600px){.hero{min-height:760px}}
+@media(max-width:1100px){.desktop-nav{gap:18px;font-size:13px}.header{gap:24px}.header-invite{font-size:13px;gap:15px}.hero h1{font-size:6.5vw}.footer-top{gap:60px}.footer-top p{max-width:210px}}
+@media(max-width:850px) and (min-width:701px){.header{padding-left:25px}.desktop-nav{gap:15px}.header-invite{max-width:135px}.hero h1{font-size:6.5vw}.journal-title{font-size:21px}.footer-top{padding-left:30px;gap:35px}}
+@media(max-width:700px){
+ .header{min-height:238px;position:relative;justify-content:center;padding:68px 0 98px;margin:0 6%}
+ .header .wordmark{width:172px}.menu-toggle{position:absolute;right:0;bottom:10px;font-size:14px;padding:12px 0;gap:15px}
+ .hero{grid-template-columns:1fr;padding-top:31px;gap:34px;min-height:0}.hero-copy{padding-top:0}
+ .hero h1{font-size:clamp(47px,10.5vw,68px);line-height:1.13;margin:25px 0 24px}
+ .hero h1 em{font-size:1.22em}.hero-visual{min-height:430px}.hero-visual>.brand-orbit{width:142%;left:-21%;top:5%}
+ h2{font-size:38px;line-height:1.17}.club-introduction h2{font-size:29px;line-height:1.35}
+ .why h2{font-size:31px;line-height:1.3}.why .why-subtitle{font-size:17px}
+ .pillars h3{font-size:27px}.more-wellness h3,.experience-detail h3{font-size:35px;line-height:1.2}
+ .necessity-copy h2{font-size:34px;line-height:1.23}.necessity-photo{height:300px}
+ .invitation{padding-left:7%;padding-right:7%;gap:42px}.invitation-brand{max-width:350px;width:100%;margin:auto}.invitation-brand p{font-size:29px;margin-top:20px}
+ .journal-title{font-size:22px;line-height:1.35}.note h2{font-size:34px;line-height:1.23}
+ .footer-top{display:flex;flex-direction:column;align-items:center;gap:24px;padding:76px 0 44px}
+ .footer-top .wordmark{width:180px;margin-bottom:52px}.footer-top p{max-width:none;text-align:center}
+ .footer-top>a:last-child{width:auto;text-align:center}.footer-bottom{font-size:12px}
+ dialog h2,#article-dialog h2{font-size:35px;line-height:1.2}
+}

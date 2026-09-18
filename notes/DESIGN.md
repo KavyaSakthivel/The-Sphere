@@ -40,3 +40,14 @@ The authored HTML, CSS, JavaScript, images and fonts are in `dist/`; no build de
 - Surrenne Belgravia: https://www.surrenne.com/en/destinations/surrenne-belgravia — warm neutral palette, fine rules, membership and journal navigation.
 - THE WELL was revisited; its live page returned a server error on this pass. The prior successful visual inspection remains the reference.
 - Six Senses wellness content was revisited via its official website.
+
+## Supplied brand identity — September 18 update
+- Reviewed all six BrandGuideline.pdf pages, nine logo variants, transparent PNGs, and six Post1 social creatives.
+- Applied exact Soft Ivory #FFF8EC, Sage Green #9AB7A8, Dusty Blue #93B0C2, Warm Beige #DFC6B6, Deep Terracotta #834C4D, with coral/olive supporting accents. Dark neutral text provides readable contrast on lighter brand colours.
+- Supplied SVG 01/02 wordmarks replace the approximate text logo. Only artboard/background removed for responsive placement; original path geometry and colours preserved. 172px+ wordmarks retain 45mm-equivalent minimum width and generous clear space.
+- Supplied SVG 07 circle lockup anchors membership and supplies the favicon; its original circular artwork is used over the forest photograph. No invented replacement logo or gradients.
+- Primary typography now Avenir Next / Avenir where locally installed, with bundled DM Sans fallback elsewhere. Florelie local support for restrained accents, with existing Cormorant italic fallback. No font binaries were supplied; commercial/system fonts were not extracted or redistributed.
+- Post1 contains finished text-over-photo social compositions, not clean standalone photography. Reviewed as brand reference; retained existing photography to avoid duplicated copy and baked-in tiny text.
+- Original editorial structure, complete PDF source copy, invitation behavior and five restored journal reflections remain.
+- scripts/prepare_brand.py reproduces web-ready SVGs from the provided originals.
+- QA: desktop (1309 CSS px) and mobile (354 CSS px) screenshots reviewed; no horizontal overflow. All seven image instances load. Invitation dialog, mobile menu, journal dialog and experience accordion checked. No browser console errors. Content audit passes all 103 source lines; JavaScript syntax and diff checks pass.
