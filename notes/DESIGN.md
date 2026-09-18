@@ -75,3 +75,11 @@ The authored HTML, CSS, JavaScript, images and fonts are in `dist/`; no build de
 - Replaced the dark footer with an airy ivory four-column layout: supplied wordmark, existing brand/location copy, section links, Instagram and an underlined invitation link. It rearranges into two link columns on mobile.
 - Used the existing membership destination rather than adding an unconnected newsletter form. Footer and persistent navigation are shared by all five journal pages.
 - Verified desktop and mobile scrolling, header position, section clearance, menu interaction, footer layout, no horizontal overflow and no console errors. Existing content and SEO checks pass.
+
+## Direct invitation and editorial photography refresh
+- Header, mobile menu and footer invitation links now open the existing dialog immediately. The private-circle navigation link still leads to its descriptive section. Journal pages include the same invitation dialog, so their headers behave identically.
+- Normal links remain as a progressive fallback. Modal closing returns focus to its trigger, or the visible menu button for mobile navigation.
+- Reviewed Surrenne (https://www.surrenne.com/en), The Bothy (https://heckfieldplace.com/the-bothy-by-wildsmith/spaces), Pinterest retreat references and Dribbble wellness directions. Chose warm natural-light human photography over generic nature imagery and literal facility imagery.
+- Replaced forest, yoga-mat conversation and teacup photos with a singing-bowl session, two women making pottery, and hands shaping clay. All three are licensed Pexels images; source URLs and photographer credits are recorded in dist/assets/PHOTO-CREDITS.md.
+- Removed oversized rings and dark grading from the hero photograph, preserving the supplied rings in the membership lockup. Retained image labels and a small ivory note. Responsive WebP versions are 640px and 1200px wide.
+- Illustrative photographs do not represent Sphere members or permanent premises. No new service claims, article copy or venue details were added.

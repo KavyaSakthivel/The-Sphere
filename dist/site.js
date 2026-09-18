@@ -26,7 +26,18 @@ document.querySelectorAll('dialog').forEach(dialog => {
     if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
   });
 });
-document.querySelector('[data-invitation]')?.addEventListener('click', () => document.querySelector('#invitation-dialog').showModal());
+const invitationDialog = document.querySelector('#invitation-dialog');
+let invitationTrigger;
+document.querySelectorAll('[data-invitation]').forEach(trigger => {
+  trigger.addEventListener('click', event => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (!invitationDialog || typeof invitationDialog.showModal !== 'function') return;
+    event.preventDefault();
+    invitationTrigger = trigger.closest('#mobile-nav') ? menuButton : trigger;
+    invitationDialog.showModal();
+  });
+});
+invitationDialog?.addEventListener('close', () => invitationTrigger?.focus({ preventScroll: true }));
 const entries = JSON.parse(document.querySelector('#journal-data')?.textContent || '[]');
 document.querySelectorAll('[data-entry]').forEach(button => {
   button.addEventListener('click', event => {

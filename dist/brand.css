@@ -111,6 +111,16 @@ h1 em,h2 em,h3 em{font-size:1.15em;line-height:1.18}
 @media(max-width:700px){.article-reading{padding:36px 7% 60px}.article-breadcrumb{margin-bottom:32px}.article-reading h1{font-size:36px}.article-deck{font-size:18px}.article-prose p{font-size:17px}.footer-top p{max-width:250px}.hero-copy>.eyebrow{max-width:100%;line-height:1.8}}
 
 /* Persistent navigation with reserved space prevents a layout jump on scroll. */
+/* Natural photographic colour and clear, unobstructed human subjects. */
+.hero-visual>img:not(.brand-orbit){filter:none;object-position:50% 60%}
+.hero-visual{min-height:640px}
+.hero-image-label{color:var(--paper);text-shadow:0 1px 5px #0008}
+.image-note{left:auto;right:22px;bottom:22px;background:var(--paper);color:var(--terracotta);padding:12px 20px;font-size:25px;line-height:1.1}
+.image-note em{font-size:1.2em}
+.experience-detail img,.necessity-photo img{filter:none}
+.experience-detail img{object-position:48% 50%}
+@media(max-width:700px){.hero-visual{min-height:440px}.image-note{right:16px;bottom:16px;font-size:24px;padding:12px 18px}.experience-detail img{height:auto;aspect-ratio:1 / 1;object-fit:cover}}
+
 html{scroll-padding-top:140px}
 .navigation-space{height:218px}
 .header{position:fixed;inset:0 0 auto;z-index:40;margin:0;padding:72px 5.2% 72px calc(5.2% + 72px);background:var(--paper);border-bottom:1px solid var(--rule);transition:padding .2s ease,min-height .2s ease}

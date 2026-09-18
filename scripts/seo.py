@@ -47,6 +47,7 @@ def build_articles(home,entries):
  head=re.search(r'<head>(.*?)</head>',(ROOT/'templates/original-index.html').read_text(),re.S)[1]
  shell=re.search(r'<a class="skip".*?<main id="main">',home,re.S)[0].removesuffix('<main id="main">')
  footer=re.search(r'<footer>.*?</footer>',home,re.S)[0]
+ invitation=re.search(r'<dialog id="invitation-dialog".*?</dialog>',home,re.S)[0]
  for entry in entries:
   path=ROOT/'dist/journal'/entry['slug'];path.mkdir(parents=True,exist_ok=True)
   related=''.join(f'<a href="/journal/{e["slug"]}/">{escape(e["title"])} <span aria-hidden="true">↗</span></a>' for e in entries if e!=entry)
@@ -59,7 +60,7 @@ def build_articles(home,entries):
   <div class="article-prose">{''.join('<p>'+escape(p)+'</p>' for p in entry['paragraphs'])}</div>
   <p class="signature">The Sphere</p><a class="article-back" href="/#journal">← Back to the journal</a>
   <aside class="article-related"><h2>More from the journal</h2>{related}</aside>
-  </article></main>{footer}</body></html>'''
+  </article></main>{footer}{invitation}</body></html>'''
   # Root-relative assets and anchor links work from every article URL.
   html=re.sub(r'(href|src)="(assets/|style.css|brand.css|site.js)',r'\1="/\2',html)
   html=html.replace('href="#','href="/#').replace('href="/#main"','href="#main"')
