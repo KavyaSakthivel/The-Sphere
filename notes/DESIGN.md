@@ -83,3 +83,10 @@ The authored HTML, CSS, JavaScript, images and fonts are in `dist/`; no build de
 - Replaced forest, yoga-mat conversation and teacup photos with a singing-bowl session, two women making pottery, and hands shaping clay. All three are licensed Pexels images; source URLs and photographer credits are recorded in dist/assets/PHOTO-CREDITS.md.
 - Removed oversized rings and dark grading from the hero photograph, preserving the supplied rings in the membership lockup. Retained image labels and a small ivory note. Responsive WebP versions are 640px and 1200px wide.
 - Illustrative photographs do not represent Sphere members or permanent premises. No new service claims, article copy or venue details were added.
+
+## Panoramic landing and calligraphic typography
+- Adapted the user's Elysian Club reference (https://dribbble.com/shots/27516845-Wellness-Club-Website-Design-Concept) into a full-height framed landscape with a centred supplied logo, quiet side copy, large ivory title and centred pill CTA.
+- Self-hosted SIL OFL Pinyon Script replaces Allura as the decorative face. It is a freely licensed interpretation of the reference, not a claim to use its exact proprietary typeface. Nunito Sans remains the readable body and navigation face.
+- Script now carries through section accents, experience headings, journal titles, membership details and the invitation dialog. Original PDF text and restored journal reflections remain intact.
+- Used a real licensed misty landscape photograph. Retained the existing pottery/community photography below the hero. Photograph and font sources are included beside the assets.
+- Checked desktop and mobile hero screenshots, mobile section and journal typography, sticky navigation, anchor clearance and one-click invitation opening/closing. No mobile horizontal overflow or browser console errors observed. Content coverage passes all 103 source lines and SEO checks pass for six pages.

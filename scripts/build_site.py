@@ -17,7 +17,7 @@ def group(s,ids):return '<p>'+' '.join(t(s,i) for i in ids)+'</p>'
 def label(s,prefix=''):return '<p class="eyebrow">'+prefix+escape(heads[s])+'</p>'
 html=(ROOT/'templates/original-index.html').read_text()
 # Restore the original composition and integrate the complete source into it.
-html=re.sub(r'<p class="hero-description">.*?</p>',f'<p class="hero-description">{t(0,0)}<br>{t(0,1)}</p>',html,count=1)
+html=re.sub(r'<p class="hero-description">.*?</p>',f'<p class="hero-description">{t(0,1)}</p>',html,count=1)
 intro=f'''<section class="club-introduction section-pad">{label(0)}<h2>{t(0,2)}</h2><p>{t(0,3)}</p><div class="ritual-lines">{ps(0,range(4,10))}</div></section>'''
 html=html.replace('  <section id="philosophy"',intro+'\n  <section id="philosophy"',1)
 philosophy=f'''<section id="philosophy" class="philosophy section-pad">{label(1,'01 / ')}<div class="philosophy-main"><h2>Wellness,<br><em>beyond the usual.</em></h2><div class="prose">{ps(1,[1])}{group(1,range(2,7))}{ps(1,[7,8])}</div></div></section>'''

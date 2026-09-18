@@ -8,3 +8,7 @@ NunitoSans-Bold: https://fonts.gstatic.com/s/nunitosans/v19/pe1mMImSLYBIv1o4X1M8
 Nunito Sans: https://fonts.google.com/specimen/Nunito+Sans
 Allura: https://fonts.google.com/specimen/Allura
 See accompanying OFL licence files.
+
+Pinyon Script: https://fonts.google.com/specimen/Pinyon+Script
+PinyonScript-Regular: https://fonts.gstatic.com/s/pinyonscript/v24/6xKpdSJbL9-e9LuoeQiDRQR8aOI.ttf
+License: https://raw.githubusercontent.com/google/fonts/main/ofl/pinyonscript/OFL.txt

@@ -7,3 +7,9 @@ These are illustrative editorial stock photographs, not photographs of The Spher
 - `mindful-hands-*.webp`: Anastasia Shuraeva, “Hands Making Clay Pot on Brown Wooden Table,” https://www.pexels.com/photo/hands-making-clay-pot-on-brown-wooden-table-5566965/ — source https://images.pexels.com/photos/5566965/pexels-photo-5566965.jpeg
 
 License: https://www.pexels.com/license/ — free website and commercial use; no endorsement implied. Downloaded September 19, 2026. Encoded as responsive WebP assets; natural photographic colour retained. Layout cropping is done using CSS.
+
+## Panoramic landing photograph
+- `misty-meadow-*.webp`: Steve Gribble, “Misty mountain range over a dry grassy field,” https://unsplash.com/photos/misty-mountain-range-over-a-dry-grassy-field-thT7D1iWeo0
+- Source: https://images.unsplash.com/photo-1775499269254-7f2f91d1dd51?auto=format&fit=crop&w=3200&q=88
+- Free Unsplash license: https://unsplash.com/license. Downloaded September 19, 2026. Responsive WebP widths 960, 1920 and 2880.
+- Illustrative Tasman Lake, New Zealand landscape; not a claimed Sphere venue or Coimbatore location.
