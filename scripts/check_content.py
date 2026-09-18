@@ -1,6 +1,7 @@
 from pathlib import Path
 from html.parser import HTMLParser
 import re,json
+from urllib.parse import urlsplit
 ROOT=Path(__file__).resolve().parents[1]
 class Content(HTMLParser):
  def __init__(self):super().__init__();self.main=False;self.text=[];self.links=[]
@@ -22,7 +23,7 @@ for path in sorted((ROOT/'dist').rglob('*.html')):
  if p.text:pages[str(path.relative_to(ROOT/'dist'))]=' '.join(p.text)
  for link in p.links:
   if not link.startswith('/') or link.startswith('//'):continue
-  target=ROOT/'dist'/link.split('#')[0].lstrip('/')
+  target=ROOT/'dist'/urlsplit(link).path.lstrip('/')
   if target.is_dir():target=target/'index.html'
   assert target.is_file(),f'Broken local reference: {path}: {link}'
 missing=[];coverage=[]
@@ -36,6 +37,6 @@ allcopy=' '.join(pages.values())
 for restored in ['A little more room for you', 'Room for thought']:
  assert norm(restored) in norm(allcopy), f'Original design headline missing: {restored}'
 assert 'data-entry' in (ROOT/'dist/index.html').read_text()
-assert 'Try leaving a small part of your day unclaimed' in (ROOT/'dist/site.js').read_text()
+assert 'Try leaving a small part of your day unclaimed' in (ROOT/'data/journal.json').read_text()
 (ROOT/'notes/content-coverage.json').write_text(json.dumps(coverage,indent=2,ensure_ascii=False)+'\n')
 print(f'PASS: {len(coverage)} source lines are present across {len(pages)} pages; local links and assets resolve; original headlines and journal interactions restored.')

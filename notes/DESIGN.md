@@ -59,3 +59,12 @@ The authored HTML, CSS, JavaScript, images and fonts are in `dist/`; no build de
 - Direct versioned font CSS and hero font preloads replace the old nested CSS import to prevent stale fallback rendering on returning browsers. Script uses natural non-italic style, zero letter spacing, and adjusted sizing/line heights.
 - Verified font resource responses, desktop and mobile screenshots (1309 / 354 CSS px), no horizontal overflow, no console errors, and mobile journal and invitation dialogs. All 103 brief lines remain covered by the existing content check.
 - Personal-use Florelie demo remains outside deployment output in font-review and is not included in the website.
+
+## Coimbatore SEO preparation
+- Confirmed location: Coimbatore, Tamil Nadu; venues change and are communicated by email or WhatsApp. These details now appear naturally in the homepage.
+- data/site.json centralizes the canonical origin and confirmed business details. Domain remains unconfirmed; current Sites audience remains owner-private.
+- scripts/seo.py generates six canonical pages, unique metadata, Organization/WebSite/WebPage/Article/BreadcrumbList JSON-LD, sitemap.xml and robots.txt. Legacy section redirects are excluded from the sitemap and marked noindex,follow.
+- Five existing approved journal reflections moved into data/journal.json, shared by crawlable article pages and the original homepage dialogs. Article pages retain the brand's typefaces, colours and navigation.
+- Responsive forest WebP files reduce hero transfer size by approximately 60–85% compared with the existing JPEG. This is an asset-size comparison, not a measured Core Web Vitals claim.
+- Content coverage and SEO tests pass; desktop/mobile article layouts, homepage journal dialog and mobile navigation checked with no horizontal overflow or console errors.
+- notes/SEO-HANDOFF.md records domain connection, public launch, canonical migration, Search Console and eligibility-aware local discovery steps for the marketer.

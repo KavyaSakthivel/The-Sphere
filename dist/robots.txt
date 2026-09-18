@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://the-sphere-women.kavya931379.chatgpt.site/sitemap.xml

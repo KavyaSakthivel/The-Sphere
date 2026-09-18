@@ -93,3 +93,19 @@ h1 em,h2 em,h3 em{font-size:1.15em;line-height:1.18}
  .note .note-pause{font-size:32px!important}
  .invitation-brand p{font-size:33px}
 }
+
+/* Crawlable journal pages retain the main site's editorial identity. */
+.footer-location{display:inline-block;margin-top:8px}
+.invitation-copy .venue-note{font-size:14px;line-height:1.7;margin-top:22px}
+.article-reading{max-width:850px;margin:auto;padding:70px 6% 90px}
+.article-breadcrumb{display:flex;gap:12px;font-size:14px;margin-bottom:48px;color:var(--muted)}
+.article-breadcrumb a,.article-byline a,.article-back{text-decoration:underline;text-underline-offset:5px}
+.article-reading h1{font-size:clamp(38px,4.5vw,66px);line-height:1.15;color:var(--terracotta);margin:24px 0}
+.article-deck{font-size:20px;line-height:1.6;color:var(--muted)}
+.article-byline{font-size:14px;margin:24px 0 42px;padding-bottom:25px;border-bottom:1px solid var(--rule)}
+.article-prose p{font-size:18px;line-height:1.85;margin:24px 0}
+.article-back{display:inline-block;margin-top:32px;font-size:14px}
+.article-related{border-top:1px solid var(--rule);margin-top:70px;padding-top:32px}
+.article-related h2{font-size:26px;margin-bottom:22px}
+.article-related a{display:flex;justify-content:space-between;gap:20px;font-size:16px;line-height:1.6;padding:17px 0;border-bottom:1px solid var(--rule)}
+@media(max-width:700px){.article-reading{padding:36px 7% 60px}.article-breadcrumb{margin-bottom:32px}.article-reading h1{font-size:36px}.article-deck{font-size:18px}.article-prose p{font-size:17px}.footer-top p{max-width:250px}.hero-copy>.eyebrow{max-width:100%;line-height:1.8}}

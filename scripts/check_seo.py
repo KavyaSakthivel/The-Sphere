@@ -1,0 +1,60 @@
+"""Verify generated search metadata, discoverability, and article content."""
+from pathlib import Path
+from html.parser import HTMLParser
+from urllib.parse import urlsplit
+import json,xml.etree.ElementTree as ET
+ROOT=Path(__file__).resolve().parents[1];DIST=ROOT/'dist'
+config=json.loads((ROOT/'data/site.json').read_text());base=config['url'].rstrip('/')
+entries=json.loads((ROOT/'data/journal.json').read_text())
+class Page(HTMLParser):
+ def __init__(self):super().__init__();self.canon=[];self.meta={};self.h1=0;self.title='';self.in_title=False;self.jsons=[];self.json_text=None;self.links=[];self.text=[]
+ def handle_starttag(self,tag,attrs):
+  a=dict(attrs)
+  if tag=='h1':self.h1+=1
+  if tag=='title':self.in_title=True
+  if tag=='meta':self.meta[a.get('name',a.get('property'))]=a.get('content')
+  if tag=='link' and a.get('rel')=='canonical':self.canon.append(a['href'])
+  if tag=='script' and a.get('type')=='application/ld+json':self.json_text=''
+  if tag=='a':self.links.append(a.get('href',''))
+  for key in ['href','src']:
+   u=a.get(key,'')
+   if not u or u.startswith('#') or urlsplit(u).scheme or u.startswith('//'):continue
+   p=(DIST/urlsplit(u).path.lstrip('/')) if u.startswith('/') else self.path.parent/urlsplit(u).path
+   if p.is_dir():p=p/'index.html'
+   assert p.is_file(),f'Missing {u} from {self.path}'
+ def handle_endtag(self,tag):
+  if tag=='title':self.in_title=False
+  if tag=='script' and self.json_text is not None:self.jsons.append(json.loads(self.json_text));self.json_text=None
+ def handle_data(self,s):
+  self.text.append(s)
+  if self.in_title:self.title+=s
+  if self.json_text is not None:self.json_text+=s
+ def read(self,path):self.path=path;self.feed(path.read_text());return self
+paths=['/']+['/journal/'+e['slug']+'/' for e in entries]
+titles=set();descriptions=set()
+for route in paths:
+ p=Page().read(DIST/route.strip('/')/'index.html')
+ assert p.h1==1 and p.canon==[base+route],route
+ assert p.meta['og:url']==p.canon[0]
+ assert p.meta['robots']=='index,follow,max-image-preview:large'
+ assert p.title and p.title not in titles;titles.add(p.title)
+ assert p.meta['description'] and p.meta['description'] not in descriptions;descriptions.add(p.meta['description'])
+ assert len(p.jsons)==1
+ graph=p.jsons[0]['@graph'];organization=next(x for x in graph if x['@type']=='Organization')
+ assert organization['areaServed']['name']=='Coimbatore'
+ assert not any(k in organization for k in ['address','telephone','aggregateRating','openingHours'])
+ if route!='/':
+  entry=next(e for e in entries if route=='/journal/'+e['slug']+'/')
+  article=next(x for x in graph if x['@type']=='Article')
+  assert article['headline']==entry['title']
+  assert all(t in ' '.join(p.text) for t in entry['paragraphs'])
+ else:
+  assert all('/journal/'+e['slug']+'/' in p.links for e in entries)
+  assert 'Coimbatore' in ' '.join(p.text)
+locs=[x.text for x in ET.parse(DIST/'sitemap.xml').iter('{http://www.sitemaps.org/schemas/sitemap/0.9}loc')]
+assert locs==[base+p for p in paths]
+assert 'Sitemap: '+base+'/sitemap.xml' in (DIST/'robots.txt').read_text()
+assert 'Disallow: /' not in (DIST/'robots.txt').read_text()
+for p in ['experience','circle','journal']:
+ assert Page().read(DIST/p/'index.html').meta['robots']=='noindex,follow'
+print('PASS: six unique canonicals, titles, descriptions, structured-data graphs, sitemap entries, static article bodies and crawlable journal links; no invented location details.')

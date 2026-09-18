@@ -2,7 +2,12 @@
   {
     "source": "THE SPHERE",
     "pages": [
-      "index.html"
+      "index.html",
+      "journal/beyond-the-checklist/index.html",
+      "journal/the-art-of-slowing-down/index.html",
+      "journal/the-modern-woman/index.html",
+      "journal/wellness-is-a-necessity/index.html",
+      "journal/women-who-make-space-for-women/index.html"
     ]
   },
   {
@@ -152,31 +157,36 @@
   {
     "source": "A mother.",
     "pages": [
-      "index.html"
+      "index.html",
+      "journal/the-modern-woman/index.html"
     ]
   },
   {
     "source": "A leader.",
     "pages": [
-      "index.html"
+      "index.html",
+      "journal/the-modern-woman/index.html"
     ]
   },
   {
     "source": "A daughter.",
     "pages": [
-      "index.html"
+      "index.html",
+      "journal/the-modern-woman/index.html"
     ]
   },
   {
     "source": "A partner.",
     "pages": [
-      "index.html"
+      "index.html",
+      "journal/the-modern-woman/index.html"
     ]
   },
   {
     "source": "A friend.",
     "pages": [
-      "index.html"
+      "index.html",
+      "journal/the-modern-woman/index.html"
     ]
   },
   {
@@ -476,7 +486,12 @@
   {
     "source": "THE SPHERE JOURNAL",
     "pages": [
-      "index.html"
+      "index.html",
+      "journal/beyond-the-checklist/index.html",
+      "journal/the-art-of-slowing-down/index.html",
+      "journal/the-modern-woman/index.html",
+      "journal/wellness-is-a-necessity/index.html",
+      "journal/women-who-make-space-for-women/index.html"
     ]
   },
   {
@@ -488,31 +503,48 @@
   {
     "source": "Wellness is a necessity, not a luxury",
     "pages": [
-      "index.html"
+      "index.html",
+      "journal/beyond-the-checklist/index.html",
+      "journal/the-art-of-slowing-down/index.html",
+      "journal/the-modern-woman/index.html",
+      "journal/wellness-is-a-necessity/index.html",
+      "journal/women-who-make-space-for-women/index.html"
     ]
   },
   {
     "source": "Why making space for yourself isn't selfish.",
     "pages": [
-      "index.html"
+      "index.html",
+      "journal/wellness-is-a-necessity/index.html"
     ]
   },
   {
     "source": "The art of slowing down",
     "pages": [
-      "index.html"
+      "index.html",
+      "journal/beyond-the-checklist/index.html",
+      "journal/the-art-of-slowing-down/index.html",
+      "journal/the-modern-woman/index.html",
+      "journal/wellness-is-a-necessity/index.html",
+      "journal/women-who-make-space-for-women/index.html"
     ]
   },
   {
     "source": "Why rest isn’t something you need to earn.",
     "pages": [
-      "index.html"
+      "index.html",
+      "journal/the-art-of-slowing-down/index.html"
     ]
   },
   {
     "source": "Women who make space for women",
     "pages": [
-      "index.html"
+      "index.html",
+      "journal/beyond-the-checklist/index.html",
+      "journal/the-art-of-slowing-down/index.html",
+      "journal/the-modern-woman/index.html",
+      "journal/wellness-is-a-necessity/index.html",
+      "journal/women-who-make-space-for-women/index.html"
     ]
   },
   {
@@ -524,19 +556,30 @@
   {
     "source": "Beyond the checklist",
     "pages": [
-      "index.html"
+      "index.html",
+      "journal/beyond-the-checklist/index.html",
+      "journal/the-art-of-slowing-down/index.html",
+      "journal/the-modern-woman/index.html",
+      "journal/wellness-is-a-necessity/index.html",
+      "journal/women-who-make-space-for-women/index.html"
     ]
   },
   {
     "source": "Wellness isn't another thing to accomplish.",
     "pages": [
-      "index.html"
+      "index.html",
+      "journal/beyond-the-checklist/index.html"
     ]
   },
   {
     "source": "The modern woman",
     "pages": [
-      "index.html"
+      "index.html",
+      "journal/beyond-the-checklist/index.html",
+      "journal/the-art-of-slowing-down/index.html",
+      "journal/the-modern-woman/index.html",
+      "journal/wellness-is-a-necessity/index.html",
+      "journal/women-who-make-space-for-women/index.html"
     ]
   },
   {
@@ -602,13 +645,15 @@
   {
     "source": "Come as you are.",
     "pages": [
-      "index.html"
+      "index.html",
+      "journal/the-modern-woman/index.html"
     ]
   },
   {
     "source": "Stay for what you discover.",
     "pages": [
-      "index.html"
+      "index.html",
+      "journal/the-modern-woman/index.html"
     ]
   },
   {
