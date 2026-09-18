@@ -1,7 +1,7 @@
 # The Sphere — design and content notes
 
 ## Direction
-An editorial, typography-led site using the supplied sage/ivory identity, restrained circles, spacious composition, real photography, and no gradients. All twelve topics in THE SPHERE.pdf are represented. Five short journal reflections were newly drafted from the supplied titles and themes; they should receive the club's editorial review before public launch.
+An editorial, typography-led site using the supplied sage/ivory identity, restrained circles, spacious composition, real photography, and no gradients. All eleven sections in THE SPHERE.pdf are represented across four pages. Website content is limited to the user-supplied text; the journal contains only the supplied titles and descriptions. The earlier drafted articles and added marketing copy have been removed.
 
 ## Research — 18 September 2026
 - https://www.instagram.com/thespherewomen/ — inspected public profile and feed. Sage circular identity, real gatherings, yoga and traditional movement. Its linked Google Form is for a June 6 gathering, so it is not presented as an upcoming event.
@@ -20,8 +20,17 @@ This is a focused international reference set, not a claim to have reviewed ever
 - These are illustrative stock photographs, not representations of Sphere members or venues.
 
 ## Invitation behavior
-The enquiry dialog opens the verified Instagram profile. No contact details are collected or stored locally; no submission or membership acceptance is simulated. A live application endpoint can replace this flow when the club supplies its current membership intake process.
+The Request an Invitation link opens the verified Instagram profile directly. No contact details are collected or stored locally; no submission or membership acceptance is simulated. A live application endpoint can replace this flow when the club supplies its current membership intake process.
 
 ## Running locally
 Run `python3 -m http.server 4173 --bind 127.0.0.1 --directory dist` from the project folder.
 The authored HTML, CSS, JavaScript, images and fonts are in `dist/`; no build dependencies are required.
+
+## Content organization and verification
+- `/`: THE SPHERE, A SPACE THAT FEELS LIKE YOURS, WHY THE SPHERE?, IS WELLNESS A LUXURY OR A NECESSITY?, A NOTE FROM THE SPHERE.
+- `/experience/`: THE SPHERE EXPERIENCE, MORE THAN WELLNESS, CURATED EXPERIENCES.
+- `/circle/`: THE WOMEN OF THE SPHERE, A PRIVATE CIRCLE.
+- `/journal/`: THE SPHERE JOURNAL.
+- `notes/content.txt` matches the supplied PDF after normalizing whitespace and apostrophes.
+- Run `python3 scripts/build_site.py` to regenerate the four static pages.
+- Run `python3 scripts/check_content.py` to check all 103 source lines and local references. It writes `notes/content-coverage.json`.
