@@ -2,17 +2,20 @@
   {
     "source": "THE SPHERE",
     "pages": [
+      "carnival/index.html",
       "index.html",
       "journal/beyond-the-checklist/index.html",
       "journal/the-art-of-slowing-down/index.html",
       "journal/the-modern-woman/index.html",
       "journal/wellness-is-a-necessity/index.html",
-      "journal/women-who-make-space-for-women/index.html"
+      "journal/women-who-make-space-for-women/index.html",
+      "thank-you/index.html"
     ]
   },
   {
     "source": "Crafted calm for the modern woman.",
     "pages": [
+      "carnival/index.html",
       "index.html"
     ]
   },
@@ -574,6 +577,7 @@
   {
     "source": "The modern woman",
     "pages": [
+      "carnival/index.html",
       "index.html",
       "journal/beyond-the-checklist/index.html",
       "journal/the-art-of-slowing-down/index.html",
@@ -609,6 +613,7 @@
   {
     "source": "A space to pause.",
     "pages": [
+      "carnival/index.html",
       "index.html"
     ]
   },
@@ -645,6 +650,7 @@
   {
     "source": "Come as you are.",
     "pages": [
+      "carnival/index.html",
       "index.html",
       "journal/the-modern-woman/index.html"
     ]

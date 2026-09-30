@@ -1,0 +1,158 @@
+/* One-off event page. Uses only the brand tokens from brand.css; nothing here outlives the event folder. */
+
+/* Opening: copy and facts beside a tall photograph, the old editorial hero rhythm. */
+.event-hero{display:grid;grid-template-columns:1.05fr 1fr;gap:6%;padding:34px 5.2% 96px;align-items:stretch}
+.event-hero-copy{display:flex;flex-direction:column;justify-content:center;padding-left:72px}
+.event-crumb{display:flex;gap:12px;font-size:13px;color:var(--muted);margin-bottom:40px}
+.event-crumb a{text-decoration:underline;text-underline-offset:5px}
+.event-hero h1{font-size:clamp(46px,4.4vw,72px);line-height:1.1;letter-spacing:-.04em;color:var(--terracotta);margin:22px 0 20px}
+.event-hero h1 em{display:block;font-family:var(--script);font-weight:500;font-size:1.02em;line-height:1.2;letter-spacing:0;margin-top:.08em}
+.event-tagline{font-size:20px;line-height:1.6;color:var(--ink);max-width:460px}
+.event-facts{margin:38px 0 0;border-top:1px solid var(--rule);max-width:560px}
+.event-facts>div{display:grid;grid-template-columns:110px 1fr;gap:20px;padding:17px 0;border-bottom:1px solid var(--rule)}
+.event-facts dt{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--terracotta);padding-top:4px}
+.event-facts dd{margin:0;font-size:16px;line-height:1.65;color:var(--ink)}
+.event-facts dd span{color:var(--muted)}
+.event-facts dd a{display:inline-flex;align-items:center;gap:6px;min-height:32px;font-size:14px;color:var(--terracotta);text-decoration:underline;text-underline-offset:5px}
+.event-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px;margin-top:36px}
+.event-hero-visual{position:relative;margin:0;min-height:680px;overflow:hidden;background:var(--beige)}
+.event-hero-visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
+/* The club's montage sits over its own first frame and fades in once it is actually playing. */
+.event-hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s ease}
+.event-hero-video.is-playing{opacity:1}
+.event-video-toggle{position:absolute;left:22px;bottom:22px;min-height:44px;padding:10px 18px;border:0;border-radius:100px;background:#fff8ecd9;color:var(--ink);font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.event-video-toggle:hover{background:var(--paper)}
+.event-video-toggle:focus-visible{outline:2px solid var(--paper);outline-offset:3px}
+.event-date-chip{position:absolute;right:22px;bottom:22px;display:flex;flex-direction:column;align-items:center;min-width:132px;padding:16px 20px 14px;background:var(--paper);color:var(--terracotta);text-align:center;line-height:1}
+.event-date-chip span{font-size:11px;letter-spacing:.2em}
+.event-date-chip strong{font-size:64px;font-weight:400;letter-spacing:-.05em;margin:8px 0 2px}
+.event-date-chip em{font-family:var(--script);font-weight:500;font-style:normal;font-size:23px;line-height:1.2}
+
+/* After the evening, event.js sets is-past and every booking control is withdrawn. */
+.is-past [data-book],.is-past .event-card-action,.is-past .event-bar{display:none!important}
+
+/* Introduction. */
+.event-intro{display:grid;grid-template-columns:1.1fr 1fr;gap:9%;align-items:center;border-top:0}
+.event-intro h2{color:var(--terracotta);margin:24px 0 30px}
+.event-intro .prose p{font-size:16px;line-height:1.85}
+.event-quote{margin:0;padding:8px 0 8px 36px;border-left:1px solid var(--terracotta);font-family:var(--script);font-weight:500;font-size:clamp(26px,2.2vw,34px);line-height:1.45;color:var(--terracotta)}
+
+/* The six experiences, ruled like the pillars on the home page. */
+.event-experience{border-top:1px solid var(--rule)}
+.event-experience h2,.event-schedule h2,.event-faq h2{color:var(--terracotta)}
+.event-grid{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);margin:56px 0 0;padding:0;border-top:1px solid var(--rule)}
+.event-grid li{padding:32px 34px 38px;border-bottom:1px solid var(--rule);border-right:1px solid var(--rule)}
+.event-grid li:nth-child(3n){border-right:0;padding-right:0}
+.event-grid li:nth-child(3n+1){padding-left:0}
+.event-grid h3{font-family:var(--script);font-weight:500;font-size:32px;line-height:1.25;letter-spacing:0;color:var(--terracotta);margin:0 0 12px}
+.event-grid p{font-size:15px;line-height:1.75;color:var(--muted)}
+
+/* The evening, hour by hour. */
+.event-schedule{border-top:1px solid var(--rule)}
+.event-schedule h2{margin-top:23px}
+.event-timeline{list-style:none;margin:52px 0 0;padding:0;border-top:1px solid var(--rule)}
+.event-timeline li{display:grid;grid-template-columns:220px 1fr;gap:28px;padding:26px 0;border-bottom:1px solid var(--rule)}
+.event-time{font-size:14px;letter-spacing:.06em;color:var(--terracotta);padding-top:12px}
+.event-timeline h3{font-family:var(--script);font-weight:500;font-size:30px;line-height:1.3;letter-spacing:0;color:var(--terracotta);margin:0}
+.event-timeline p{font-size:15px;color:var(--muted);margin-top:6px;line-height:1.75;max-width:620px}
+
+/* Tickets: the sage ground of the home page's invitation, with an ivory ticket. */
+.event-tickets{background:var(--sage);display:grid;grid-template-columns:1fr minmax(360px,470px);gap:9%;align-items:center}
+.event-tickets-copy h2{margin:24px 0 26px}
+.event-tickets-copy>p:not(.eyebrow){font-size:17px;line-height:1.8;color:var(--ink);max-width:520px}
+.event-card{background:var(--paper);padding:44px 44px 38px;scroll-margin-top:140px}
+.event-price{font-size:clamp(58px,5vw,76px);font-weight:400;letter-spacing:-.05em;line-height:1;color:var(--terracotta);margin-top:20px}
+.event-card-note{font-size:14px!important;color:var(--muted);margin-top:8px}
+.event-card-facts{list-style:none;margin:28px 0 30px;padding:0;border-top:1px solid var(--rule)}
+.event-card-facts li{padding:12px 0;border-bottom:1px solid var(--rule);font-size:14px;line-height:1.6}
+.event-card-action .button{width:100%}
+.event-card-small{font-size:12px!important;line-height:1.7;color:var(--muted);margin-top:16px}
+/* Razorpay injects its own button; give it room and centre it inside the ticket. */
+.event-rzp{display:flex;justify-content:center;min-height:52px}
+.event-rzp>*{max-width:100%}
+
+/* The client's pill: women and couples welcome. */
+.event-welcome{display:inline-block;margin-top:26px;padding:10px 20px;border:1px solid var(--ink);border-radius:100px;font-size:13px!important;letter-spacing:.06em}
+.event-card-small{font-size:13px!important;line-height:1.7;color:var(--muted)}
+
+/* Who is it for. */
+.event-who{border-top:1px solid var(--rule);text-align:center}
+.event-who h2{color:var(--terracotta);margin:24px 0 26px}
+.event-who p:not(.eyebrow){font-size:18px;line-height:1.85;color:var(--muted);max-width:760px;margin:0 auto}
+.event-who strong{color:var(--ink);font-weight:600}
+
+/* Good to know and questions. */
+.event-faq{display:grid;grid-template-columns:.85fr 1.15fr;gap:9%;align-items:start;border-top:1px solid var(--rule)}
+.event-faq h2{margin:24px 0 0}
+.event-questions{margin-top:6px}
+.event-questions summary{display:flex;justify-content:space-between;gap:20px;align-items:center;cursor:pointer;list-style:none;font-size:17px;padding:4px 0}
+.event-questions summary::-webkit-details-marker{display:none}
+.event-questions details[open] summary span{transform:rotate(45deg)}
+.event-questions summary span{font-size:22px;transition:transform .2s;color:var(--terracotta)}
+.event-questions details p{font-size:15px;line-height:1.8;color:var(--muted);margin-top:12px;max-width:620px}
+.event-questions details a{color:var(--terracotta);text-decoration:underline;text-underline-offset:5px}
+
+/* Closing, on the brand's dusty blue like the home page's note. */
+.event-close{background:var(--blue);text-align:center}
+.event-close h2{margin:24px 0 22px;font-size:clamp(36px,3.8vw,58px)}
+.event-close p:not(.eyebrow){font-size:17px;color:var(--ink)}
+.event-close-meta{font-size:14px!important;margin-top:18px}
+.event-close [data-book]{margin-top:34px}
+
+/* A quiet booking bar that follows the reader between the opening and the tickets. */
+.event-bar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:12px 5.2%;background:var(--paper);border-top:1px solid var(--rule);box-shadow:0 -10px 30px #393e3514;transform:translateY(110%);transition:transform .3s ease;visibility:hidden}
+.event-bar.is-visible{transform:none;visibility:visible}
+.event-bar p{display:flex;align-items:baseline;gap:18px;font-size:14px;line-height:1.4}
+.event-bar strong{font-weight:600;color:var(--terracotta)}
+.event-bar span{color:var(--muted)}
+.event-bar .button{min-height:46px;padding:11px 20px;gap:30px}
+
+
+@media(max-width:1100px){
+ .event-hero-copy{padding-left:0}
+ .event-tickets{grid-template-columns:1fr minmax(320px,420px);gap:6%}
+ .event-card{padding:36px 32px 32px}
+}
+@media(max-width:900px){
+ .event-hero{grid-template-columns:1fr;gap:44px}
+ .event-hero-visual{min-height:0;aspect-ratio:4 / 3.4}
+ .event-intro,.event-faq,.event-tickets{grid-template-columns:1fr;gap:50px}
+ .event-grid{grid-template-columns:1fr 1fr}
+ .event-grid li,.event-grid li:nth-child(3n),.event-grid li:nth-child(3n+1){padding:28px 24px 32px;border-right:1px solid var(--rule)}
+ .event-grid li:nth-child(odd){padding-left:0}
+ .event-grid li:nth-child(even){border-right:0;padding-right:0}
+ .event-timeline li{grid-template-columns:170px 1fr}
+}
+@media(max-width:700px){
+ .event-hero{padding:12px 7% 64px;gap:36px}
+ .event-crumb{margin-bottom:30px}
+ .event-hero h1{font-size:clamp(40px,11vw,56px);margin:18px 0 16px}
+ .event-tagline{font-size:18px}
+ .event-facts>div{grid-template-columns:78px 1fr;gap:14px;padding:15px 0}
+ .event-facts dd{font-size:15px}
+ .event-actions{flex-direction:column;align-items:stretch;gap:4px}
+ .event-actions .button{width:100%;margin-bottom:10px}
+ .event-hero-visual{aspect-ratio:4 / 4.6}
+ .event-video-toggle{left:14px;bottom:14px}
+ .event-date-chip{right:14px;bottom:14px;min-width:104px;padding:12px 14px 10px}
+ .event-date-chip strong{font-size:48px}.event-date-chip em{font-size:20px}
+ .event-quote{padding-left:24px;font-size:25px}
+ .event-grid{grid-template-columns:1fr;margin-top:34px}
+ .event-grid li,.event-grid li:nth-child(3n),.event-grid li:nth-child(3n+1),.event-grid li:nth-child(even),.event-grid li:nth-child(odd){padding:24px 0 26px;border-right:0}
+ .event-grid h3{font-size:29px;margin-top:14px}
+ .event-timeline{margin-top:34px}
+ .event-timeline li{grid-template-columns:1fr;gap:4px;padding:22px 0}
+ .event-time{padding-top:0}
+ .event-timeline h3{font-size:27px}
+ .event-card{padding:32px 24px 28px;margin:0 -2%}
+ .event-questions summary{font-size:16px;min-height:44px}
+ .event-close h2{font-size:34px;line-height:1.23}
+ .event-close [data-book] .button{width:100%}
+ .event-bar{padding:10px 5%;gap:12px}
+ .event-bar p{flex-direction:column;gap:0;font-size:12px}
+ .event-bar strong{font-size:13px;line-height:1.45}
+ .event-bar p>span{display:none}
+ .event-who p:not(.eyebrow){font-size:16px}
+ .event-bar .button{gap:14px;padding:10px 16px;font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){.event-bar,.event-hero-video{transition:none}.event-questions summary span{transition:none}}

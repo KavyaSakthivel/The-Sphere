@@ -31,6 +31,8 @@ class Page(HTMLParser):
   if self.json_text is not None:self.json_text+=s
  def read(self,path):self.path=path;self.feed(path.read_text());return self
 paths=['/']+['/journal/'+e['slug']+'/' for e in entries]
+event=json.loads((ROOT/'data/event.json').read_text()) if (ROOT/'data/event.json').exists() else None
+event_path='/'+event['slug']+'/' if event else None
 titles=set();descriptions=set()
 for route in paths:
  p=Page().read(DIST/route.strip('/')/'index.html')
@@ -52,7 +54,15 @@ for route in paths:
   assert all('/journal/'+e['slug']+'/' in p.links for e in entries)
   assert 'Coimbatore' in ' '.join(p.text)
 locs=[x.text for x in ET.parse(DIST/'sitemap.xml').iter('{http://www.sitemaps.org/schemas/sitemap/0.9}loc')]
-assert locs==[base+p for p in paths]
+assert locs==[base+p for p in paths+([event_path] if event else [])]
+if event:
+ # The one-off event page: indexable, with an Event graph.
+ p=Page().read(DIST/event['slug']/'index.html')
+ assert p.h1==1 and p.canon==[base+event_path] and p.meta['robots']=='index,follow,max-image-preview:large'
+ assert p.title not in titles and p.meta['description'] not in descriptions
+ ev=next(x for x in p.jsons[0]['@graph'] if x['@type']=='Event')
+ assert ev['startDate']==event['start'] and ev['offers']['price']==str(event['price_inr']) and ev['location']['name']==event['venue']
+ assert event_path in Page().read(DIST/'index.html').links
 assert 'Sitemap: '+base+'/sitemap.xml' in (DIST/'robots.txt').read_text()
 assert 'Disallow: /' not in (DIST/'robots.txt').read_text()
 for p in ['experience','circle','journal']:

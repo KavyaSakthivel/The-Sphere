@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Script comparison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Parisienne&family=Dancing+Script:wght@400;500&family=Sacramento&family=Great+Vibes&family=Petit+Formal+Script&family=Alex+Brush&family=Italianno&family=Nunito+Sans:wght@400&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#fff8ec;color:#393e35;font-family:'Nunito Sans',sans-serif;padding:24px}
+.row{display:grid;grid-template-columns:170px 1fr 1fr 1fr;gap:24px;align-items:center;border-bottom:1px solid #dfc6b6;padding:10px 0}
+.name{font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+h2{font-weight:400;font-size:44px;line-height:1.1;margin:0;color:#834c4d;letter-spacing:-.02em}
+h2 em{font-style:normal}
+.small{font-size:30px;color:#834c4d;line-height:1.3}
+.tiny{font-size:22px;color:#834c4d}
+</style></head><body>
+<script>
+const fonts=[['Pinyon Script (now)',1.25],['Parisienne',1.12],['Dancing Script',1.0],['Sacramento',1.35],['Great Vibes',1.2],['Petit Formal Script',0.95],['Alex Brush',1.15],['Italianno',1.45]];
+for(const [f,scale] of fonts){const fam=f.replace(' (now)','');
+document.write(`<div class="row"><div class="name">${f}</div>
+<h2>Wellness,<br><em style="font-family:'${fam}';font-size:${scale}em">beyond the usual.</em></h2>
+<div class="small" style="font-family:'${fam}';font-size:${34*scale}px">Wellness is a necessity, not a luxury</div>
+<div class="tiny" style="font-family:'${fam}';font-size:${24*scale}px">you belong in your life. &nbsp;Shared values.</div></div>`)}
+</script></body></html>

@@ -1,0 +1,134 @@
+{
+  "note": "Shot list for the landing-page montage. Footage: Sphere sessions of 10 July (sound healing) and 4 September (Kalaripayattu), from the club's Google Drive, kept in media/home/raw/. start = seconds into the clip, hold = seconds on screen, focus = where the crop sits left (0) to right (1). A triptych puts three vertical clips side by side in the wide cut.",
+  "wide": [
+    {
+      "file": "C0059.MP4",
+      "start": 1.9,
+      "hold": 3.2
+    },
+    {
+      "triptych": [
+        {
+          "file": "C0006.MP4",
+          "start": 2.2
+        },
+        {
+          "file": "C9997.MP4",
+          "start": 1.0
+        },
+        {
+          "file": "C4451.MP4",
+          "start": 5.0
+        }
+      ],
+      "hold": 3.6
+    },
+    {
+      "file": "C0019.MP4",
+      "start": 4.0,
+      "hold": 3.2
+    },
+    {
+      "triptych": [
+        {
+          "file": "C4438.MP4",
+          "start": 0.3
+        },
+        {
+          "file": "C4441.MP4",
+          "start": 16.4
+        },
+        {
+          "file": "C4327.MP4",
+          "start": 14.5
+        }
+      ],
+      "hold": 3.6
+    },
+    {
+      "file": "C0001.MP4",
+      "start": 0.4,
+      "hold": 3.2
+    },
+    {
+      "triptych": [
+        {
+          "file": "C0013.MP4",
+          "start": 3.0
+        },
+        {
+          "file": "C0026.MP4",
+          "start": 0.2
+        },
+        {
+          "file": "C4453.MP4",
+          "start": 13.0
+        }
+      ],
+      "hold": 3.4
+    },
+    {
+      "file": "C0021.MP4",
+      "start": 2.0,
+      "hold": 3.2
+    }
+  ],
+  "tall": [
+    {
+      "file": "C0006.MP4",
+      "start": 2.2,
+      "hold": 2.6
+    },
+    {
+      "file": "C4417.MP4",
+      "start": 11.0,
+      "hold": 2.6
+    },
+    {
+      "file": "C0026.MP4",
+      "start": 0.2,
+      "hold": 2.4
+    },
+    {
+      "file": "C9997.MP4",
+      "start": 1.0,
+      "hold": 2.8
+    },
+    {
+      "file": "C4438.MP4",
+      "start": 0.3,
+      "hold": 2.6
+    },
+    {
+      "file": "C0064.MP4",
+      "start": 1.0,
+      "hold": 2.6
+    },
+    {
+      "file": "C4451.MP4",
+      "start": 5.0,
+      "hold": 2.6
+    },
+    {
+      "file": "C4368.MP4",
+      "start": 5.8,
+      "hold": 2.6
+    },
+    {
+      "file": "C0059.MP4",
+      "start": 1.9,
+      "hold": 2.8,
+      "focus": 0.42
+    },
+    {
+      "file": "C9996.MP4",
+      "start": 0.5,
+      "hold": 2.6
+    },
+    {
+      "file": "C4441.MP4",
+      "start": 0.0,
+      "hold": 2.2
+    }
+  ]
+}

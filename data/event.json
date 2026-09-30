@@ -1,0 +1,18 @@
+{
+  "slug": "carnival",
+  "name": "The Sphere Wellness Carnival",
+  "tagline": "A day to pause. Breathe. Connect. Celebrate.",
+  "description": "The Sphere Wellness Carnival — A day to pause, breathe, connect and celebrate. 20 December 2026, 3 PM–10 PM, Jenney's Residency, Coimbatore.",
+  "start": "2026-12-20T15:00:00+05:30",
+  "end": "2026-12-20T22:00:00+05:30",
+  "venue": "Jenney's Residency",
+  "city": "Coimbatore",
+  "audience": "Open to Women & Couples",
+  "price_inr": 2799,
+  "price_note": "+ applicable fee",
+  "ticket_note": "",
+  "razorpay_button_id": "",
+  "payment_url": "",
+  "refund_policy": "",
+  "show_on_home": true
+}

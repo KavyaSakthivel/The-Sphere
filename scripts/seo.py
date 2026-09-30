@@ -53,7 +53,7 @@ def build_articles(home,entries):
   related=''.join(f'<a href="/journal/{e["slug"]}/">{escape(e["title"])} <span aria-hidden="true">↗</span></a>' for e in entries if e!=entry)
   html=f'''<!doctype html><html lang="en-IN"><head>{head}</head><body class="article-page">{shell}
   <main id="main"><article class="article-reading">
-  <nav class="article-breadcrumb" aria-label="Breadcrumb"><a href="/">The Sphere</a><span aria-hidden="true">/</span><span>Journal</span></nav>
+  <nav class="article-breadcrumb" aria-label="Breadcrumb"><a href="/">The Sphere</a><span aria-hidden="true">/</span><a href="/#journal">Journal</a></nav>
   <p class="eyebrow">THE SPHERE JOURNAL · A SHORT REFLECTION</p>
   <h1>{escape(entry['title'])}</h1><p class="article-deck">{escape(entry['subtitle'])}</p>
   <p class="article-byline">By <a href="/#philosophy">The Sphere</a> · Coimbatore</p>

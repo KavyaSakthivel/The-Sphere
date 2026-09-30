@@ -1,0 +1,1 @@
+Downloaded Florelie DEMO from https://www.1001fonts.com/florelie-demo-font.html on 2026-09-18. The included licence is personal-use-only. These review files are not included in dist or the live website. Avenir Next authorised free webfont source not found.

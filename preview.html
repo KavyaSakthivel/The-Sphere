@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Sphere Wellness Carnival</title>
+<meta name="description" content="The Sphere Wellness Carnival — A day to pause, breathe, connect and celebrate. 20 December 2026, 3 PM–10 PM, Jenney's Residency, Coimbatore.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap');
+
+:root{
+  --ivory:#fff7e8;
+  --beige:#ffd2b8;
+  --coral:#ff5f73;
+  --terracotta:#b52f5b;
+  --blue:#39bfe8;
+  --sage:#a8d84e;
+  --olive:#596b3d;
+  --orange:#ff8a2a;
+  --purple:#7b4ce2;
+  --ink:#30332d;
+  --white:#fffdf9;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ivory);color:var(--ink);font-family:"DM Sans",Arial,sans-serif;line-height:1.65}
+a{text-decoration:none;color:inherit}
+.container{width:min(1120px,92%);margin:auto}
+header{position:absolute;top:0;left:0;right:0;z-index:5;padding:25px 0}
+.nav{display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:28px;letter-spacing:4px;font-weight:500;color:#fff}
+.nav a{margin-left:28px;color:#fff;font-size:13px;letter-spacing:.5px}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 25px;border-radius:999px;background:var(--terracotta);color:#fff;font-weight:600;font-size:13px;letter-spacing:.5px;transition:.2s}
+.btn:hover{transform:translateY(-2px)}
+.btn.light{background:#fff;color:var(--terracotta)}
+.hero{min-height:760px;display:flex;align-items:center;position:relative;overflow:hidden;background:
+ radial-gradient(circle at 78% 25%,rgba(255,255,255,.32),transparent 24%),
+ linear-gradient(135deg,rgba(131,76,77,.82),rgba(126,133,113,.68)),
+ url("https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1800&q=85") center/cover}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(53,50,42,.48),rgba(53,50,42,.08))}
+.hero-content{position:relative;z-index:2;max-width:700px;color:#fff;padding-top:70px}
+.eyebrow{font-size:12px;letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:20px}
+h1{font-family:"Playfair Display",serif;font-size:clamp(48px,7vw,88px);line-height:1.02;font-weight:500;margin:0 0 18px}
+.hero h1 em{font-weight:500}
+.hero-sub{font-family:"Playfair Display",serif;font-size:clamp(22px,3vw,34px);line-height:1.25;margin:0 0 25px}
+.meta{display:flex;flex-wrap:wrap;gap:10px 24px;font-size:15px;margin-bottom:30px}
+.meta span:before{content:"•";margin-right:10px;opacity:.7}
+.meta span:first-child:before{display:none}
+.section{padding:95px 0}
+.section.alt{background:var(--white)}
+.kicker{text-transform:uppercase;letter-spacing:2.5px;font-size:11px;font-weight:700;color:var(--coral);margin-bottom:12px}
+h2{font-family:"Playfair Display",serif;font-weight:500;font-size:clamp(38px,5vw,58px);line-height:1.1;margin:0 0 20px;color:var(--terracotta)}
+.lead{font-size:18px;max-width:760px;color:#66665e}
+.intro{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+.quote{font-family:"Playfair Display",serif;font-size:31px;line-height:1.35;color:var(--terracotta);padding:35px;border-left:3px solid var(--coral);background:rgba(210,119,110,.08)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:45px}
+.card{padding:30px;background:var(--ivory);border-radius:20px;min-height:190px}
+.card:nth-child(2){background:#eef2f3}
+.card:nth-child(3){background:#edf3ed}
+.card:nth-child(4){background:#f6e7df}
+.card:nth-child(5){background:#efe7df}
+.card:nth-child(6){background:#e8eeee}
+.icon{font-size:27px;margin-bottom:12px}
+.card h3{margin:0 0 7px;font-size:19px;color:var(--terracotta)}
+.card p{margin:0;font-size:14px;color:#66665e}
+.schedule{margin-top:45px;border-top:1px solid #d9cec2}
+.event{display:grid;grid-template-columns:180px 1fr;gap:30px;padding:25px 0;border-bottom:1px solid #d9cec2}
+.time{font-weight:700;color:var(--terracotta)}
+.event h3{margin:0 0 4px;font-size:20px}
+.event p{margin:0;color:#68675f}
+.ticket{background:var(--terracotta);color:#fff;padding:70px 0}
+.ticket h2{color:#fff}
+.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:35px 0}
+.price{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:30px}
+.price small{display:block;text-transform:uppercase;letter-spacing:2px;opacity:.8}
+.amount{font-size:38px;font-weight:700;margin:6px 0}
+.ticket-note{font-size:13px;opacity:.8}
+.faq{max-width:850px;margin:35px auto 0}
+details{padding:20px 0;border-bottom:1px solid #d9cec2}
+summary{cursor:pointer;font-weight:600;font-size:16px}
+details p{color:#68675f;margin:12px 0 0}
+.cta{padding:90px 0;text-align:center;background:linear-gradient(135deg,#f1ddd4,#eef2ec)}
+.cta h2{margin-bottom:12px}
+footer{padding:30px 0;text-align:center;font-size:12px;color:#77736c;background:#f2e8dc}
+@media(max-width:800px){
+ header{padding:18px 0}.nav a{display:none}.hero{min-height:700px}
+ .intro,.cards,.price-grid{grid-template-columns:1fr}
+ .section{padding:70px 0}.event{grid-template-columns:1fr;gap:5px}
+}
+
+.event-strip{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:12px;
+  margin:0 auto;padding:14px 18px;background:rgba(255,248,236,.96);
+  color:#834c4d;border-radius:999px;box-shadow:0 10px 30px rgba(63,64,57,.12);
+  font-weight:700;font-size:14px;letter-spacing:.2px;
+}
+.event-strip span{padding:0 8px}
+.event-strip span+span{border-left:1px solid #dfc6b6}
+.event-highlight{
+  display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;
+  margin:22px 0;padding:13px 18px;background:#fff8ec;border:1px solid #dfc6b6;
+  border-radius:14px;color:#834c4d;font-weight:700;
+}
+.sticky-event{
+  position:fixed;left:0;right:0;bottom:0;z-index:20;padding:10px 16px;
+  background:rgba(131,76,77,.97);box-shadow:0 -8px 25px rgba(0,0,0,.14);
+}
+.sticky-event-inner{width:min(1120px,94%);margin:auto;display:flex;align-items:center;justify-content:space-between;gap:15px;color:#fff}
+.sticky-event strong{font-size:14px}
+.sticky-event small{opacity:.85}
+@media(max-width:650px){
+ .event-strip{border-radius:18px;display:block;text-align:center}
+ .event-strip span{display:block;padding:3px 0}
+ .event-strip span+span{border-left:0}
+ .sticky-event-inner{justify-content:center}.sticky-event .btn{padding:10px 16px}
+ .sticky-event small{display:none}
+}
+
+
+/* Vibrant Wellness Festival theme */
+body{background:var(--ivory)}
+.hero{
+ background:
+ radial-gradient(circle at 78% 18%,rgba(255,255,255,.35),transparent 18%),
+ radial-gradient(circle at 12% 80%,rgba(168,216,78,.40),transparent 22%),
+ linear-gradient(125deg,rgba(181,47,91,.90),rgba(255,95,115,.82) 48%,rgba(255,138,42,.80)),
+ url("https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1800&q=85") center/cover;
+}
+.hero:after{background:linear-gradient(90deg,rgba(60,27,54,.42),rgba(181,47,91,.08))}
+h2{color:var(--terracotta)}
+.kicker{color:var(--coral)}
+.event-strip{background:#fffdf9;color:var(--terracotta);border:2px solid rgba(255,95,115,.35)}
+.btn{background:linear-gradient(135deg,var(--coral),var(--orange));box-shadow:0 8px 22px rgba(181,47,91,.22)}
+.btn.light{background:#fff;color:var(--terracotta);box-shadow:0 8px 20px rgba(0,0,0,.12)}
+.quote{color:var(--terracotta);border-left-color:var(--orange);background:linear-gradient(135deg,rgba(255,95,115,.14),rgba(255,138,42,.12))}
+.section.alt{background:linear-gradient(135deg,#fffdf9 0%,#eef9df 45%,#e9f8ff 100%)}
+.card{border:1px solid rgba(181,47,91,.08);box-shadow:0 12px 30px rgba(91,73,54,.08);transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-5px);box-shadow:0 18px 35px rgba(91,73,54,.13)}
+.card:nth-child(1){background:linear-gradient(135deg,#fff0e7,#ffe1dd)}
+.card:nth-child(2){background:linear-gradient(135deg,#edfbd8,#dff3bc)}
+.card:nth-child(3){background:linear-gradient(135deg,#e7f8ff,#c9efff)}
+.card:nth-child(4){background:linear-gradient(135deg,#fff4cf,#ffe3aa)}
+.card:nth-child(5){background:linear-gradient(135deg,#f4e7ff,#e6d5ff)}
+.card:nth-child(6){background:linear-gradient(135deg,#ffe5ef,#ffd0e1)}
+.card h3{color:var(--terracotta)}
+.event{border-bottom-color:#ead8ca}
+.time{color:var(--terracotta)}
+.ticket{
+ background:
+ radial-gradient(circle at 90% 20%,rgba(168,216,78,.35),transparent 20%),
+ radial-gradient(circle at 10% 90%,rgba(57,191,232,.30),transparent 25%),
+ linear-gradient(135deg,#b52f5b,#ff5f73 52%,#ff8a2a);
+}
+.ticket h2{color:#fff}
+.price{background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.42);backdrop-filter:blur(5px)}
+.amount{color:#fff;font-size:48px}
+.event-highlight{background:#fffdf9;border-color:var(--coral);box-shadow:0 10px 24px rgba(181,47,91,.10)}
+.cta{background:
+ radial-gradient(circle at 15% 30%,rgba(57,191,232,.25),transparent 20%),
+ radial-gradient(circle at 85% 70%,rgba(255,95,115,.25),transparent 20%),
+ linear-gradient(135deg,#fff1c8,#ffe0df,#e5f6ff)}
+.cta h2{color:var(--terracotta)}
+.sticky-event{background:linear-gradient(90deg,#b52f5b,#ff5f73,#ff8a2a)}
+.logo{font-weight:700}
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <div class="logo">THE SPHERE</div>
+    <nav>
+      <a href="#experience">Experience</a>
+      <a href="#schedule">Schedule</a>
+      <a href="#tickets">Tickets</a>
+      <a href="#faq">FAQs</a>
+      <a class="btn light" href="#tickets">Get Your Ticket</a>
+    </nav>
+  </div>
+</header>
+<div style="position:absolute;top:78px;left:0;right:0;z-index:4;">
+  <div class="container">
+    <div class="event-strip">
+      <span>20 DECEMBER 2026</span>
+      <span>3:00 PM – 10:00 PM</span>
+      <span>JENNEY'S RESIDENCY, COIMBATORE</span>
+    </div>
+  </div>
+</div>
+
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="eyebrow">The Sphere Wellness Carnival</div>
+      <h1>A day to pause.<br><em>Breathe. Connect. Celebrate.</em></h1>
+      <p class="hero-sub">Crafted calm for the modern woman.</p>
+      <div class="meta">
+        <span>20 December 2026</span>
+        <span>3:00 PM – 10:00 PM</span>
+        <span>Jenney's Residency, Coimbatore</span>
+      </div>
+      <div style="margin:18px 0 22px;font-size:15px;font-weight:700;letter-spacing:.2px;">
+        ✨ Open to Women & Couples
+      </div>
+      <a class="btn light" href="#tickets">Reserve Your Spot</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container intro">
+    <div>
+      <div class="kicker">More than an event</div>
+      <h2>Make space for yourself.</h2>
+      <p class="lead">Step away from the rush of everyday life and into an evening created around wellness, connection and celebration.</p>
+      <p>The Sphere Wellness Carnival brings together mindful experiences, movement, sound, nourishing food, music and community — creating a space where you can slow down, reconnect and enjoy the moment.</p>
+    </div>
+    <div class="quote">“Sometimes, you simply need a space to pause, breathe deeply, meet new people and leave feeling a little lighter.”</div>
+  </div>
+</section>
+
+
+<div class="container" style="margin-top:42px;">
+  <div class="event-highlight">
+    <span>📅 20 December 2026</span>
+    <span>📍 Jenney's Residency, Coimbatore</span>
+    <span>⏰ 3:00 PM – 10:00 PM</span>
+  </div>
+</div>
+
+
+<div class="container" style="margin-top:10px;margin-bottom:65px;">
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+    <div style="padding:18px;text-align:center;border-radius:18px;background:#ffddd8;color:#b52f5b;font-weight:700;">WELLNESS</div>
+    <div style="padding:18px;text-align:center;border-radius:18px;background:#e3f5b9;color:#596b3d;font-weight:700;">NOURISH</div>
+    <div style="padding:18px;text-align:center;border-radius:18px;background:#d7f4ff;color:#167d9d;font-weight:700;">MUSIC</div>
+    <div style="padding:18px;text-align:center;border-radius:18px;background:#eadcff;color:#6840ad;font-weight:700;">COMMUNITY</div>
+  </div>
+</div>
+
+<section class="section alt" id="experience">
+  <div class="container">
+    <div class="kicker">The experience</div>
+    <h2>Come for the experience.<br>Stay for the feeling.</h2>
+    <p class="lead">An evening thoughtfully brought together around well-being, community and celebration.</p>
+    <div class="cards">
+      <div class="card"><div class="icon">🌿</div><h3>Mindful Experiences</h3><p>Moments designed to help you slow down, reconnect and be present.</p></div>
+      <div class="card"><div class="icon">🧘</div><h3>Breath & Movement</h3><p>A guided Breath Walk to help you reconnect with yourself.</p></div>
+      <div class="card"><div class="icon">🔔</div><h3>Sound Healing</h3><p>An immersive experience created around relaxation and mindful connection.</p></div>
+      <div class="card"><div class="icon">🥗</div><h3>Nourishing Food</h3><p>A curated dinner to enjoy alongside meaningful conversations.</p></div>
+      <div class="card"><div class="icon">🎶</div><h3>Sober Party</h3><p>Music, movement and celebration — without alcohol.</p></div>
+      <div class="card"><div class="icon">🤍</div><h3>Community & Connection</h3><p>Meet like-minded people and create new connections.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="schedule">
+  <div class="container">
+    <div class="kicker">Your evening</div>
+    <h2>A little preview of your day.</h2>
+    <div class="schedule">
+      <div class="event"><div class="time">3:00 – 5:00 PM</div><div><h3>Settle In</h3><p>Arrive, register, get comfortable and connect with fellow attendees.</p></div></div>
+      <div class="event"><div class="time">5:00 – 5:30 PM</div><div><h3>Inauguration</h3><p>A warm welcome to begin the evening.</p></div></div>
+      <div class="event"><div class="time">5:30 – 6:00 PM</div><div><h3>Breath Walk</h3><p>A guided breathwork experience to help you slow down and become present.</p></div></div>
+      <div class="event"><div class="time">6:00 – 7:00 PM</div><div><h3>Sound Healing</h3><p>An immersive sound healing experience designed for relaxation and mindful connection.</p></div></div>
+      <div class="event"><div class="time">7:00 – 8:00 PM</div><div><h3>Dinner</h3><p>Nourishing food, conversations and community.</p></div></div>
+      <div class="event"><div class="time">8:00 – 10:00 PM</div><div><h3>Sober Party</h3><p>Music, movement and celebration to close the evening.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="ticket" id="tickets">
+<div class="container" style="margin-bottom:35px;">
+  <div class="event-highlight" style="justify-content:center;width:100%;">
+    <span>📅 20 December 2026</span>
+    <span>📍 Jenney's Residency, Coimbatore</span>
+  </div>
+</div>
+
+  <div class="container">
+    <div class="kicker" style="color:#dfc6b6">Tickets</div>
+    <h2>Choose your moment to join us.</h2>
+    <p style="max-width:680px">Your ticket to an evening of wellness, connection, nourishing food and celebration.</p>
+    <div style="display:inline-block;margin:10px 0 5px;padding:10px 16px;border:1px solid rgba(255,255,255,.45);border-radius:999px;font-weight:700;">Women & Couples Welcome</div>
+    <div class="price-grid" style="grid-template-columns:1fr;max-width:520px">
+      <div class="price">
+        <small style="color:#ffe9d7">ENTRY TICKET</small>
+        <div class="amount">₹2,799</div>
+        <div>+ applicable fee</div>
+      </div>
+    </div>
+    <a class="btn light" href="#" onclick="alert('Connect this button to your payment/ticketing link.');return false;">Book Your Experience</a>
+    <p class="ticket-note">Payment and ticketing link will be available at checkout.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="kicker">Who is it for?</div>
+    <h2>Come as you are.</h2>
+    <p class="lead"><strong>Women & Couples are welcome.</strong> Whether you want to slow down, reconnect, meet new people, explore wellness, enjoy good food or simply dance freely — there is space for you at The Sphere.</p>
+  </div>
+</section>
+
+<section class="section alt" id="faq">
+  <div class="container">
+    <div class="kicker">Good to know</div>
+    <h2>Frequently asked questions.</h2>
+    <div class="faq">
+      <details><summary>What is The Sphere Wellness Carnival?</summary><p>A wellness-led social experience bringing together mindful activities, sound healing, food, music and community.</p></details>
+      <details><summary>When and where is the event?</summary><p>20 December 2026, from 3:00 PM to 10:00 PM at Jenney's Residency, Coimbatore.</p></details>
+      <details><summary>Do I need prior wellness experience?</summary><p>No. The experience is designed to be accessible to participants.</p></details>
+      <details><summary>Is alcohol served?</summary><p>No. The evening concludes with a sober party featuring music, movement and social experiences.</p></details>
+      <details><summary>Can I attend alone?</summary><p>Yes. The event is designed to encourage community and meaningful connections.</p></details>
+      <details><summary>Is dinner included?</summary><p>Dinner is part of the event schedule.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="container">
+    <div class="kicker">The Sphere Wellness Carnival</div>
+    <h2>Your next chapter can begin with a pause.</h2>
+    <p class="lead" style="margin:0 auto 12px">Come slow down. Come connect. Come celebrate.</p><p style="font-weight:700;margin:0 auto 28px;color:#834c4d;">20 December 2026 &nbsp;•&nbsp; Jenney's Residency, Coimbatore &nbsp;•&nbsp; 3:00 PM – 10:00 PM</p>
+    <a class="btn" href="#tickets">Reserve Your Spot</a>
+  </div>
+</section>
+
+<footer>
+  © 2026 The Sphere. Crafted calm for the modern woman.
+</footer>
+
+<div class="sticky-event">
+  <div class="sticky-event-inner">
+    <div><strong>20 Dec 2026 · Jenney's Residency, Coimbatore</strong><br><small>3:00 PM – 10:00 PM · Entry ₹2,799 + Applicable Fee</small></div>
+    <a class="btn light" href="#tickets">Book Your Experience</a>
+  </div>
+</div>
+
+</body>
+</html>

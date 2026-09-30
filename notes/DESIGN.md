@@ -19,8 +19,8 @@ This is a focused international reference set, not a claim to have reviewed ever
 - Fonts: Cormorant Garamond and DM Sans, served locally from Google Fonts downloads.
 - These are illustrative stock photographs, not representations of Sphere members or venues.
 
-## Invitation behavior
-The restored invitation dialog leads to the verified Instagram profile. No contact details are collected or stored locally; no submission or membership acceptance is simulated. A live application endpoint can replace this flow when the club supplies its current membership intake process.
+## Invitation behavior — updated 21 September 2026
+The invitation dialog now carries a real enquiry form (name, email, optional WhatsApp, optional note, explicit consent tick), and a "Stay close" section above the footer takes an email address alone. Both post to FormSubmit, which emails the submission to the club's own address and sends the sender an instant auto-reply; nothing is stored on this site and no membership acceptance is simulated. The Instagram profile remains in the dialog as the second route. Delivery address and setup live in `data/site.json` (`form_endpoint`) and `notes/FORMS.md`; the forms do not deliver until the club clicks FormSubmit's one-time activation email.
 
 ## Running locally
 Run `python3 -m http.server 4173 --bind 127.0.0.1 --directory dist` from the project folder.
@@ -90,3 +90,110 @@ The authored HTML, CSS, JavaScript, images and fonts are in `dist/`; no build de
 - Script now carries through section accents, experience headings, journal titles, membership details and the invitation dialog. Original PDF text and restored journal reflections remain intact.
 - Used a real licensed misty landscape photograph. Retained the existing pottery/community photography below the hero. Photograph and font sources are included beside the assets.
 - Checked desktop and mobile hero screenshots, mobile section and journal typography, sticky navigation, anchor clearance and one-click invitation opening/closing. No mobile horizontal overflow or browser console errors observed. Content coverage passes all 103 source lines and SEO checks pass for six pages.
+
+## UI/UX pass — 21 September 2026
+A full read of every page, state and breakpoint (360, 375, 768, 900, 1024, 1280, 1600 CSS px),
+with the fixes applied in the same pass.
+
+**Journey.** A visitor could read the whole page and still not know what actually happens after
+she writes in — the steps only existed inside the invitation dialog. A `How joining works` section
+now sits between A Private Circle and the Journal: write to us, we reply personally within two
+days, we meet and then you join. It repeats the invitation CTA at the point where the question is
+asked. Its wording describes the club's own stated process (invitation-only, limited membership,
+venue shared privately); nothing about price, schedule or venue is invented.
+
+**"Join the club" was a trap.** On a page about joining a members' club, an email field captioned
+`Join the club` reads as a membership application. The inbox band now says `Join the list`, states
+plainly that it is not an application, and links across to the invitation form.
+
+**Accessibility.**
+- Focus rings were `--ink` everywhere, so they vanished against the photographic header and hero.
+  Those surfaces now take a `--paper` ring; the skip link takes terracotta, visible on both.
+- Body copy on the beige *necessity* panel sat at 4.29:1 against its background. It now uses
+  `--ink` (6.9:1). A full computed-contrast sweep of every text node against its painted
+  background now reports no failures at AA.
+- Form placeholders were `#a79b8d` on ivory (2.6:1) and now use `#776d60` (4.8:1).
+- Accordion summaries were 30px tall; they and the footer's back-to-top link are now 44px.
+  Remaining targets are all above the 24px WCAG 2.2 minimum.
+
+**Layout and state.**
+- Opening the mobile menu left the landing header transparent, so the ivory panel floated over the
+  photograph with a seam above it. The header now takes an `is-nav-open` class: opaque ground,
+  sage wordmark, dark toggle.
+- `A WOMEN'S WELLNESS CLUB` / `IN COIMBATORE` ran together as `CLUBIN COIMBATORE` on phones, where
+  the line break is suppressed. A space before the break fixes it at every width.
+- Journal step headings in the new section are height-matched above 900px so the three paragraphs
+  share a baseline.
+
+**Pages.** `/thank-you/` was inheriting the home page title and had no `h1`; it now carries its own
+title, og:title and heading. The journal breadcrumb's `Journal` step is a link rather than inert
+text. No horizontal overflow and no console errors on any page at any width tested.
+
+## Monthly gatherings — 21 September 2026
+The club meets once a month, usually in the first week (confirmed by the client). That rhythm is
+now stated in the A Private Circle section beside the existing venue note, where it needs no
+maintenance.
+
+A `What is coming up` section sits between How joining works and the Journal. It reads upcoming
+gatherings from a Google Sheet the club publishes to the web, so the club edits its own dates with
+no login, server or deploy. The section ships **dormant**: `gatherings_csv` in `data/site.json` is
+empty, so only the standing line about dates travelling by email and WhatsApp is published, until
+the client decides whether gathering dates should be public at all. Setup, the sheet's six columns
+and the failure modes are in `notes/GATHERINGS.md`.
+
+The loader is deliberately forgiving, and was verified against a deliberately messy sheet: past
+rows drop off, rows marked `no` stay hidden, quoted commas parse, slash dates read day-first for
+India, and a date it cannot parse is printed as typed rather than discarded. An empty, malformed or
+unreachable sheet leaves the static fallback in place, so the sheet cannot break the page.
+
+## Wellness Carnival event page — 29 September 2026
+A one-off ticketed page at `/carnival/` for 20 December 2026, built from `data/event.json` by
+`scripts/build_event.py` and styled only with the existing tokens: ivory ground, sage ticket
+section, dusty-blue close, Nunito Sans with Pinyon Script accents, fine rules, square buttons, no
+gradients. The client's draft (`preview.html`) did not bring over its bright gradient palette or its Playfair/DM Sans type.
+
+**Copy is the client's, word for word.** Every visible line — headline, experiences, schedule,
+ticket, "Who is it for?", FAQ answers, closing, booking bar — is taken from `preview.html` in its
+order. Nothing is inferred or embellished (no weekday, no countdown, no per-item times outside the
+schedule, no extra FAQs). The only non-preview words are structural labels (When, Where, Who,
+Entry) and the breadcrumb. A text audit of the built page against the preview confirms this.
+
+**Reference patterns.** Luma and Eventbrite put date, place, price and one booking action above the
+fold and keep a slim booking bar within reach on long pages; the layout does the same with the
+client's words.
+
+**Payment.** Razorpay Payment Button, embedded in the ticket card, so checkout opens over the page
+with no server. A hosted Payment Page link is the fallback. Until either is configured the card
+shows the preview's own line, "Payment and ticketing link will be available at checkout." Setup
+and open questions are in `notes/EVENT.md`.
+
+**Lifecycle.** Homepage mentions (hero note, nav link from 1240px, featured row in *What is coming
+up*) and all booking controls switch off in the browser once the evening ends. Deleting
+`data/event.json` and rebuilding turns `/carnival/` into a redirect home.
+
+**Checked.** 375, 1024 and 1440 CSS px; no horizontal overflow; no console errors. Content and SEO
+checks pass, including an Event structured-data check.
+
+## Landing montage from the club's own sessions — 30 September 2026
+The misty landscape behind "The Sphere" is replaced by a silent, looping montage of two real Sphere
+sessions: sound healing (10 July) and Kalaripayattu (4 September), from the club's Google Drive.
+Chosen for the brief "people talking, smiling and doing wellness activities": every shot has people
+moving; detail shots with no people (lanterns, plant, statue, empty bowls) were reviewed and left out.
+
+- **Two cuts.** The Kalaripayattu session was filmed vertically, the sound session mostly
+  horizontally. Phones get a tall 720×1280 cut, with vertical clips full frame (12 shots, 24 s).
+  Desktop gets a wide 1600×900 cut (7 shots, 19 s) alternating full-frame landscape shots with
+  triptychs — three vertical clips side by side divided by 6px Soft Ivory rules, echoing the
+  hero's ivory frame — so vertical footage is never cropped to a sliver.
+- **Edit.** In-points were picked from frame strips of each clip; shot list and crops are in
+  `data/montage-home.json`. 0.6 s crossfades; the loop has no seam. All audio is removed.
+- **Legibility.** The footage is dimmed (brightness .66, .58 on phones) with a soft shadow under the
+  small hero copy so the ivory type reads over busy frames.
+- **Behaviour.** The first frame is the poster, so the swap from still to video is invisible; the
+  video loads only after the page has, never for reduced-motion or data-saver visitors, pauses off
+  screen, and has a Pause control. One controller in `site.js` also drives the event-page montage.
+- **Weight.** Wide ≈ 4.3 MB, tall ≈ 3.5 MB (WebM, with MP4 for Safari).
+- **Rebuild.** Raw footage in `media/home/raw/` (git-ignored), then
+  `python3 scripts/build_montage.py home && python3 scripts/build_site.py`. Delete
+  `dist/assets/montage/` and rebuild to return to the landscape photograph.
+- **Consent.** Participants are identifiable; the club confirms everyone visible agreed to appear.
