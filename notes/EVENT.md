@@ -29,6 +29,26 @@ The page picks its mode from `data/event.json`:
 | `payment_url` | Every Book button goes to a hosted Razorpay Payment Page |
 | after 10 PM on the 20th | Automatic: every booking button and the booking bar disappear |
 
+## When the client sends the payment link
+
+One command, run from the project folder, then deploy `dist/` as usual:
+
+```bash
+python3 scripts/set_payment.py "PASTE-THE-LINK-HERE"
+```
+
+It accepts whatever Razorpay (or another provider) gives them:
+
+- **A payment link or Payment Page URL** (`https://rzp.io/...`, `https://pages.razorpay.com/...`, or any
+  `https://` link): every booking button on the page (header, hero, ticket card, closing section and
+  the follow-along bar) goes straight to it.
+- **A Razorpay Payment Button** (the embed code, or just its `pl_...` id): Razorpay's own button
+  appears in the ticket card and checkout opens on top of the page.
+
+It refuses anything that is not a secure `https://` link, and prints how many buttons it connected.
+`python3 scripts/set_payment.py --off` goes back to "Payment and ticketing link will be available at
+checkout." The link is stored in `data/event.json` (`payment_url` / `razorpay_button_id`).
+
 ## One-time Razorpay setup (the club does this in the dashboard; no code)
 
 1. **Open a Razorpay account and finish KYC now.** Activation needs business documents and can take
@@ -43,7 +63,7 @@ The page picks its mode from `data/event.json`:
      couples book two tickets.
    - Receipts on. After payment: show Razorpay's own success message (the site has no
      confirmation page, because the preview has no copy for one).
-4. Copy the button id (`pl_…`) into `razorpay_button_id` in `data/event.json`, rebuild, deploy.
+4. Run `python3 scripts/set_payment.py` with the button's embed code or `pl_…` id (see above), then deploy.
 5. Make one real ₹1 test (temporarily change the price), refund it from the dashboard, then set the
    price back. When stock runs out, Razorpay deactivates the button on its own.
 
