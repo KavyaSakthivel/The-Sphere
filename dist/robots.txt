@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://the-sphere-women.kavya931379.chatgpt.site/sitemap.xml
+Sitemap: https://the-sphere-women.netlify.app/sitemap.xml

@@ -1,6 +1,6 @@
 # The Sphere — editorial photograph sources
 
-These are illustrative editorial stock photographs, not photographs of The Sphere members or its venues.
+Earlier illustrative stock photographs (since replaced by the club's own session photos, below; files removed 3 October 2026), not photographs of The Sphere members or its venues.
 
 - `sound-ritual-*.webp`: Arina Krasnikova, “A Woman Holding a Singing Bowl Mallet,” https://www.pexels.com/photo/a-woman-holding-a-singing-bowl-mallet-6998217/ — source https://images.pexels.com/photos/6998217/pexels-photo-6998217.jpeg
 - `shared-making-*.webp`: cottonbro studio, “Women Doing Pottery,” https://www.pexels.com/photo/women-doing-pottery-6694314/ — source https://images.pexels.com/photos/6694314/pexels-photo-6694314.jpeg

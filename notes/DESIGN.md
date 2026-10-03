@@ -197,3 +197,27 @@ moving; detail shots with no people (lanterns, plant, statue, empty bowls) were 
   `python3 scripts/build_montage.py home && python3 scripts/build_site.py`. Delete
   `dist/assets/montage/` and rebuild to return to the landscape photograph.
 - **Consent.** Participants are identifiable; the club confirms everyone visible agreed to appear.
+
+## Netlify, security headers and a full audit — 3 October 2026
+The site is public at https://the-sphere-women.netlify.app (Netlify, connected to the private GitHub
+repository; publish directory `dist`, no build command). `data/site.json` `url` now names it, so
+canonical links, share previews, the sitemap and the forms' no-JavaScript fallback all point there.
+Change that one line when a custom domain is connected, rebuild and push.
+
+- **Audit.** All 11 pages crawled: no broken links or assets, no duplicate ids, every image has alt
+  text, every new-tab link has `rel=noopener`, no `http://` content, one `h1` per page, no console
+  errors, no horizontal overflow. Legacy routes redirect to their sections. Forms tested for empty
+  submission, network failure, an unactivated FormSubmit account, success and the honeypot (with
+  the network call stubbed, so nothing was sent).
+- **Clean-up.** Removed 19 unused files: replaced stock photos, stray font copies, and the Allura
+  and Pinyon Script fonts. The misty-meadow photo stays as the hero fallback.
+- **Cache-busting.** `build_site.py` now versions every CSS and JS link by its content hash, so a
+  returning visitor never keeps a stale stylesheet or script after an update.
+- **Security headers** (`dist/_headers`, read by Netlify and Cloudflare Pages): no framing by other
+  sites, no MIME sniffing, a private referrer policy, and a Content-Security-Policy per page group.
+  Pages may load only the site's own files, FormSubmit and (for gatherings) a published Google Sheet.
+  The event page also allows Razorpay; its button needs `'unsafe-eval'` and `razorpay.com` frames,
+  both found by running Razorpay's real script under the policy with a test button id.
+- **Forms.** They post to FormSubmit and arrive at thespherewomen@gmail.com, but only after the
+  club clicks FormSubmit's one-time activation email; until then visitors see "That did not send".
+  The address is visible in the page source until the activation alias replaces it (notes/FORMS.md).

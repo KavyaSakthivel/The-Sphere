@@ -1,0 +1,34 @@
+# Security headers for Netlify (and Cloudflare Pages, which reads the same file).
+# The site is static: no logins, no database. These headers stop it being framed by other sites,
+# stop browsers guessing file types, keep referrer details private, and limit what each page may load.
+# Rules must not overlap on the same header name: overlapping values are merged and would tighten
+# each other, so the Content-Security-Policy is set per page group rather than on /*.
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
+
+# Every page except the event page: the site's own files, FormSubmit for the two forms, and a
+# published Google Sheet for upcoming gatherings (data/site.json gatherings_csv) when it is set.
+/
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src 'self' https://formsubmit.co https://docs.google.com https://*.googleusercontent.com; form-action 'self' https://formsubmit.co; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+/index.html
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src 'self' https://formsubmit.co https://docs.google.com https://*.googleusercontent.com; form-action 'self' https://formsubmit.co; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+/journal/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src 'self' https://formsubmit.co; form-action 'self' https://formsubmit.co; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+/thank-you/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src 'self' https://formsubmit.co; form-action 'self' https://formsubmit.co; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+
+# The event page also allows Razorpay, whose Payment Button injects its own script, styles and
+# checkout frame. Razorpay publishes no fixed list, so its own domains are allowed as a group, and its
+# button script evaluates code at runtime ('unsafe-eval') and frames razorpay.com itself, both confirmed by
+# running payment-button.js under this policy. Its error telemetry (sentry.io) is deliberately not allowed.
+/carnival/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-eval' https://razorpay.com https://*.razorpay.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://razorpay.com https://*.razorpay.com; font-src 'self' https://razorpay.com https://*.razorpay.com; media-src 'self'; connect-src 'self' https://formsubmit.co https://razorpay.com https://*.razorpay.com; frame-src https://razorpay.com https://*.razorpay.com; form-action 'self' https://formsubmit.co https://razorpay.com https://*.razorpay.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(self "https://api.razorpay.com" "https://checkout.razorpay.com")

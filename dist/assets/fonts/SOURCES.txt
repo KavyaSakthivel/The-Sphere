@@ -16,3 +16,5 @@ License: https://raw.githubusercontent.com/google/fonts/main/ofl/pinyonscript/OF
 Dancing Script (replaces Pinyon Script as the script accent, 30 September 2026): https://fonts.google.com/specimen/Dancing+Script
 DancingScript-Regular / Medium / SemiBold: static instances served by the Google Fonts CSS API (fonts.gstatic.com/s/dancingscript/v29/)
 License: https://raw.githubusercontent.com/google/fonts/main/ofl/dancingscript/OFL.txt (DancingScript-OFL.txt)
+
+Allura and Pinyon Script are no longer used; their files were removed on 3 October 2026.
