@@ -112,7 +112,10 @@ for i in range(1,11,2):
  entries+=f'<a class="journal-entry" href="/journal/{slug}/" data-entry="{(i-1)//2}" aria-label="Read {t(9,i)}"><span class="journal-number">0{(i+1)//2}</span><span class="journal-title">{t(9,i)}</span><span class="journal-subtitle">{t(9,i+1)}</span><span class="journal-arrow" aria-hidden="true">↗</span></a>'
 journal=f'''<section id="journal" class="journal section-pad"><div class="section-heading"><div>{label(9,'04 / ')}<h2>Room for <em>thought.</em></h2></div><p>{t(9,0)}</p></div><div class="journal-list">{entries}</div></section>'''
 html=re.sub(r'<section id="journal".*?</section>',lambda _:journal,html,flags=re.S,count=1)
-note=f'''<section class="note section-pad">{label(10)}<h2>“We wanted to create<br>a space to <em>simply be.</em>”</h2>{ps(10,[0,1])}<p class="note-pause">{t(10,2)}<br>{t(10,3)}<br>{t(10,4)}</p>{group(10,[5,6])}{ps(10,[7])}<p class="note-signoff">{t(10,8)} {t(10,9)}<br>{t(10,10)}</p><span class="signature">The Sphere</span></section>'''
+# The founder's note as an ivory letter on the blue, with the brand's rings faint behind it: heading
+# on the left, left-aligned reading text on the right, the three "A space to" lines as a pull quote
+# and a signed close. Copy is the source text, line for line.
+note=f'''<section class="note letter section-pad" aria-labelledby="letter-title"><div class="letter-card"><div class="letter-head">{label(10)}<h2 id="letter-title">“We wanted to create<br>a space to <em>simply be.</em>”</h2></div><div class="letter-text"><div class="letter-body">{ps(10,[0,1])}<p class="note-pause"><span>{t(10,2)}</span><span>{t(10,3)}</span><span>{t(10,4)}</span></p>{group(10,[5,6])}{ps(10,[7])}</div><div class="letter-close"><p class="note-signoff">{t(10,8)} {t(10,9)}<br>{t(10,10)}</p><p class="letter-sign"><img src="assets/brand/circle-lockup.svg" alt="" aria-hidden="true" width="56" height="56" loading="lazy"><span class="signature">The Sphere</span></p></div></div></div></section>'''
 html=re.sub(r'<section class="note.*?</section>',lambda _:note,html,flags=re.S,count=1)
 dialog=('<dialog id="invitation-dialog" aria-labelledby="invitation-title">'
  '<button class="dialog-close" aria-label="Close invitation">×</button>'
