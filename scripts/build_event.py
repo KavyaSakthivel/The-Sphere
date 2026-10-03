@@ -56,7 +56,8 @@ def feature_home(html, ev):
   f'<span class="hero-event-cta">Get Your Ticket {arrow()}</span></a>')
  html = html.replace('<div class="hero-prelude">', chip+'<div class="hero-prelude">', 1)
  link = f'<a href="{ev["path"]}" data-event-until="{until}">Wellness Carnival</a>'
- html = re.sub(r'(<nav class="desktop-nav"[^>]*>.*?)(</nav>)', lambda m: m[1]+link+m[2], html, count=1, flags=re.S)
+ # On wide screens the event sits on the right, beside the invitation, so the header stays balanced.
+ html = re.sub(r'<a class="header-invite"[^>]*>.*?</a>', lambda m: f'<div class="header-actions"><a class="header-event" href="{ev["path"]}" data-event-until="{until}">Wellness Carnival</a>{m[0]}</div>', html, count=1, flags=re.S)
  html = re.sub(r'(<nav id="mobile-nav"[^>]*>)', lambda m: m[1]+link, html, count=1)
  feature = (f'<a class="event-feature" href="{ev["path"]}" data-event-until="{until}">'
   f'<span class="event-feature-date">{full_date(d).upper()}<br>{hours(ev)}</span>'
@@ -276,7 +277,7 @@ def assemble(home, ev, path, title, body):
  # On the event page the header's call to action is the ticket itself.
  shell = re.sub(r'<a class="header-invite"[^>]*>.*?</a>',
   f'<a class="header-invite" href="{a(book_href(ev))}" data-book>Get Your Ticket {arrow()}</a>', shell, count=1, flags=re.S)
- shell = shell.replace(f'<a href="{ev["path"]}" data-event-until', f'<a href="{ev["path"]}" aria-current="page" data-event-until')
+ shell = shell.replace(f'href="{ev["path"]}" data-event-until', f'href="{ev["path"]}" aria-current="page" data-event-until')
  footer = re.search(r'<footer>.*?</footer>', home, re.S)[0]
  invitation = re.search(r'<dialog id="invitation-dialog".*?</dialog>', home, re.S)[0]
  html = f'<!doctype html><html lang="en-IN"><head>{head}{seo(ev, path, title)}</head><body class="event-page">{shell}\n{body}{footer}{invitation}</body></html>'
