@@ -153,6 +153,8 @@ if all((MONTAGE/f).exists() for f in ('wide.mp4','wide.webm','wide-poster.jpg','
  html=re.sub(r'<div class="hero-visual">.*?</div>',lambda _:hero_media,html,count=1,flags=re.S)
 # A one-off event (data/event.json) adds a hero note, a nav link and a featured gathering.
 html=build_event.feature_home(html,build_event.load())
+# The footer is a terracotta block, so it carries the ivory wordmark (every page copies this footer).
+html=re.sub(r'<footer>.*?</footer>',lambda m:m[0].replace('wordmark-sage.svg','wordmark-ivory.svg'),html,count=1,flags=re.S)
 html=apply_seo(html)
 html=html.replace('</main>', '</main><script type="application/json" id="journal-data">'+json.dumps(journal_data,ensure_ascii=False).replace('<','\\u003c')+'</script>',1)
 (ROOT/'dist/index.html').write_text(html)

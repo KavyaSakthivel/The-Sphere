@@ -474,3 +474,14 @@ dialog h2 em{font-size:1.04em}
  .letter-close{flex-direction:column;align-items:flex-start}
  .letter .signature{font-size:36px}
 }
+
+/* Footer as a terracotta colour block (3 October 2026), so the end of every page is unmistakable.
+   Ivory text is 6.4:1 on Deep Terracotta; the softer secondary ivory (#e6d6cc) is 4.78:1, both AA. */
+footer{background:var(--terracotta);color:var(--paper)}
+footer .footer-brand p,footer .footer-invitation>p:not(.eyebrow),footer .footer-bottom{color:#e6d6cc}
+footer .footer-links a:hover{text-decoration-color:var(--paper)}
+footer .footer-invitation>a{border-color:#fff8ec80}
+footer .footer-invitation>a:hover{color:var(--paper);border-color:var(--paper)}
+footer .footer-bottom{border-color:#fff8ec33}
+footer a:focus-visible{outline-color:var(--paper)}
+footer ::selection{background:var(--paper);color:var(--terracotta)}
