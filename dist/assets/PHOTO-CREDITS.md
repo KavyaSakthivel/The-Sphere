@@ -14,7 +14,7 @@ License: https://www.pexels.com/license/ — free website and commercial use; no
 - Free Unsplash license: https://unsplash.com/license. Downloaded September 19, 2026. Responsive WebP widths 960, 1920 and 2880.
 - Illustrative Tasman Lake, New Zealand landscape; not a claimed Sphere venue or Coimbatore location.
 
-## Landing montage (`montage/`)
+## Landing montages (`montage/` and `montage-carnival/`)
 The club's own footage and photography from Sphere sessions on 10 July 2026 (sound healing) and
 4 September 2026 (Kalaripayattu), supplied by the club. Not stock. Edited, silenced and re-encoded
 for the web; see `data/montage-home.json` for the shot list.

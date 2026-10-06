@@ -133,11 +133,13 @@ def build_subpages(home, full_main):
         page_head = re.sub(r'<meta name="description"[^>]*>', '<meta name="description" content="'+escape(description, quote=True)+'">', page_head)
         meta = f'<link rel="canonical" href="{url("/"+slug+"/")}"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:title" content="{title} | The Sphere"><meta property="og:url" content="{url("/"+slug+"/")}"><meta property="og:description" content="{escape(description, quote=True)}"><meta property="og:image" content="{url("/assets/session-together-1920.webp")}">'
         graph = {'@context':'https://schema.org','@graph':[org(),{'@type':'WebPage','url':url('/'+slug+'/'),'name':title+' | The Sphere'}]}
-        opening = f'<div class="subpage-opening"><a class="text-link" href="/">← The Sphere</a><p class="eyebrow">THE SPHERE / {slug.upper()}</p><h1>{title}.</h1></div>'
+        opening_photo = ('session-sound-1920.webp', 'A sound-healing experience with women at The Sphere') if slug == 'experiences' else ('session-together-1920.webp', 'Women coming together in The Sphere circle')
+        opening = f'<section class="subpage-opening photo-opening">{photo(*opening_photo, eager=True)}<div class="photo-opening-copy"><p class="eyebrow">THE SPHERE / {slug.upper()}</p><h1>{title}.</h1><a class="text-link light-link" href="#'+('experiences' if slug == 'experiences' else 'invitation')+'">Discover more <span aria-hidden="true">↓</span></a></div></section>'
         html = f'<!doctype html><html lang="en-IN"><head>{page_head}{meta}<script type="application/ld+json">{json.dumps(graph,ensure_ascii=False)}</script></head><body class="premium-home club-subpage">{shell}<main id="main">{opening}{body}</main>{footer}{dialog}</body></html>'
         html = re.sub(r'(href|src)="(assets/|style.css|brand.css|premium.css|site.js|motion.js)', r'\1="/\2', html)
         html = html.replace('srcset="assets/', 'srcset="/assets/').replace(', assets/', ', /assets/')
         html = html.replace('href="#', 'href="/#').replace('href="/#main"', 'href="#main"')
+        html = html.replace('href="/#experiences"', 'href="#experiences"') if slug == 'experiences' else html.replace('href="/#invitation">Discover more', 'href="#invitation">Discover more')
         path = ROOT/'dist'/slug; path.mkdir(exist_ok=True)
         (path/'index.html').write_text(html)
 

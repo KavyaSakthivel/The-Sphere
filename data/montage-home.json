@@ -1,47 +1,89 @@
 {
-  "note": "The club’s own July sound-healing and September Kalaripayattu footage, from the supplied Drive collection. Single-frame compositions, longer holds and gentle crossfades for the quiet premium opening. No triptych.",
+  "note": "Kalari-led opening with steady group kicks and coordinated movement from C4417 and the early C4368 sequence. A paired portrait composition on desktop keeps bodies in frame. Sound healing remains interwoven. Avoid later panning footage; one-second crossfades and a blended loop seam. Rear-facing C4372 is excluded; C4397 uses a front-facing group movement interval.",
   "wide": [
+    {
+      "diptych": [
+        {
+          "file": "C4417.MP4",
+          "start": 2,
+          "hold": 4.8,
+          "speed": 0.8
+        },
+        {
+          "file": "C4368.MP4",
+          "start": 2,
+          "hold": 4.8,
+          "speed": 0.8
+        }
+      ],
+      "hold": 4.8
+    },
     {
       "file": "C0019.MP4",
       "start": 4,
-      "hold": 5
+      "hold": 5,
+      "speed": 0.8
     },
     {
-      "file": "C0059.MP4",
-      "start": 1.9,
-      "hold": 5
+      "diptych": [
+        {
+          "file": "C4397.MP4",
+          "start": 2,
+          "hold": 4.5,
+          "speed": 0.8
+        },
+        {
+          "file": "C4438.MP4",
+          "start": 0.3,
+          "hold": 4.5,
+          "speed": 0.8
+        }
+      ],
+      "hold": 4.5
+    },
+    {
+      "file": "C0027.MP4",
+      "start": 1,
+      "hold": 5,
+      "speed": 0.8
     },
     {
       "file": "C0021.MP4",
       "start": 2,
-      "hold": 5
-    },
-    {
-      "file": "C0001.MP4",
-      "start": 0.4,
-      "hold": 5
+      "hold": 5,
+      "speed": 0.8
     }
   ],
   "tall": [
     {
-      "file": "C0006.MP4",
-      "start": 2.2,
-      "hold": 5
+      "file": "C4417.MP4",
+      "start": 2,
+      "hold": 4.8,
+      "speed": 0.8
     },
     {
-      "file": "C4451.MP4",
-      "start": 5,
-      "hold": 4.5
+      "file": "C0013.MP4",
+      "start": 2,
+      "hold": 5,
+      "speed": 0.8
     },
     {
-      "file": "C4441.MP4",
-      "start": 16.4,
-      "hold": 4.5
+      "file": "C4368.MP4",
+      "start": 2,
+      "hold": 4.8,
+      "speed": 0.8
     },
     {
-      "file": "C9997.MP4",
-      "start": 1,
-      "hold": 4.5
+      "file": "C4438.MP4",
+      "start": 0.3,
+      "hold": 4.5,
+      "speed": 0.8
+    },
+    {
+      "file": "C0007.MP4",
+      "start": 0.1,
+      "hold": 3.8,
+      "speed": 0.8
     }
   ]
 }

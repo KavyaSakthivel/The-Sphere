@@ -192,17 +192,18 @@ thanks=re.sub(r'<meta property="og:title"[^>]*>','<meta property="og:title" cont
 # Keep links from the interim four-page version working.
 for route,target in [('experience','experiences'),('circle','invitation'),('journal','journal')]:
  (ROOT/'dist'/route/'index.html').write_text(f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0;url=/#{target}"><title>The Sphere</title><meta name="robots" content="noindex,follow"></head><body><a href="/#{target}">Enter The Sphere</a></body></html>')
-# Version every stylesheet and script link by its content, so a returning visitor's browser can never
+# Version scripts, styles and montage media by content, so a returning visitor's browser can never
 # keep a stale copy after an update (and the files can be cached for a long time in between).
 import hashlib
 def stamp(page):
  html=page.read_text()
  def version(m):
   path=m.group(1)
+  if not path.endswith(('.css', '.js')) and 'montage/' not in path and 'montage-carnival/' not in path: return m.group(0)
   target=ROOT/'dist'/path.lstrip('/') if path.startswith('/') else page.parent/path
   if not target.exists(): return m.group(0)
   return f'{path}?v={hashlib.sha256(target.read_bytes()).hexdigest()[:10]}"'
- page.write_text(re.sub(r'((?:/|\.\./)*[\w/.-]*\.(?:css|js))(?:\?v=[^"]*)?"',version,html))
+ page.write_text(re.sub(r'((?:/|\.\./)*[\w/.-]*\.(?:css|js|mp4|webm|jpg))(?:\?v=[^"]*)?"',version,html))
 for page in (ROOT/'dist').rglob('*.html'):
  stamp(page)
 print('Built the premium homepage, full philosophy, journal and event pages.')

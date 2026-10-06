@@ -97,25 +97,29 @@ price, a confirmation message — should come from the club before it goes on th
   FAQ. It is deliberately not shown until it exists.
 - **Capacity**, for the Razorpay stock limit.
 
-## Hero montage (optional)
+## Independent Carnival hero montage
 
-The photograph beside the headline can be replaced by a silent, looping montage of the club's own
-footage. Nothing is set up until clips exist; the page shows the photograph meanwhile.
+The essentials below the film now have a larger sage panel, visible WHEN/WHERE/WHO labels,
+and a contrasting terracotta ticket block with a prominent price and reservation link. On phones
+the facts and ticket block stack. The reservation link still leads to the booking-soon section until
+the client supplies a checkout URL.
 
-1. Put clips and/or photos in `media/carnival/`. They play in name order, so name them `01-…`,
-   `02-…`. Six to ten shots is plenty. Raw footage is git-ignored and never published.
-2. Run `python3 scripts/build_montage.py`, then `python3 scripts/build_site.py`, then deploy.
+Carnival uses its own desktop and phone montages of past Sphere gatherings. Its clip selection
+is separate from the homepage, recorded in `data/montage-carnival.json`. These are previews of
+the club experience, not footage of the upcoming event.
 
-What the script does: takes about 3 seconds from each clip (skipping the first fifth, where phone
-footage is usually unsteady), gives photos a slow push-in, crops everything to the 4:5 portrait hero
-frame, crossfades between shots, loops without a visible jump, and removes all sound. Output is in
-`templates/event/montage/` (MP4 + WebM, around 0.15 MB per second, plus a first-frame poster). It
-warns if the files pass 6 MB.
+1. Keep supplied clips in `media/home/raw/` (git-ignored). Select reviewed intervals in the manifest.
+2. Run `python3 scripts/build_montage.py carnival`, then `python3 scripts/build_site.py`.
+3. Run `python3 scripts/check_montages.py` alongside the content and SEO checks.
+
+Reviewed clips have longer holds and slightly slower playback, with one-second crossfades
+between shots and across the loop boundary. Output is in `dist/assets/montage-carnival/`:
+1600 × 900 desktop and 720 × 1280 phone, each with MP4, WebM and a matching first-frame poster.
+Intervals that exceed their original footage are rejected rather than frozen at the end.
 
 On the page the video starts muted and silent, has a Pause button, rests when scrolled out of view,
 and does not play at all for visitors whose phones ask for reduced motion or data saving. They see
-the first frame as a still. To go back to the photograph, delete `templates/event/montage/` and
-rebuild.
+the first frame as a still. URLs include content hashes so returning visitors receive updated cuts.
 
 **Footage to ask the club for:** vertical phone clips, held still for 5 seconds or more, of previous
 gatherings — breathwork, sound bowls, food, people talking or dancing. Centre the subject, because
@@ -124,7 +128,7 @@ public web page.**
 
 ## After the event
 
-The current carnival design uses the responsive home montage with a short cinematic opening,
+The current carnival design uses its independent responsive montage with a short cinematic opening,
 then a fact row, three editorial photos, the evening schedule, tickets and FAQs. Reveals respect
 reduced-motion preferences. The filled header action remains visible on phones. Until the client
 supplies a payment link, ticket actions lead to the ticket section with a booking-soon notice.

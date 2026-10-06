@@ -1,0 +1,30 @@
+[
+  {
+    "video": "dist/assets/montage-carnival/wide.mp4",
+    "frames": 470,
+    "seam_pixel_difference": 12.25,
+    "within_loop_difference_p95": 9.756,
+    "largest_difference": 18.68
+  },
+  {
+    "video": "dist/assets/montage-carnival/tall.mp4",
+    "frames": 388,
+    "seam_pixel_difference": 0.851,
+    "within_loop_difference_p95": 1.5,
+    "largest_difference": 2.523
+  },
+  {
+    "video": "dist/assets/montage/wide.mp4",
+    "frames": 483,
+    "seam_pixel_difference": 4.401,
+    "within_loop_difference_p95": 6.714,
+    "largest_difference": 10.5
+  },
+  {
+    "video": "dist/assets/montage/tall.mp4",
+    "frames": 448,
+    "seam_pixel_difference": 0.86,
+    "within_loop_difference_p95": 2.261,
+    "largest_difference": 3.633
+  }
+]

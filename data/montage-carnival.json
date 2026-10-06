@@ -1,0 +1,63 @@
+{
+  "note": "Preserve the existing movement, wellness and conversation clips, adding Kalari from a separate C4438 interval and the steadier early floor sequence in C4441. C0064 appears in both formats. Distinct page edits with one-second crossfades.",
+  "wide": [
+    {
+      "file": "C0059.MP4",
+      "start": 1.9,
+      "hold": 5,
+      "speed": 0.8
+    },
+    {
+      "file": "C4438.MP4",
+      "start": 4.3,
+      "hold": 3.8,
+      "speed": 0.75,
+      "focus_y": 0.28
+    },
+    {
+      "file": "C0051.MP4",
+      "start": 1,
+      "hold": 5,
+      "speed": 0.8
+    },
+    {
+      "file": "C0064.MP4",
+      "start": 1,
+      "hold": 5,
+      "speed": 0.8,
+      "focus_y": 0.28
+    },
+    {
+      "file": "C0020.MP4",
+      "start": 1,
+      "hold": 5,
+      "speed": 0.8
+    }
+  ],
+  "tall": [
+    {
+      "file": "C0006.MP4",
+      "start": 0.5,
+      "hold": 5,
+      "speed": 0.8
+    },
+    {
+      "file": "C4441.MP4",
+      "start": 0.8,
+      "hold": 4.5,
+      "speed": 0.8
+    },
+    {
+      "file": "C4451.MP4",
+      "start": 5,
+      "hold": 5,
+      "speed": 0.8
+    },
+    {
+      "file": "C0064.MP4",
+      "start": 1,
+      "hold": 5,
+      "speed": 0.8
+    }
+  ]
+}

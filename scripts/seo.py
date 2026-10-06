@@ -48,12 +48,21 @@ def build_articles(home,entries):
  shell=re.search(r'<a class="skip".*?<main id="main">',home,re.S)[0].removesuffix('<main id="main">')
  footer=re.search(r'<footer>.*?</footer>',home,re.S)[0]
  invitation=re.search(r'<dialog id="invitation-dialog".*?</dialog>',home,re.S)[0]
+ covers = {
+  'wellness-is-a-necessity': ('session-sound-1920.webp', 'A moment of stillness at The Sphere'),
+  'the-art-of-slowing-down': ('editorial-flowers-1200.webp', 'Flowers and a ceramic vase in afternoon light'),
+  'women-who-make-space-for-women': ('session-group-960.webp', 'Women sharing a conversation at The Sphere'),
+  'beyond-the-checklist': ('editorial-journal-1200.webp', 'Taking a quiet moment to read'),
+  'the-modern-woman': ('editorial-making-1200.webp', 'Women exploring a creative practice together'),
+ }
  for entry in entries:
   path=ROOT/'dist/journal'/entry['slug'];path.mkdir(parents=True,exist_ok=True)
   related=''.join(f'<a href="/journal/{e["slug"]}/">{escape(e["title"])} <span aria-hidden="true">↗</span></a>' for e in entries if e!=entry)
+  cover, cover_alt = covers[entry['slug']]
   html=f'''<!doctype html><html lang="en-IN"><head>{head}</head><body class="article-page">{shell}
   <main id="main"><article class="article-reading">
   <nav class="article-breadcrumb" aria-label="Breadcrumb"><a href="/">The Sphere</a><span aria-hidden="true">/</span><a href="/#journal">Journal</a></nav>
+  <figure class="article-opening-photo"><img src="/assets/{cover}" alt="{escape(cover_alt,quote=True)}" fetchpriority="high" decoding="async"></figure>
   <p class="eyebrow">THE SPHERE JOURNAL · A SHORT REFLECTION</p>
   <h1>{escape(entry['title'])}</h1><p class="article-deck">{escape(entry['subtitle'])}</p>
   <p class="article-byline">By <a href="/#philosophy">The Sphere</a> · Coimbatore</p>

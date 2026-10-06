@@ -137,11 +137,11 @@ def has_montage(): return (MONTAGE/'hero.mp4').exists()
 
 
 def hero_visual(ev):
- if (ROOT/'dist/assets/montage/wide.mp4').exists():
-  return ('<picture><source media="(max-width:700px)" srcset="/assets/montage/tall-poster.jpg"><img src="/assets/montage/wide-poster.jpg" alt="" fetchpriority="high" width="1600" height="900"></picture>'
+ if (ROOT/'dist/assets/montage-carnival/wide.mp4').exists():
+  return ('<picture><source media="(max-width:700px)" srcset="/assets/montage-carnival/tall-poster.jpg"><img src="/assets/montage-carnival/wide-poster.jpg" alt="" fetchpriority="high" width="1600" height="900"></picture>'
    '<video class="event-hero-video" muted loop playsinline preload="none" aria-hidden="true" data-montage '
-   'data-wide-webm="/assets/montage/wide.webm" data-wide-mp4="/assets/montage/wide.mp4" '
-   'data-tall-webm="/assets/montage/tall.webm" data-tall-mp4="/assets/montage/tall.mp4"></video>'
+   'data-wide-webm="/assets/montage-carnival/wide.webm" data-wide-mp4="/assets/montage-carnival/wide.mp4" '
+   'data-tall-webm="/assets/montage-carnival/tall.webm" data-tall-mp4="/assets/montage-carnival/tall.mp4"></video>'
    '<button class="event-video-toggle montage-toggle" type="button" hidden aria-label="Pause background film">Pause</button>')
  if not has_montage():
   return ('<img src="/assets/session-bowls-1200.webp" srcset="/assets/session-bowls-640.webp 640w, /assets/session-bowls-1200.webp 1200w" '
@@ -185,10 +185,11 @@ def page(ev):
  <a class="event-scroll-cue" href="#event-details" aria-label="Explore the carnival">SCROLL TO DISCOVER <span aria-hidden="true">↓</span></a>
 </section>
   <div id="event-details" class="event-pass">
+   <div class="event-pass-heading"><p class="eyebrow">THE SPHERE WELLNESS CARNIVAL</p><h2>Your evening,<br>at a glance.</h2></div>
    <dl class="event-facts">
-    <div>{icon('calendar')}<dt class="visually-hidden">When</dt><dd><strong>{date}</strong><span>{time}</span></dd></div>
-    <div>{icon('pin')}<dt class="visually-hidden">Where</dt><dd><strong>{place}</strong></dd></div>
-    <div>{icon('people')}<dt class="visually-hidden">Who</dt><dd><strong>{audience}</strong></dd></div>
+    <div>{icon('calendar')}<dt>WHEN</dt><dd><strong>{date}</strong><span>{time}</span></dd></div>
+    <div>{icon('pin')}<dt>WHERE</dt><dd><strong>{place}</strong></dd></div>
+    <div>{icon('people')}<dt>WHO</dt><dd><strong>{audience}</strong></dd></div>
    </dl>
    <div class="event-pass-foot">
     <p class="event-pass-price"><span class="eyebrow">ENTRY TICKET</span><strong>{price}</strong> <span>{escape(ev['price_note'])}</span></p>
@@ -359,7 +360,7 @@ def build(home):
  loc = '  <url><loc>'+escape(url(ev['path']))+'</loc></url>\n'
  if loc not in sitemap.read_text():
   sitemap.write_text(sitemap.read_text().replace('</urlset>', loc+'</urlset>'))
- print(f"Built {ev['path']} ({ev['mode']} booking mode, {'montage' if has_montage() or (ROOT/'dist/assets/montage/wide.mp4').exists() else 'photo'} hero).")
+ print(f"Built {ev['path']} ({ev['mode']} booking mode, {'montage' if has_montage() or (ROOT/'dist/assets/montage-carnival/wide.mp4').exists() else 'photo'} hero).")
 
 
 def retire(folder):
