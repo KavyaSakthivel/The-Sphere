@@ -43,12 +43,15 @@ document.querySelectorAll('[data-invitation]').forEach(trigger => {
 });
 invitationDialog?.addEventListener('close', () => invitationTrigger?.focus({ preventScroll: true }));
 const entries = JSON.parse(document.querySelector('#journal-data')?.textContent || '[]');
+let articleTrigger;
+document.querySelector('#article-dialog')?.addEventListener('close', () => articleTrigger?.focus({ preventScroll: true }));
 document.querySelectorAll('[data-entry]').forEach(button => {
   button.addEventListener('click', event => {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
     const dialog = document.querySelector('#article-dialog');
     if (!dialog || typeof dialog.showModal !== 'function') return;
     event.preventDefault();
+    articleTrigger = button;
     const entry = entries[Number(button.dataset.entry)];
     document.querySelector('#article-title').textContent = entry.title;
     const body = document.querySelector('#article-body');
@@ -250,17 +253,24 @@ loadGatherings();
 // Hero montage (landing and event pages): silent, looping, and only when the visitor's settings
 // welcome motion and data use. It waits for the page to finish loading so the still frame paints first.
 const montage = document.querySelector('video[data-montage]');
-const montageWelcome = montage && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  && !(navigator.connection && navigator.connection.saveData);
-if (montageWelcome) {
+const montageMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const montageDataAllowed = !(navigator.connection && navigator.connection.saveData);
+if (montage && montageDataAllowed) {
   const toggle = montage.closest('section, figure')?.querySelector('.montage-toggle');
   // Landing page: a wide cut for desktop and a tall cut for phones. Event page: a single cut.
   const cut = montage.dataset.tallMp4 ? (window.matchMedia('(max-width: 700px)').matches ? 'tall' : 'wide') : '';
   const source = format => montage.dataset[cut ? cut + format[0].toUpperCase() + format.slice(1) : format];
   let pausedByVisitor = false;
-  const play = () => montage.play().catch(() => {});
+  let started = false;
+  let inView = true;
+  const play = () => {
+    if (!montageMotion.matches && !document.hidden && inView && !pausedByVisitor) montage.play().catch(() => {});
+  };
   const start = () => {
+    if (started || montageMotion.matches) return;
+    started = true;
     [['webm', 'video/webm'], ['mp4', 'video/mp4']].forEach(([format, type]) => {
+      if (!source(format)) return;
       const el = document.createElement('source');
       el.src = source(format);
       el.type = type;
@@ -275,8 +285,9 @@ if (montageWelcome) {
     // Off screen, the video rests so it does not spend battery nobody is watching.
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(([entry]) => {
-        if (!entry.isIntersecting) montage.pause();
-        else if (!pausedByVisitor) play();
+        inView = entry.isIntersecting;
+        if (!inView) montage.pause();
+        else play();
       }).observe(montage);
     }
   };
@@ -285,6 +296,22 @@ if (montageWelcome) {
     pausedByVisitor = !montage.paused;
     if (pausedByVisitor) montage.pause(); else play();
     toggle.textContent = pausedByVisitor ? 'Play' : 'Pause';
+    toggle.setAttribute('aria-label', pausedByVisitor ? 'Play background film' : 'Pause background film');
+  });
+  montageMotion.addEventListener('change', () => {
+    if (montageMotion.matches) {
+      montage.pause();
+      montage.classList.remove('is-playing');
+      if (toggle) toggle.hidden = true;
+    } else {
+      start();
+      if (started && toggle) toggle.hidden = false;
+      if (started) montage.classList.add('is-playing');
+      play();
+    }
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) montage.pause(); else play();
   });
   if (document.readyState === 'complete') start();
   else window.addEventListener('load', start, { once: true });

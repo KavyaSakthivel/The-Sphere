@@ -62,12 +62,12 @@ def build_articles(home,entries):
   <aside class="article-related"><h2>More from the journal</h2>{related}</aside>
   </article></main>{footer}{invitation}</body></html>'''
   # Root-relative assets and anchor links work from every article URL.
-  html=re.sub(r'(href|src)="(assets/|style.css|brand.css|site.js)',r'\1="/\2',html)
+  html=re.sub(r'(href|src)="(assets/|style.css|brand.css|premium.css|site.js|motion.js)',r'\1="/\2',html)
   html=html.replace('href="#','href="/#').replace('href="/#main"','href="#main"')
   (path/'index.html').write_text(apply_seo(html,entry))
 
 def build_discovery(entries):
- urls=[url()]+[url('/journal/'+e['slug']+'/') for e in entries]
+ urls=[url()]+[url('/journal/'+e['slug']+'/') for e in entries]+[url('/philosophy/'),url('/experiences/'),url('/membership/')]
  # Do not invent publication dates or last-modified signals.
  sitemap='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
  sitemap+=''.join('  <url><loc>'+escape(u)+'</loc></url>\n' for u in urls)+'</urlset>\n'

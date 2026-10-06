@@ -23,3 +23,36 @@ for the web; see `data/montage-home.json` for the shot list.
 The club's own photographs from the sound-healing session of 10 July 2026 (RAW files DSC09893,
 DSC09852, DSC09840), exported by `scripts/prepare_photos.py` with a gentle exposure lift. They replace
 the stock pottery, clay-hands and stock singing-bowl images on the home and event pages.
+
+## Editorial film stills, 6 October 2026
+- `session-movement-960.webp`: C4441.MP4 at 17 seconds, September Kalaripayattu gathering.
+- `session-connection-960.webp`: C4451.MP4 at 5 seconds, a participant in the same gathering.
+- `session-sound-1920.webp`: C0021.MP4 at 2 seconds, July sound-healing gathering.
+- `session-group-960.webp`: C9997.MP4 at 2 seconds, three women talking together.
+- `session-together-1920.webp`: C0001.MP4 at 2 seconds, a wide view of the sound-healing circle.
+- All use footage already supplied by the club from the linked Google Drive collection:
+  https://drive.google.com/drive/folders/1kBHZ0cSbNAv9nHC4hCcJrcbhHsJIbHYZ
+- Extracted with ffmpeg, cropped and encoded as WebP by `scripts/prepare_premium_assets.py`.
+  Natural colour retained with a small exposure lift; no synthetic people, venues or testimonials.
+- The hero was recut as four longer full-frame shots per device, replacing the triptychs;
+  `data/montage-home.json` records source clips and timings.
+
+## Philosophy editorial photographs, 6 October 2026
+
+Pinterest wellness and sage/beige moodboards informed the visual direction. Published editorial
+photographs are sourced directly from Pexels under https://www.pexels.com/license/ . They illustrate
+reflection, discovery and quiet rituals; they do not depict Sphere members, venues or past events.
+
+- `editorial-reading-*.webp`: KATRIN BOLOVTSOVA, “Woman Reading A Book”,
+  https://www.pexels.com/photo/woman-reading-a-book-4049630/
+- `editorial-journal-*.webp`: Kevin Malik, “Woman Reading a Black Book”,
+  https://www.pexels.com/photo/woman-reading-a-black-book-9031737/
+- `editorial-making-*.webp`: cottonbro studio, “A Woman in Beige Long Sleeves Teaching a Woman
+  Standing Beside Her How to Mold a Clay”,
+  https://www.pexels.com/photo/a-woman-in-beige-long-sleeves-teaching-a-woman-standing-beside-her-how-to-mold-a-clay-6694742/
+- `editorial-flowers-*.webp`: Amoria Made, “Elegant Floral Arrangement in Sunlit Vase”,
+  https://www.pexels.com/photo/elegant-floral-arrangement-in-sunlit-vase-29547110/
+
+Downloaded from each image's Pexels CDN URL, encoded at 640 and 1200 pixels with
+`scripts/prepare_editorial_assets.py`. Natural colour retained; layout crops and mild desaturation
+are applied in CSS. No endorsement implied.

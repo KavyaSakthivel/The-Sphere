@@ -14,5 +14,6 @@
   "razorpay_button_id": "",
   "payment_url": "",
   "refund_policy": "",
-  "show_on_home": true
+  "show_on_home": true,
+  "promotion_until": "2027-01-01T00:00:00+05:30"
 }

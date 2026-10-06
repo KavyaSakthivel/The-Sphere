@@ -54,7 +54,15 @@ for route in paths:
   assert all('/journal/'+e['slug']+'/' in p.links for e in entries)
   assert 'Coimbatore' in ' '.join(p.text)
 locs=[x.text for x in ET.parse(DIST/'sitemap.xml').iter('{http://www.sitemaps.org/schemas/sitemap/0.9}loc')]
-assert locs==[base+p for p in paths+([event_path] if event else [])]
+assert locs==[base+p for p in paths+['/philosophy/','/experiences/','/membership/']+([event_path] if event else [])]
+for slug in ['experiences','membership']:
+ page=Page().read(DIST/slug/'index.html')
+ assert page.h1==1 and page.canon==[base+'/'+slug+'/'] and len(page.jsons)==1
+philosophy=Page().read(DIST/'philosophy/index.html')
+assert philosophy.h1==1 and philosophy.canon==[base+'/philosophy/']
+assert philosophy.meta['og:url']==base+'/philosophy/' and philosophy.meta['robots']=='index,follow,max-image-preview:large'
+assert philosophy.title not in titles and philosophy.meta['description'] not in descriptions
+assert len(philosophy.jsons)==1
 if event:
  # The one-off event page: indexable, with an Event graph.
  p=Page().read(DIST/event['slug']/'index.html')
@@ -62,9 +70,12 @@ if event:
  assert p.title not in titles and p.meta['description'] not in descriptions
  ev=next(x for x in p.jsons[0]['@graph'] if x['@type']=='Event')
  assert ev['startDate']==event['start'] and ev['offers']['price']==str(event['price_inr']) and ev['location']['name']==event['venue']
- assert event_path in Page().read(DIST/'index.html').links
+ from datetime import datetime
+ until=datetime.fromisoformat(event.get('promotion_until',event['end']))
+ if event.get('show_on_home') and datetime.now(until.tzinfo)<until:
+  assert event_path in Page().read(DIST/'index.html').links
 assert 'Sitemap: '+base+'/sitemap.xml' in (DIST/'robots.txt').read_text()
 assert 'Disallow: /' not in (DIST/'robots.txt').read_text()
 for p in ['experience','circle','journal']:
  assert Page().read(DIST/p/'index.html').meta['robots']=='noindex,follow'
-print('PASS: six unique canonicals, titles, descriptions, structured-data graphs, sitemap entries, static article bodies and crawlable journal links; no invented location details.')
+print('PASS: home, five journal articles, philosophy and event metadata; sitemap entries, static article bodies and crawlable links; no invented location details.')

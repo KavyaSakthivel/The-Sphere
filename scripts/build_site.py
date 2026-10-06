@@ -3,7 +3,13 @@ from html import escape
 import re, json
 from seo import apply_seo, build_articles, build_discovery, CONFIG, url
 import build_event
+from premium import render_home, build_philosophy
 ROOT=Path(__file__).resolve().parents[1]
+import shutil
+for asset in ('premium.css', 'motion.js'):
+ shutil.copyfile(ROOT/'templates'/asset,ROOT/'dist'/asset)
+with (ROOT/'dist/premium.css').open('a') as stylesheet:
+ stylesheet.write('\n'+(ROOT/'templates/editorial.css').read_text())
 journal_data=json.loads((ROOT/'data/journal.json').read_text())
 heads=['THE SPHERE','A SPACE THAT FEELS LIKE YOURS','WHY THE SPHERE?','THE SPHERE EXPERIENCE','MORE THAN WELLNESS','CURATED EXPERIENCES','IS WELLNESS A LUXURY OR A NECESSITY?','THE WOMEN OF THE SPHERE','A PRIVATE CIRCLE','THE SPHERE JOURNAL','A NOTE FROM THE SPHERE']
 sections={}
@@ -155,6 +161,8 @@ if all((MONTAGE/f).exists() for f in ('wide.mp4','wide.webm','wide-poster.jpg','
 html=build_event.feature_home(html,build_event.load())
 # The footer is a terracotta block, so it carries the ivory wordmark (every page copies this footer).
 html=re.sub(r'<footer>.*?</footer>',lambda m:m[0].replace('wordmark-sage.svg','wordmark-ivory.svg'),html,count=1,flags=re.S)
+html=render_home(html)
+build_philosophy(html,sections,heads)
 html=apply_seo(html)
 html=html.replace('</main>', '</main><script type="application/json" id="journal-data">'+json.dumps(journal_data,ensure_ascii=False).replace('<','\\u003c')+'</script>',1)
 (ROOT/'dist/index.html').write_text(html)
@@ -172,7 +180,7 @@ thanks=f'''<!doctype html><html lang="en-IN"><head>{head}</head><body>{shell}
 &mdash; if you do not see it, it may be resting in your promotions or spam folder.</p>\
 <a class="button button-dark" href="/">Back to The Sphere <span aria-hidden="true">&#8599;</span></a>\
 </section></main>{footer}{dialog}</body></html>'''
-thanks=re.sub(r'(href|src)="(assets/|style.css|brand.css|site.js)',r'\1="/\2',thanks)
+thanks=re.sub(r'(href|src)="(assets/|style.css|brand.css|premium.css|site.js|motion.js)',r'\1="/\2',thanks)
 thanks=thanks.replace('href="#','href="/#').replace('href="/#main"','href="#main"')
 thanks=re.sub(r'<link rel="canonical"[^>]*>','',thanks,count=1)
 thanks=re.sub(r'<meta name="robots"[^>]*>','<meta name="robots" content="noindex,follow">',thanks,count=1)
@@ -197,4 +205,4 @@ def stamp(page):
  page.write_text(re.sub(r'((?:/|\.\./)*[\w/.-]*\.(?:css|js))(?:\?v=[^"]*)?"',version,html))
 for page in (ROOT/'dist').rglob('*.html'):
  stamp(page)
-print('Restored the original single-page design with all 11 source sections.')
+print('Built the premium homepage, full philosophy, journal and event pages.')

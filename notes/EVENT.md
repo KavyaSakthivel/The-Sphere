@@ -10,13 +10,22 @@ site. No subdomain, no server, no second host.
 | Every fact and switch (date, venue, price, payment, refund text) | `data/event.json` |
 | Page layout and copy (copy is word for word from `preview.html`) | `scripts/build_event.py` |
 | Page styles and behaviour | `templates/event/event.css`, `templates/event/event.js` |
-| Homepage hero note and featured row styles | end of `dist/brand.css` |
+| Homepage entry popup layout, styles and behaviour | `scripts/premium.py`, `templates/premium.css`, `templates/motion.js` |
 | Generated output | `dist/carnival/` |
 
-`python3 scripts/build_site.py` builds it with the rest of the site. The homepage gets three
-mentions — a note in the hero, a nav link (1240px and wider, and the mobile menu), and a featured
-row in *What is coming up* — and all three remove themselves in the visitor's browser once the
-evening ends, even if nobody rebuilds.
+`python3 scripts/build_site.py` builds it with the rest of the site. The homepage gets an entry
+popup and a seasonal Carnival navigation link on desktop and mobile. Both expire after December
+using `promotion_until`, even if nobody rebuilds. The permanent homepage has no event section.
+
+## Page layout (4 October 2026)
+
+Follows the pattern ticketed event pages share (Luma, Eventbrite, District): the first screen carries the
+date, time, venue, who it is for, the price and the booking button in one card, so a visitor can book
+without scrolling. Then the preview's section links (Experience, Schedule, Tickets, FAQs), the
+introduction, the experiences as icon cards, the hour-by-hour timeline, *Who is it for* (moved before
+the price to answer doubts first), the ticket, questions and the closing invitation. Item titles are in
+plain type for quick scanning; the script face is kept for headline accents. The booking bar appears
+once the opening card scrolls away and, on wide screens, also carries the section links.
 
 ## Booking modes
 
@@ -114,6 +123,17 @@ landscape clips are cropped at the sides. **Anyone recognisable must have agreed
 public web page.**
 
 ## After the event
+
+The current carnival design uses the responsive home montage with a short cinematic opening,
+then a fact row, three editorial photos, the evening schedule, tickets and FAQs. Reveals respect
+reduced-motion preferences. The filled header action remains visible on phones. Until the client
+supplies a payment link, ticket actions lead to the ticket section with a booking-soon notice.
+
+The seasonal homepage entry popup expires automatically on 1 January 2027 at midnight India time,
+using `promotion_until` in `data/event.json`. It appears once per tab session, links to the event
+landing page and can be dismissed. A seasonal Carnival link is present in desktop and mobile
+navigation, expires at the same time, and points to `/carnival/`. No permanent homepage event
+section is present.
 
 Nothing is required on the night. When convenient: delete `data/event.json`, run
 `python3 scripts/build_site.py`, deploy. `/carnival/` becomes a redirect to the homepage so links
