@@ -167,7 +167,7 @@ footer .footer-brand .wordmark{margin:0 0 35px}
 .premium-home .header:not(.is-scrolled):not(.is-nav-open)>.header-invite{background:var(--paper);border-color:var(--paper);color:var(--ink)}
 .premium-home .header>.header-invite:hover{background:#6d3d3e;color:var(--paper);border-color:#6d3d3e}
 .home-invitation .invitation-heading>button{background:var(--terracotta);color:var(--paper);padding:17px 24px;min-height:54px;border:0}
-.experience-page-link{margin-top:35px}.membership-notes>.text-link{margin-top:28px}
+.membership-notes>.text-link{margin-top:28px}
 .club-subpage .header:not(.is-scrolled):not(.is-nav-open){background:var(--paper);color:var(--ink)}
 .club-subpage .header:not(.is-scrolled):not(.is-nav-open)>.header-invite{background:var(--terracotta);border-color:var(--terracotta);color:var(--paper)}
 .club-subpage .wordmark-primary{opacity:1!important}.club-subpage .wordmark-light{opacity:0!important}
@@ -248,8 +248,6 @@ footer .footer-brand .wordmark{margin:0 0 35px}
 .pillar-copy>.eyebrow{font-size:9px!important;color:var(--terracotta);margin-bottom:26px}
 .premium-home .pillar-copy h3{font-size:clamp(34px,3.6vw,54px);line-height:1.15;margin-bottom:26px}
 .pillar-copy>p:not(.eyebrow){font-size:15px;line-height:1.85;color:var(--muted);margin-bottom:28px}
-.landing-page .experience-page-link{display:flex;width:fit-content;max-width:100%;margin:28px auto 0;gap:40px}
-.landing-page .experience-page-link:hover{gap:54px}
 @keyframes pillar-image-enter{from{opacity:.35;transform:scale(1.04)}to{opacity:1;transform:scale(1)}}
 @keyframes pillar-copy-enter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 .landing-page .circle-story{background:transparent;gap:7%;padding-top:30px;padding-bottom:100px;grid-template-columns:.85fr 1.15fr}

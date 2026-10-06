@@ -67,7 +67,7 @@ def render_home(html):
     # The homepage introduces the club; practical detail lives on focused reading pages.
     main = re.sub(r'<div class="experience-gallery">.*?</div>', experience_browser(offerings), main, flags=re.S)
     main = re.sub(r'<div class="discover-line".*?</div>', '', main, flags=re.S)
-    main = re.sub(r'<details class="experience-directory".*?</details>', '<a class="text-link experience-page-link" href="/experiences/">Explore the experiences <span aria-hidden="true">↗</span></a>', main, flags=re.S)
+    main = re.sub(r'<details class="experience-directory".*?</details>', '', main, flags=re.S)
     main = re.sub(r'<section class="home-letter\b[^\"]*".*?</section>', '', main, flags=re.S)
     main = re.sub(r'<div class="membership-notes".*?</dl></div>', '<div class="membership-notes" data-reveal><p>A small circle. A monthly rhythm.<br>A personal conversation first.</p><a class="text-link" href="/membership/">Discover membership <span aria-hidden="true">↗</span></a></div>', main, flags=re.S)
     main = re.sub(r'<details id="joining".*?</details>', '', main, flags=re.S)
