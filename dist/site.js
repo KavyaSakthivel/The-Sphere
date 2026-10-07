@@ -211,7 +211,7 @@ const renderGatherings = entries => {
   link.textContent = 'Request an invitation ';
   const arrow = document.createElement('span');
   arrow.setAttribute('aria-hidden', 'true');
-  arrow.textContent = '↗';
+  arrow.textContent = '↗\uFE0E';
   link.append(arrow);
   link.addEventListener('click', event => {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;

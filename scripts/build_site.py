@@ -203,6 +203,8 @@ def stamp(page):
   target=ROOT/'dist'/path.lstrip('/') if path.startswith('/') else page.parent/path
   if not target.exists(): return m.group(0)
   return f'{path}?v={hashlib.sha256(target.read_bytes()).hexdigest()[:10]}"'
+ # iOS draws a bare ↗ as a colour emoji; the text-presentation selector (U+FE0E) keeps it a quiet glyph.
+ html=re.sub('(?:↗|&#8599;)(?!\ufe0e|&#xFE0E;)','↗&#xFE0E;',html)
  page.write_text(re.sub(r'((?:/|\.\./)*[\w/.-]*\.(?:css|js|mp4|webm|jpg))(?:\?v=[^"]*)?"',version,html))
 for page in (ROOT/'dist').rglob('*.html'):
  stamp(page)
