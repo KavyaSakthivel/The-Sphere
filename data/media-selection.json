@@ -78,6 +78,12 @@
       "name": "sphere-carnival-connect",
       "exposure": 1.12,
       "provenance": "Chosen by the client for the Carnival page's 03 / Connect photograph; add the original RAW to media/home/raw/ and run scripts/prepare_authentic_assets.py sphere-carnival-connect."
+    },
+    {
+      "source": "DSC09843.ARW",
+      "name": "sphere-showing-up",
+      "exposure": 1.12,
+      "provenance": "From the client's shared Drive folder PHOTOS (file 1a7xYN4AGNLAJDZ_knJHsW7SkVDFDL64n); Our story, 'Is wellness a luxury or a necessity?'."
     }
   ],
   "stills": [

@@ -219,7 +219,7 @@ def build_philosophy(home, sections, heads):
         f'<section class="st-necessity" aria-labelledby="necessity-title"><div class="st-copy"><p class="eyebrow">{escape(heads[6])}</p>'
         f'<h2 id="necessity-title">{escape(necessity[0])}</h2>{p(necessity[1], "st-lead")}'
         f'<p>{escape(necessity[2])} {escape(necessity[3])} {escape(necessity[4])}</p>{p(necessity[5], "st-emphasis")}</div>'
-        f'{photo("sphere-necessity-1200.webp", "Women seated in quiet meditation on green mats at The Sphere")}</section>'
+        f'{photo("sphere-showing-up-1200.webp", "Two women sitting in quiet meditation, their eyes closed, at The Sphere")}</section>'
     )
     html = f'''<!doctype html><html lang="en-IN"><head>{head}
     <link rel="canonical" href="{url('/philosophy/')}">

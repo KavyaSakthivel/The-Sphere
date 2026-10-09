@@ -157,3 +157,9 @@ conversation), so both are video stills from the club's own classes. Selection r
 clothed, standing arms-overhead stretches only; no lunges, high kicks, floor poses or frames that
 emphasise the body. Home: `sphere-move-reach` (C4417, 9.3 s). Carnival: `sphere-move-smile`
 (C4368, 7.8 s), framed to the waist.
+
+## Our story: "Is wellness a luxury or a necessity?" (9 October 2026)
+
+The photograph is now `sphere-showing-up`, DSC09843 from the client's shared Drive folder (two women in
+quiet meditation, eyes closed): it fits "choosing yourself begins with showing up for an hour". It replaces
+the supplied `sphere-necessity` frame, which is no longer used on the site.
