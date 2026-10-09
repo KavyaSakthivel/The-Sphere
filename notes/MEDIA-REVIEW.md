@@ -129,3 +129,31 @@ with the same modest exposure correction as the other real photographs.
 It appears beside “Intentionally intimate” on both the homepage and Membership.
 The complete 3:2 composition is retained, keeping the circle visible on phones.
 The temporary screenshot crop has been replaced; no Drive interface is included.
+
+## Client-supplied photographs (9 October 2026)
+
+Three photographs supplied directly by the client are kept in `media/supplied/` and exported by
+`scripts/prepare_supplied_photos.py` (original size, nothing enlarged):
+
+- `sphere-necessity` — Our story, "Is wellness a luxury or a necessity?" (replaces sphere-smile)
+- `sphere-talk-reflect` — Experiences page, Talk & Reflect
+- `sphere-explore` — Experiences page, Explore & Experience
+
+The homepage "Curated. Not crowded." section now uses the PDF's own wording for the four elements
+(Move, Pause, Connect, Discover) so it no longer repeats the Experiences page, which keeps the five
+curated experiences. Its photographs: Move sphere-move-reach (C4417 at 9.3 s), Pause sphere-rest-bowls, Connect
+sphere-laughter, Discover sphere-hands-bowls (`ELEMENT_PHOTOS` in `scripts/premium.py`). Crops of the
+two new Experiences photographs are positioned on the people in `templates/finish.css`.
+
+DSC09903 (the group of eight women, from the client's shared Drive folder PHOTOS, file
+1qQTVVk4LOeHSC5wCm8aVM0n5cxJqfoNA) is exported as sphere-carnival-connect and is the Carnival page's
+"03 / Connect" photograph. The original RAW is in `media/home/raw/` (git-ignored).
+
+## Move photographs (9 October 2026)
+
+Both Move photographs were re-chosen from the full set of 75 Drive photographs and every reviewed
+movement clip. The Drive folder holds no movement photographs (it is sound healing, meditation and
+conversation), so both are video stills from the club's own classes. Selection rule: calm, fully
+clothed, standing arms-overhead stretches only; no lunges, high kicks, floor poses or frames that
+emphasise the body. Home: `sphere-move-reach` (C4417, 9.3 s). Carnival: `sphere-move-smile`
+(C4368, 7.8 s), framed to the waist.

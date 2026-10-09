@@ -1,5 +1,5 @@
 {
-  "note": "Reviewed all 36 source clips. A single-frame, calm documentary edit using genuine Sphere sessions. Desktop uses native landscape footage without enlarging portrait clips or combining panels. Phone uses composed portrait scenes with bodies and faces kept in frame. Establish the circle, show practice, then detail and connection. No stock, synthetic imagery, speed ramps or static-frame padding. Short 0.65-second dissolves reduce double-exposure ghosting. Camera-facing C4451 has been removed at the client\u2019s request; the phone edit now ends with seated participation rather than a speaking portrait.",
+  "note": "Reviewed all 36 source clips. A single-frame, calm documentary edit using genuine Sphere sessions. Desktop uses native landscape footage without enlarging portrait clips or combining panels. Phone uses composed portrait scenes with bodies and faces kept in frame. Establish the circle, show practice, then detail and connection. No stock, synthetic imagery, speed ramps or static-frame padding. Short 0.65-second dissolves reduce double-exposure ghosting. Camera-facing C4451 has been removed at the client’s request; the phone edit now ends with seated participation rather than a speaking portrait. On 9 October 2026 C4345 (from 5 s: a guided arms-out and arms-overhead movement class) was added to both cuts so the film does not read as meditation only.",
   "fade": 0.65,
   "wide": [
     {
@@ -7,6 +7,13 @@
       "start": 0.2,
       "hold": 3.4,
       "speed": 0.9
+    },
+    {
+      "file": "C4345.MP4",
+      "start": 5.0,
+      "hold": 3.2,
+      "speed": 0.8,
+      "focus_y": 0.3
     },
     {
       "file": "C0027.MP4",
@@ -39,6 +46,12 @@
       "start": 1.8,
       "hold": 4.8,
       "speed": 0.9
+    },
+    {
+      "file": "C4345.MP4",
+      "start": 5.0,
+      "hold": 3.2,
+      "speed": 0.8
     },
     {
       "file": "C0013.MP4",

@@ -11,18 +11,21 @@ ROOT = Path(__file__).resolve().parents[1]
 
 # Every photograph on the site is used once. The home pillars and the Experiences page show
 # different moments from the club's own sessions.
-EXPERIENCE_PHOTOS = [
- ('sphere-arms-up-1200.webp','A member moving with arms raised in a Sphere movement class'),
+# The home page shows the PDF's four elements (Move, Pause, Connect, Discover); the Experiences page
+# shows the five curated experiences, so the two sections no longer repeat each other.
+ELEMENT_PHOTOS = [
+ ('sphere-move-reach-1200.webp','Women reaching their arms overhead in a standing stretch at a Sphere movement class'),
  ('sphere-rest-bowls-1920.webp','Women resting beside singing bowls during sound healing'),
- ('sphere-listening-1200.webp','Women listening to one another at The Sphere'),
- ('sphere-kalari-floor-1200.webp','A Kalaripayattu teacher demonstrating grounded floor movement'),
  ('sphere-laughter-1200.webp','Women sharing a laugh at a Sphere gathering'),
+ ('sphere-hands-bowls-1200.webp','A woman playing singing bowls with mallets, laid out on a woven mat'),
 ]
+# Each element points at the experience on the Experiences page that is closest to it.
+ELEMENT_LINKS = ['/experiences/#practice-1', '/experiences/#practice-2', '/experiences/#practice-5', '/experiences/#practice-4']
 ATLAS_PHOTOS = [
  ('sphere-meditation-1200.webp','Women seated on their mats at a Sphere gathering'),
  ('sphere-bowls-cushion-1200.webp','Singing bowls and a cushion laid out for sound healing'),
- ('sphere-conversation-standing-1200.webp','Women sharing a conversation at The Sphere'),
- ('sphere-kalari-partners-1200.webp','A Kalaripayattu teacher guiding partner practice'),
+ ('sphere-talk-reflect-1200.webp','Women talking in the studio, with sound instruments laid out on the floor'),
+ ('sphere-explore-1200.webp','Women seated on the studio floor, listening during a Sphere session'),
  ('sphere-connection-1200.webp','Women seated in pairs connecting at a Sphere gathering'),
 ]
 
@@ -46,17 +49,25 @@ def experience_atlas(articles):
     return '<div class="experience-atlas">'+''.join(cards)+'</div>'
 
 
-def experience_browser(articles):
-    """Progressively enhanced pillars: readable in full when JavaScript is unavailable."""
-    labels = ['Move & Reconnect', 'Pause & Restore', 'Talk & Reflect', 'Explore & Experience', 'Meet & Connect']
-    tabs, panels = [], []
-    for i, article in enumerate(re.findall(r'<article>.*?</article>', articles, re.S)):
-        filename, alt = EXPERIENCE_PHOTOS[i]
-        title = re.search(r'<h3>(.*?)</h3>', article, re.S)[1]
-        body = re.search(r'<p>.*?</p>', article, re.S)[0]
-        tabs.append(f'<button type="button" id="pillar-tab-{i}" aria-controls="pillar-panel-{i}">{labels[i]}</button>')
-        panels.append(f'<article class="pillar-panel" id="pillar-panel-{i}">{photo(filename, alt)}<div class="pillar-copy"><p class="eyebrow">0{i+1} / THE SPHERE EXPERIENCE</p><h3>{title}</h3>{body}<a class="text-link" href="/experiences/#practice-{i+1}">Explore this experience <span aria-hidden="true">↗</span></a></div></article>')
-    return '<div class="pillar-browser" data-pillar-browser><div class="pillar-tabs" aria-label="Explore the wellness experiences" hidden>'+''.join(tabs)+'</div>'+''.join(panels)+'</div>'
+def experience_elements():
+    """The four elements and their descriptions, exactly as written in the client's source (notes/content.txt)."""
+    lines = (ROOT / 'notes/content.txt').read_text().splitlines()
+    start = lines.index('THE SPHERE EXPERIENCE')
+    block = [l.strip() for l in lines[start+1:start+10] if l.strip()]
+    lead = block[3]
+    elements = [tuple(part.strip() for part in line.split(':', 1)) for line in block[4:8]]
+    return block[1], block[2], lead, elements
+
+
+def element_cards():
+    """All four elements at once, as cards: nothing is hidden behind a tab and the section stays compact."""
+    _, _, _, elements = experience_elements()
+    cards = []
+    for i, (name, copy) in enumerate(elements):
+        name = name.title()
+        filename, alt = ELEMENT_PHOTOS[i]
+        cards.append(f'<article class="element-card" data-reveal>{photo(filename, alt)}<div class="element-copy"><p class="element-number">0{i+1}</p><h3>{name}</h3><p>{escape(copy)}</p><a class="text-link" href="{ELEMENT_LINKS[i]}">Explore this experience <span aria-hidden="true">↗</span></a></div></article>')
+    return '<div class="elements-grid">'+''.join(cards)+'</div>'
 
 
 def render_home(html):
@@ -79,7 +90,10 @@ def render_home(html):
     main = main.replace('<figure>', '<figure data-image-reveal>')
     full_main = main
     # The homepage introduces the club; practical detail lives on focused reading pages.
-    main = re.sub(r'<div class="experience-gallery">.*?</div>', experience_browser(offerings), main, flags=re.S)
+    intimate, belief, lead, _ = experience_elements()
+    intro = f'<div class="elements-intro" data-reveal><p>{escape(intimate)}<br>{escape(belief)}</p><p class="elements-lead">{escape(lead)}</p></div>'
+    main = re.sub(r'<p data-reveal>We believe meaningful experiences happen.*?</p>', lambda _: intro, main, count=1, flags=re.S)
+    main = re.sub(r'<div class="experience-gallery">.*?</div>', lambda _: element_cards(), main, flags=re.S)
     main = re.sub(r'<div class="discover-line".*?</div>', '', main, flags=re.S)
     main = re.sub(r'<details class="experience-directory".*?</details>', '', main, flags=re.S)
     main = re.sub(r'<section class="home-letter\b[^\"]*".*?</section>', '', main, flags=re.S)
@@ -205,7 +219,7 @@ def build_philosophy(home, sections, heads):
         f'<section class="st-necessity" aria-labelledby="necessity-title"><div class="st-copy"><p class="eyebrow">{escape(heads[6])}</p>'
         f'<h2 id="necessity-title">{escape(necessity[0])}</h2>{p(necessity[1], "st-lead")}'
         f'<p>{escape(necessity[2])} {escape(necessity[3])} {escape(necessity[4])}</p>{p(necessity[5], "st-emphasis")}</div>'
-        f'{photo("sphere-smile-1200.webp", "A participant smiling during a Sphere gathering")}</section>'
+        f'{photo("sphere-necessity-1200.webp", "Women seated in quiet meditation on green mats at The Sphere")}</section>'
     )
     html = f'''<!doctype html><html lang="en-IN"><head>{head}
     <link rel="canonical" href="{url('/philosophy/')}">

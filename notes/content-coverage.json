@@ -255,7 +255,9 @@
   },
   {
     "source": "The Sphere is intentionally intimate.",
-    "pages": []
+    "pages": [
+      "index.html"
+    ]
   },
   {
     "source": "We believe meaningful experiences happen when there is room to connect — with yourself and with others.",
@@ -265,23 +267,33 @@
   },
   {
     "source": "Every experience is thoughtfully curated around four elements:",
-    "pages": []
+    "pages": [
+      "index.html"
+    ]
   },
   {
     "source": "MOVE  :  Movement that brings you back to your body.",
-    "pages": []
+    "pages": [
+      "index.html"
+    ]
   },
   {
     "source": "PAUSE : Practices that create stillness in a world that rarely stops.",
-    "pages": []
+    "pages": [
+      "index.html"
+    ]
   },
   {
     "source": "CONNECT : Conversations and experiences that bring women together beyond small talk.",
-    "pages": []
+    "pages": [
+      "index.html"
+    ]
   },
   {
     "source": "DISCOVER :  New ideas, practices, perspectives and experiences that enrich the way you live.",
-    "pages": []
+    "pages": [
+      "index.html"
+    ]
   },
   {
     "source": "MORE THAN WELLNESS",
@@ -349,36 +361,31 @@
   {
     "source": "Move & Reconnect :  Yoga, functional movement, traditional practices and mindful ways of reconnecting with the body.",
     "pages": [
-      "experiences/index.html",
-      "index.html"
+      "experiences/index.html"
     ]
   },
   {
     "source": "Pause & Restore : Sound healing, meditation, breathwork and experiences designed to quiet the noise.",
     "pages": [
-      "experiences/index.html",
-      "index.html"
+      "experiences/index.html"
     ]
   },
   {
     "source": "Talk & Reflect : Honest, thoughtful conversations on womanhood, ambition, relationships, identity and the realities of modern life.",
     "pages": [
-      "experiences/index.html",
-      "index.html"
+      "experiences/index.html"
     ]
   },
   {
     "source": "Explore & Experience:  Immersive experiences that invite you to explore something new.",
     "pages": [
-      "experiences/index.html",
-      "index.html"
+      "experiences/index.html"
     ]
   },
   {
     "source": "Meet & Connect :  Intimate gatherings designed to build genuine relationships among like-minded women.",
     "pages": [
-      "experiences/index.html",
-      "index.html"
+      "experiences/index.html"
     ]
   },
   {

@@ -52,9 +52,11 @@ def still(path, tmp):
  return target
 
 
-def crop(w, h, focus, focus_y=0.5):
+def crop(w, h, focus, focus_y=0.5, zoom=1.0):
  # Fill the frame, then slide the crop window: focus 0 keeps the left edge, 1 the right, 0.5 the centre.
- return f"scale={w}:{h}:force_original_aspect_ratio=increase,crop={w}:{h}:(iw-{w})*{focus}:(ih-{h})*{focus_y},setsar=1"
+ # zoom > 1 enlarges first, so a shot with empty floor or ceiling can be framed on the people.
+ sw, sh = round(w*zoom/2)*2, round(h*zoom/2)*2
+ return f"scale={sw}:{sh}:force_original_aspect_ratio=increase,crop={w}:{h}:(iw-{w})*{focus}:(ih-{h})*{focus_y},setsar=1"
 
 
 def render_shot(shot, source, w, h, target, tmp):
@@ -78,7 +80,7 @@ def render_shot(shot, source, w, h, target, tmp):
  if speed <= 0 or start < 0 or start + take > length - .04:
   sys.exit(f'{path.name}: requested interval extends beyond the source; select a shorter hold instead of freezing the final frame.')
  run(['ffmpeg', '-v', 'error', '-y', '-ss', f'{start:.2f}', '-t', f'{take:.2f}', '-i', str(path),
-  '-vf', f'setpts=(PTS-STARTPTS)/{speed},{crop(w, h, focus, shot.get("focus_y", .5))},fps={FPS}', '-frames:v', str(round(hold*FPS))]+enc)
+  '-vf', f'setpts=(PTS-STARTPTS)/{speed},{crop(w, h, focus, shot.get("focus_y", .5), shot.get("zoom", 1.0))},fps={FPS}', '-frames:v', str(round(hold*FPS))]+enc)
 
 
 def render_triptych(shot, source, w, h, target, tmp):

@@ -18,6 +18,10 @@ TEMPLATES = ROOT/'templates/event'
 MONTAGE = TEMPLATES/'montage'
 
 
+# The client chose DSC09903 for "03 / Connect" (data/media-selection.json, sphere-carnival-connect). Until that
+# photograph is exported, the earlier conversation photograph stands in.
+CONNECT_PHOTO = 'sphere-carnival-connect' if (Path(__file__).resolve().parents[1]/'dist/assets/sphere-carnival-connect-1200.webp').exists() else 'sphere-conversation'
+
 def load():
  if not SOURCE.exists():
   return None
@@ -181,9 +185,9 @@ def page(ev):
  offer = ''.join(f'<li><span class="cv-icon">{icon(i)}</span><h3>{t}</h3><p>{d}</p></li>' for i, t, d in EXPERIENCES)
  schedule = ''.join(f'<li><p class="cv-time">{w}</p><div><h3>{t}</h3><p>{d}</p></div></li>' for w, t, d in SCHEDULE)
  moments = ''.join(f'<figure><img src="/assets/{f}-1200.webp" srcset="/assets/{f}-640.webp 640w, /assets/{f}-1200.webp 1200w" sizes="(max-width:700px) 86vw, 28vw" alt="{alt}" width="1200" height="1500" loading="lazy" decoding="async"><figcaption><span>{k}</span>{h}</figcaption></figure>'
-  for f, alt, k, h in [('sphere-arms-raised', 'Women moving together with arms raised in a Sphere class', '01 / MOVE', 'Return to your body.'),
+  for f, alt, k, h in [('sphere-move-smile', 'A woman smiling as she stretches her arms overhead in a Sphere movement class', '01 / MOVE', 'Return to your body.'),
                         ('sphere-bowls', 'Singing bowls prepared for sound healing', '02 / PAUSE', 'Make room for stillness.'),
-                        ('sphere-conversation', 'Women connecting in conversation at The Sphere', '03 / CONNECT', 'Find your people.')])
+                        (CONNECT_PHOTO, 'Women connecting at a Sphere gathering', '03 / CONNECT', 'Find your people.')])
  glance_cta = (f'<a class="cv-glance-cta" href="#tickets">View tickets <span aria-hidden="true">↓</span></a>' if ev['mode'] == 'soon'
   else f'<a class="cv-glance-cta" href="{a(book)}" data-book>Reserve your spot {arrow()}</a>')
  return f"""<main id="main" class="event carnival" data-event-end="{a(ev['end'])}">

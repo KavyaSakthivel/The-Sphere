@@ -19,6 +19,9 @@ def main():
         for item in selection['photos']+selection['stills']:
             if only and item['name'] not in only: continue
             source=RAW/item['source']
+            if not source.exists():
+                print('skipped (original not in media/home/raw yet):',item['name'],flush=True)
+                continue
             jpeg=Path(tmp)/(item['name']+'.jpg')
             if source.suffix.lower()=='.arw':
                 subprocess.run(['sips','-s','format','jpeg','-s','formatOptions','95',str(source),'--out',str(jpeg)],check=True,capture_output=True)

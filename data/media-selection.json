@@ -1,5 +1,5 @@
 {
-  "note": "Reviewed local RAW photographs and six temporal samples from each of 36 clips. DSC09844 was subsequently selected by the client and retrieved from the shared Drive folder. All public editorial photography depicts authentic Sphere gatherings. Exposure correction and responsive exports only; no synthetic or stock images. On 9 October 2026 fourteen more video stills and DSC09837 were added so that every image on the site is used once.",
+  "note": "Reviewed local RAW photographs and six temporal samples from each of 36 clips. DSC09844 was subsequently selected by the client and retrieved from the shared Drive folder. All public editorial photography depicts authentic Sphere gatherings. Exposure correction and responsive exports only; no synthetic or stock images. On 9 October 2026 fourteen more video stills and DSC09837 were added so that every image on the site is used once. On 9 October 2026 two movement stills from C4368 replaced the seated-stretch and arms-raised frames for Move: sphere-move-reach (home page, calm standing stretch in loose tops) and sphere-move-smile (Carnival).",
   "photos": [
     {
       "source": "DSC09831.ARW",
@@ -72,6 +72,12 @@
       "name": "sphere-soft-garden",
       "exposure": 1.1,
       "soft": true
+    },
+    {
+      "source": "DSC09903.ARW",
+      "name": "sphere-carnival-connect",
+      "exposure": 1.12,
+      "provenance": "Chosen by the client for the Carnival page's 03 / Connect photograph; add the original RAW to media/home/raw/ and run scripts/prepare_authentic_assets.py sphere-carnival-connect."
     }
   ],
   "stills": [
@@ -203,6 +209,18 @@
       "name": "sphere-soft-rest",
       "exposure": 1.05,
       "soft": true
+    },
+    {
+      "source": "C4368.MP4",
+      "name": "sphere-move-smile",
+      "time": 7.8,
+      "exposure": 1.05
+    },
+    {
+      "source": "C4417.MP4",
+      "name": "sphere-move-reach",
+      "time": 9.3,
+      "exposure": 1.05
     }
   ],
   "page_selections": {

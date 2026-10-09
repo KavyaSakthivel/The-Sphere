@@ -221,9 +221,13 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 :root body main img[src*="/sphere-circle-"],:root body main img[src^="assets/sphere-circle-"]{object-position:50% 62%!important}
 :root body main img[src*="/sphere-intimate-"],:root body main img[src^="assets/sphere-intimate-"]{object-position:50% 60%!important}
 :root body main img[src*="/sphere-meditation-circle-"],:root body main img[src^="assets/sphere-meditation-circle-"]{object-position:50% 60%!important}
+:root body main img[src*="/sphere-talk-reflect-"]{object-position:50% 14%!important}
+:root body main img[src*="/sphere-explore-"]{object-position:50% 45%!important}
 /* Type laid over film or photographs stays ivory. */
 :root body .hero-copy :is(h1,p,a),:root body .event-cinematic :is(h1,h2,p,a,span,time){color:var(--s-ivory)!important}
 :root body .event-cinematic .eyebrow.eyebrow{color:#fff8ecd9!important}
+/* The ivory "Reserve your spot" button carries dark text: the ivory rule above would otherwise erase it. */
+:root body .event-cinematic .cv-button-light,:root body .event-cinematic .cv-button-light span{color:var(--s-ink)!important}
 :root body .hero-foot :is(p,a){color:var(--s-ivory)!important}
 @media(max-width:700px){
  :root body main p br{display:none}
@@ -414,3 +418,29 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 :root body main .inbox.section-pad{padding:clamp(56px,6vw,80px) 7%!important}
 :root body main .inbox h2{margin:12px 0 14px!important}
 :root body main .inbox .inbox-intro{margin:0 auto 24px!important}
+/* Home "Curated. Not crowded.": a compact heading row over four cards, soft sage ground. */
+:root body .home-experiences{background:#e6ece3!important}
+:root body .home-experiences.section-pad{padding-top:clamp(52px,5.5vw,84px);padding-bottom:clamp(44px,4.6vw,70px)}
+:root body .home-experiences .editorial-heading{align-items:start;margin-bottom:clamp(28px,3.4vw,48px)}
+:root body .home-experiences .elements-intro{justify-self:end;max-width:460px}
+:root body .home-experiences .elements-intro p{margin:0;color:var(--s-text);line-height:1.75}
+:root body .home-experiences .elements-intro .elements-lead{margin-top:14px;color:var(--s-ink);font-weight:500}
+.elements-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(14px,1.6vw,24px)}
+.element-card{display:flex;flex-direction:column;background:var(--s-ivory);overflow:hidden;border:1px solid #24302a14}
+.element-card .editorial-photo{margin:0;aspect-ratio:4/5;overflow:hidden;background:#d9dfd5}
+.element-card .editorial-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.element-copy{display:flex;flex-direction:column;flex:1;padding:clamp(18px,1.8vw,26px)}
+.element-number{margin:0 0 10px;font-size:12px;letter-spacing:.14em;color:var(--s-clay)}
+:root body .element-copy h3{margin:0 0 10px;font-size:clamp(26px,2.3vw,34px);line-height:1.15;color:var(--s-ink)}
+.element-copy p:not(.element-number){margin:0 0 18px;font-size:15px;line-height:1.65;color:var(--s-text)}
+.element-copy .text-link{margin-top:auto;align-self:flex-start}
+.element-card img[src*="/sphere-rest-bowls-"]{object-position:35% 50%}
+.element-card img[src*="/sphere-hands-bowls-"]{object-position:30% 50%}
+.element-card img[src*="/sphere-laughter-"]{object-position:50% 30%}
+@media(max-width:1000px){.elements-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){
+ :root body .home-experiences .elements-intro{justify-self:start}
+ .elements-grid{grid-template-columns:1fr;gap:16px}
+ .element-card .editorial-photo{aspect-ratio:16/11}
+ .element-card .editorial-photo img[src*="/sphere-move-reach-"]{object-position:50% 14%}
+}
