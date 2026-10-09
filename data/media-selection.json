@@ -1,5 +1,5 @@
 {
-  "note": "Reviewed local RAW photographs and six temporal samples from each of 36 clips. DSC09844 was subsequently selected by the client and retrieved from the shared Drive folder. All public editorial photography depicts authentic Sphere gatherings. Exposure correction and responsive exports only; no synthetic or stock images.",
+  "note": "Reviewed local RAW photographs and six temporal samples from each of 36 clips. DSC09844 was subsequently selected by the client and retrieved from the shared Drive folder. All public editorial photography depicts authentic Sphere gatherings. Exposure correction and responsive exports only; no synthetic or stock images. On 9 October 2026 fourteen more video stills and DSC09837 were added so that every image on the site is used once.",
   "photos": [
     {
       "source": "DSC09831.ARW",
@@ -61,6 +61,11 @@
       "name": "sphere-intimate",
       "exposure": 1.12,
       "provenance": "Original RAW downloaded from user-provided Google Drive folder; file 1r54uwAkbsJHr2ehft2LRuMoQBSTg3Vtv."
+    },
+    {
+      "source": "DSC09837.ARW",
+      "name": "sphere-conversation",
+      "exposure": 1.12
     }
   ],
   "stills": [
@@ -80,6 +85,96 @@
       "source": "C0059.MP4",
       "time": 2.6,
       "name": "sphere-stretch",
+      "exposure": 1.05
+    },
+    {
+      "source": "C0022.MP4",
+      "time": 4.6,
+      "name": "sphere-rest-bowls",
+      "exposure": 1.05
+    },
+    {
+      "source": "C4441.MP4",
+      "time": 2.2,
+      "name": "sphere-kalari-floor",
+      "exposure": 1.05
+    },
+    {
+      "source": "C9997.MP4",
+      "time": 4.5,
+      "name": "sphere-laughter",
+      "exposure": 1.05
+    },
+    {
+      "source": "C0027.MP4",
+      "time": 3.5,
+      "name": "sphere-hands-bowls",
+      "exposure": 1.05
+    },
+    {
+      "source": "C9993.MP4",
+      "time": 1.9,
+      "name": "sphere-bowls-cushion",
+      "exposure": 1.05
+    },
+    {
+      "source": "C4438.MP4",
+      "time": 6.6,
+      "name": "sphere-kalari-partners",
+      "exposure": 1.05
+    },
+    {
+      "source": "C0051.MP4",
+      "time": 2.7,
+      "name": "sphere-bowl-practice",
+      "exposure": 1.05
+    },
+    {
+      "source": "C0020.MP4",
+      "time": 3.5,
+      "name": "sphere-facilitator-rest",
+      "exposure": 1.05
+    },
+    {
+      "source": "C9985.MP4",
+      "time": 2.2,
+      "name": "sphere-lanterns",
+      "exposure": 1.05
+    },
+    {
+      "source": "C9986.MP4",
+      "time": 1.9,
+      "name": "sphere-greenery",
+      "exposure": 1.05
+    },
+    {
+      "source": "C9996.MP4",
+      "time": 1.3,
+      "name": "sphere-standing-smile",
+      "exposure": 1.05
+    },
+    {
+      "source": "C4401.MP4",
+      "time": 1.3,
+      "name": "sphere-arms-raised",
+      "exposure": 1.05
+    },
+    {
+      "source": "C0001.MP4",
+      "time": 1.5,
+      "name": "sphere-circle-session",
+      "exposure": 1.05
+    },
+    {
+      "source": "C9992.MP4",
+      "time": 2.2,
+      "name": "sphere-buddha-garden",
+      "exposure": 1.03
+    },
+    {
+      "source": "C4417.MP4",
+      "time": 9.9,
+      "name": "sphere-arms-up",
       "exposure": 1.05
     }
   ],

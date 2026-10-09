@@ -46,9 +46,11 @@ def build():
   where=page.relative_to(ROOT/'dist').parent.as_posix()
   if where in INBOX_PAGES and 'id="inbox"' not in s and inbox:
    s=s.replace('</main>',inbox+'</main>',1)
-  if where=='philosophy' and founder_html:
-   s=s.replace('<section class="story-chapter" id="chapter-11"',founder_html+'<section class="story-chapter" id="chapter-11"',1)
+  if where=='philosophy':
+   s=s.replace('<div data-founder-slot></div>',founder_html,1)
   s=current_page(s,where)
+  # The footer names the page as the navigation does.
+  s=re.sub(r'(<footer>.*?)>Our philosophy<',r'\1>Our story<',s,count=1,flags=re.S)
   s=re.sub(r'<dialog[^>]*data-carnival-popup.*?</dialog>','',s,flags=re.S)
   s=re.sub(r'<div class="intro-end".*?</div>','',s,flags=re.S)
   s=re.sub(r'<figcaption>A LITTLE ROOM TO SIMPLY BE</figcaption>','',s)

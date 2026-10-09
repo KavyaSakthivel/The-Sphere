@@ -128,9 +128,9 @@ def ticket_action(ev):
   return (f'<form class="event-rzp"><script src="https://checkout.razorpay.com/v1/payment-button.js" '
    f'data-payment_button_id="{a(ev["razorpay_button_id"])}" async></script></form>')
  if ev['mode'] == 'link':
-  return f'<a class="button button-dark event-card-book" href="{a(ev["payment_url"])}">Book Your Experience {arrow()}</a>'
+  return f'<a class="cv-button" href="{a(ev["payment_url"])}">Book Your Experience {arrow()}</a>'
  # Payment not connected yet: the client's own placeholder line, and no button that goes nowhere.
- return '<p class="event-card-small">Ticket booking will open soon.</p>'
+ return '<p class="cv-ticket-small">Ticket booking will open soon.</p>'
 
 
 def has_montage(): return (MONTAGE/'hero.mp4').exists()
@@ -171,131 +171,122 @@ def mobile_links():
 
 
 def page(ev):
+ """The carnival page. Every visible line comes from the client's preview; the layout puts the
+ answers a guest looks for first (when, where, who, what it includes, what it costs) in plain view."""
  book = book_href(ev)
  price = rupees(ev['price_inr'])
- ticket_note = f'<p class="event-card-note">{escape(ev["ticket_note"])}</p>' if ev.get('ticket_note') else ''
+ ticket_note = f'<p class="cv-ticket-note">{escape(ev["ticket_note"])}</p>' if ev.get('ticket_note') else ''
  date, time, place = full_date(ev['start_at']), hours(ev), escape(where(ev))
  audience = escape(ev['audience'])
- experiences = ''.join(f'<li><span class="event-icon-ring">{icon(i)}</span><h3>{t}</h3><p>{d}</p></li>' for i, t, d in EXPERIENCES)
- schedule = ''.join(f'<li><p class="event-time">{w}</p><div><h3>{t}</h3><p>{d}</p></div></li>' for w, t, d in SCHEDULE)
- return f'''<main id="main" class="event" data-event-end="{a(ev['end'])}">
+ offer = ''.join(f'<li><span class="cv-icon">{icon(i)}</span><h3>{t}</h3><p>{d}</p></li>' for i, t, d in EXPERIENCES)
+ schedule = ''.join(f'<li><p class="cv-time">{w}</p><div><h3>{t}</h3><p>{d}</p></div></li>' for w, t, d in SCHEDULE)
+ moments = ''.join(f'<figure><img src="/assets/{f}-1200.webp" srcset="/assets/{f}-640.webp 640w, /assets/{f}-1200.webp 1200w" sizes="(max-width:700px) 86vw, 28vw" alt="{alt}" width="1200" height="1500" loading="lazy" decoding="async"><figcaption><span>{k}</span>{h}</figcaption></figure>'
+  for f, alt, k, h in [('sphere-arms-raised', 'Women moving together with arms raised in a Sphere class', '01 / MOVE', 'Return to your body.'),
+                        ('sphere-bowls', 'Singing bowls prepared for sound healing', '02 / PAUSE', 'Make room for stillness.'),
+                        ('sphere-conversation', 'Women connecting in conversation at The Sphere', '03 / CONNECT', 'Find your people.')])
+ glance_cta = (f'<a class="cv-glance-cta" href="#tickets">View tickets <span aria-hidden="true">↓</span></a>' if ev['mode'] == 'soon'
+  else f'<a class="cv-glance-cta" href="{a(book)}" data-book>Reserve your spot {arrow()}</a>')
+ return f"""<main id="main" class="event carnival" data-event-end="{a(ev['end'])}">
 <section class="event-hero event-cinematic" aria-labelledby="event-title">
  <figure class="event-hero-visual">{hero_visual(ev)}</figure>
  <div class="event-hero-copy">
-  <nav class="event-crumb" aria-label="Breadcrumb"><a href="/">The Sphere</a><span aria-hidden="true">/</span><span aria-current="page">Wellness Carnival</span></nav>
   <p class="eyebrow">{escape(ev['name']).upper()}</p>
   <h1 id="event-title"><span>Pause.</span> <span>Connect.</span><br><span>Celebrate.</span></h1>
-  <p class="event-tagline">{date} &nbsp;·&nbsp; Coimbatore</p>
-  <p class="event-mobile-meta">{icon('clock')}{time}</p>
-  <p data-book><a class="button button-dark event-hero-cta" href="{a(book)}">Reserve your spot {arrow()}</a></p>
+  <p class="event-tagline">{date} &nbsp;·&nbsp; Coimbatore<span class="cv-sep"> &nbsp;·&nbsp; </span><span class="cv-hero-time">{time}</span></p>
+  <p data-book><a class="cv-button cv-button-light" href="{a(book)}">Reserve your spot {arrow()}</a></p>
  </div>
  <a class="event-scroll-cue" href="#event-details" aria-label="Explore the carnival">SCROLL TO DISCOVER <span aria-hidden="true">↓</span></a>
 </section>
-  <div id="event-details" class="event-pass">
-   <div class="event-pass-heading"><p class="eyebrow">THE SPHERE WELLNESS CARNIVAL</p><h2>Your evening,<br>at a glance.</h2></div>
-   <dl class="event-facts">
-    <div>{icon('calendar')}<dt>WHEN</dt><dd><strong>{date}</strong><span>{time}</span></dd></div>
-    <div>{icon('pin')}<dt>WHERE</dt><dd><strong>{place}</strong></dd></div>
-    <div>{icon('people')}<dt>WHO</dt><dd><strong>{audience}</strong></dd></div>
-   </dl>
-   <div class="event-pass-foot">
-    <p class="event-pass-price"><span class="eyebrow">ENTRY TICKET</span><strong>{price}</strong> <span>{escape(ev['price_note'])}</span></p>
-    <p data-book><a class="button button-dark" href="{a(book)}">Reserve Your Spot {arrow()}</a></p>
-   </div>
-  </div>
-<nav class="event-jump" aria-label="On this page">{jump_links()}</nav>
 
-<section class="event-intro section-pad">
- <div>
+<section id="event-details" class="cv-glance" aria-label="Your evening, at a glance">
+ <dl>
+  <div>{icon('calendar')}<dt>WHEN</dt><dd><strong>{date}</strong><span>{time}</span></dd></div>
+  <div>{icon('pin')}<dt>WHERE</dt><dd><strong>{place}</strong></dd></div>
+  <div>{icon('people')}<dt>WHO</dt><dd><strong>{audience}</strong></dd></div>
+  <div class="cv-glance-price"><dt>ENTRY TICKET</dt><dd><strong>{price}</strong><span>{escape(ev['price_note'])}</span></dd></div>
+ </dl>
+ {glance_cta}
+</section>
+
+<nav class="cv-jump" aria-label="On this page">{jump_links()}</nav>
+
+<section class="cv-intro" aria-labelledby="intro-title">
+ <div class="cv-intro-copy">
   <p class="eyebrow">MORE THAN AN EVENT</p>
-  <h2>Make space<br><em>for yourself.</em></h2>
-  <div class="prose">
-   <p class="event-lead">Step away from the rush of everyday life and into an evening created around wellness, connection and celebration.</p>
-   <p>The Sphere Wellness Carnival brings together mindful experiences, movement, sound, nourishing food, music and community &mdash; creating a space where you can slow down, reconnect and enjoy the moment.</p>
-  </div>
+  <h2 id="intro-title">Make space<br>for yourself.</h2>
+  <p class="cv-lead">Step away from the rush of everyday life and into an evening created around wellness, connection and celebration.</p>
+  <p>The Sphere Wellness Carnival brings together mindful experiences, movement, sound, nourishing food, music and community &mdash; creating a space where you can slow down, reconnect and enjoy the moment.</p>
+  <blockquote class="cv-quote">&ldquo;Sometimes, you simply need a space to pause, breathe deeply, meet new people and leave feeling a little lighter.&rdquo;</blockquote>
  </div>
- <blockquote class="event-quote">&ldquo;Sometimes, you simply need a space to pause, breathe deeply, meet new people and leave feeling a little lighter.&rdquo;</blockquote>
+ <aside class="cv-who" aria-labelledby="who-title">
+  <p class="eyebrow">WHO IS IT FOR?</p>
+  <h2 id="who-title">Come as you are.</h2>
+  <p><strong>Women &amp; Couples are welcome.</strong> Whether you want to slow down, reconnect, meet new people, explore wellness, enjoy good food or simply dance freely &mdash; there is space for you at The Sphere.</p>
+  <ul class="cv-pillars"><li>WELLNESS</li><li>NOURISH</li><li>MUSIC</li><li>COMMUNITY</li></ul>
+ </aside>
 </section>
-<ul class="event-pillars"><li>WELLNESS</li><li>NOURISH</li><li>MUSIC</li><li>COMMUNITY</li></ul>
 
-<section id="experience" class="event-experience section-pad" aria-labelledby="experience-title">
- <div class="event-heading"><p class="eyebrow">THE EXPERIENCE</p><h2 id="experience-title">Come for the experience.<br><em>Stay for the feeling.</em></h2>
+<section id="experience" class="cv-experience" aria-labelledby="experience-title">
+ <div class="cv-heading"><div><p class="eyebrow">THE EXPERIENCE</p><h2 id="experience-title">Come for the experience.<br>Stay for the feeling.</h2></div>
  <p>An evening thoughtfully brought together around well-being, community and celebration.</p></div>
- <div class="event-editorial-gallery" id="event-gallery" role="region" aria-label="Moments from The Sphere’s past gatherings" tabindex="0">
-  <figure data-image-reveal><img src="/assets/sphere-movement-1200.webp" alt="Mindful movement at a Sphere gathering" width="960" height="1280" loading="lazy"><figcaption><span>01 / MOVE</span><h3>Return to your body.</h3></figcaption></figure>
-  <figure data-image-reveal><img src="/assets/sphere-bowls-1200.webp" alt="Singing bowls prepared for sound healing" width="1200" height="1800" loading="lazy"><figcaption><span>02 / PAUSE</span><h3>Make room for stillness.</h3></figcaption></figure>
-  <figure data-image-reveal><img src="/assets/sphere-conversation-standing-1200.webp" alt="Women connecting in conversation at The Sphere" width="960" height="1280" loading="lazy"><figcaption><span>03 / CONNECT</span><h3>Find your people.</h3></figcaption></figure>
- </div><div class="event-gallery-tools" hidden>
-  <p>Swipe to explore <span aria-hidden="true">↔</span></p>
-  <div><button type="button" data-gallery-prev aria-label="Previous experience" aria-controls="event-gallery">←</button><span data-gallery-count aria-live="polite" aria-atomic="true">1 / 3</span><button type="button" data-gallery-next aria-label="Next experience" aria-controls="event-gallery">→</button></div>
- </div><p class="event-photo-note">Moments from The Sphere’s past gatherings.</p>
- <details class="event-experience-details"><summary>Explore the evening’s experiences <span aria-hidden="true">+</span></summary><ul class="event-grid">{experiences}</ul></details>
+ <ul class="cv-offer">{offer}</ul>
+ <div class="cv-moments">{moments}</div>
+ <p class="cv-photo-note">Moments from The Sphere’s past gatherings.</p>
 </section>
 
-<section class="event-interlude" aria-label="Together at The Sphere"><figure data-image-reveal><img src="/assets/sphere-connection-1920.webp" alt="Women connecting in pairs at a Sphere gathering" width="1920" height="1080" loading="lazy"></figure><div><p class="eyebrow">A LITTLE LESS RUSH. A LITTLE MORE YOU.</p><p>Come as you are.<br>Leave a little lighter.</p></div></section>
+<section class="cv-interlude" aria-label="Together at The Sphere"><img src="/assets/sphere-circle-session-1920.webp" srcset="/assets/sphere-circle-session-1200.webp 1200w, /assets/sphere-circle-session-1920.webp 1920w" sizes="100vw" alt="A facilitator leading a seated circle beside singing bowls" width="1920" height="1280" loading="lazy" decoding="async"><div><p class="eyebrow">A LITTLE LESS RUSH. A LITTLE MORE YOU.</p><p>Come as you are.<br>Leave a little lighter.</p></div></section>
 
-<section id="schedule" class="event-schedule section-pad" aria-labelledby="schedule-title">
- <div class="event-schedule-side">
-  <p class="eyebrow">YOUR EVENING</p><h2 id="schedule-title">A little preview<br><em>of your day.</em></h2>
-  <ul class="event-schedule-facts">
+<section id="schedule" class="cv-schedule" aria-labelledby="schedule-title">
+ <div class="cv-schedule-side">
+  <p class="eyebrow">YOUR EVENING</p><h2 id="schedule-title">A little preview<br>of your day.</h2>
+  <ul class="cv-facts">
    <li>{icon('calendar')}{date}</li>
    <li>{icon('clock')}{time}</li>
    <li>{icon('pin')}{place}</li>
   </ul>
  </div>
- <ol class="event-timeline">{schedule}</ol>
+ <ol class="cv-timeline">{schedule}</ol>
 </section>
 
-<section class="event-who section-pad" aria-labelledby="who-title">
- <p class="eyebrow">WHO IS IT FOR?</p>
- <h2 id="who-title">Come <em>as you are.</em></h2>
- <p><strong>Women &amp; Couples are welcome.</strong> Whether you want to slow down, reconnect, meet new people, explore wellness, enjoy good food or simply dance freely &mdash; there is space for you at The Sphere.</p>
-</section>
-
-<section id="tickets" class="event-tickets section-pad" aria-labelledby="tickets-title">
- <div class="event-tickets-copy">
+<section id="tickets" class="cv-tickets" aria-labelledby="tickets-title">
+ <div class="cv-tickets-copy">
   <p class="eyebrow">TICKETS</p>
-  <h2 id="tickets-title">Choose your moment<br><em>to join us.</em></h2>
+  <h2 id="tickets-title">Choose your moment<br>to join us.</h2>
   <p>Your ticket to an evening of wellness, connection, nourishing food and celebration.</p>
-  <p class="event-welcome">{icon('people')}Women &amp; Couples Welcome</p>
+  <p class="cv-welcome">{icon('people')}Women &amp; Couples Welcome</p>
  </div>
- <div class="event-card">
-  <div class="event-card-top">
+ <div class="cv-ticket">
+  <div class="cv-ticket-top">
    <p class="eyebrow">ENTRY TICKET</p>
-   <p class="event-price">{price}</p>
-   <p class="event-card-note">{escape(ev['price_note'])}</p>{ticket_note}
+   <p class="cv-price">{price}</p>
+   <p class="cv-price-note">{escape(ev['price_note'])}</p>{ticket_note}
   </div>
-  <div class="event-card-body">
-   <ul class="event-card-facts">
-    <li>{icon('calendar')}{date}</li>
-    <li>{icon('clock')}{time}</li>
-    <li>{icon('pin')}{place}</li>
-   </ul>
-   <div class="event-card-action">{ticket_action(ev)}</div>
-  </div>
+  <ul class="cv-facts">
+   <li>{icon('calendar')}{date}</li>
+   <li>{icon('clock')}{time}</li>
+   <li>{icon('pin')}{place}</li>
+  </ul>
+  <div class="cv-ticket-action">{ticket_action(ev)}</div>
  </div>
 </section>
 
-<section id="faq" class="event-faq section-pad" aria-labelledby="faq-title">
- <div class="event-faq-side"><p class="eyebrow">GOOD TO KNOW</p><h2 id="faq-title">Frequently asked<br><em>questions.</em></h2></div>
- <div class="experience-list event-questions">{faqs(ev)}</div>
+<section id="faq" class="cv-faq" aria-labelledby="faq-title">
+ <div class="cv-faq-side"><p class="eyebrow">GOOD TO KNOW</p><h2 id="faq-title">Frequently asked<br>questions.</h2></div>
+ <div class="cv-questions">{faqs(ev)}</div>
 </section>
 
-<section class="event-close section-pad">
+<section class="cv-close">
  <p class="eyebrow">{escape(ev['name']).upper()}</p>
- <h2>Your next chapter can begin<br><em>with a pause.</em></h2>
+ <h2>Your next chapter can begin<br>with a pause.</h2>
  <p>Come slow down. Come connect. Come celebrate.</p>
- <p class="event-close-meta">{date} &nbsp;&bull;&nbsp; {place} &nbsp;&bull;&nbsp; {time}</p>
- <p data-book><a class="button button-dark" href="{a(book)}">Reserve Your Spot {arrow()}</a></p>
+ <p class="cv-close-meta">{date} &nbsp;&bull;&nbsp; {place} &nbsp;&bull;&nbsp; {time}</p>
+ <p data-book><a class="cv-button" href="{a(book)}">Reserve Your Spot {arrow()}</a></p>
 </section>
 </main>
 <div class="event-bar" data-event-bar aria-hidden="true">
- <p><strong>{ev['start_at'].strftime('%-d %b %Y')} &middot; {place}</strong><span>{time} &middot; Entry {price} + Applicable Fee</span></p>
- <p class="event-mobile-price"><strong>{price}</strong><span>{escape(ev['price_note'])}</span></p>
- <nav class="event-bar-links" aria-label="On this page">{jump_links().replace('<a ', '<a tabindex="-1" ')}</nav>
- <a class="button button-dark event-dock-cta" href="{a(book)}" tabindex="-1">{'View tickets' if ev['mode'] == 'soon' else 'Book Your Experience'} {arrow()}</a>
- <nav class="event-mobile-links" aria-label="Carnival navigation">{mobile_links()}</nav>
-</div>'''
+ <p class="cv-bar-price"><strong>{price}</strong><span>{escape(ev['price_note'])}</span></p>
+ <a class="cv-button" href="{a(book) if ev['mode'] != 'soon' else '#tickets'}" tabindex="-1">{'View tickets' if ev['mode'] == 'soon' else 'Book Your Experience'} <span aria-hidden="true">{'↓' if ev['mode'] == 'soon' else '&#8599;'}</span></a>
+</div>"""
 
 
 # ---------------------------------------------------------------- assembly
@@ -337,14 +328,11 @@ def assemble(home, ev, path, title, body):
  head = re.sub(r'<title>.*?</title>', '<title>'+escape(title)+'</title>', head, count=1)
  head = re.sub(r'<meta name="description"[^>]*>', f'<meta name="description" content="{a(ev["description"])}">', head, count=1)
  head = head.replace('width=device-width,initial-scale=1', 'width=device-width,initial-scale=1,viewport-fit=cover')
- head = re.sub(r'<meta name="theme-color"[^>]*>', '<meta name="theme-color" content="#123e46">', head, count=1)
+ head = re.sub(r'<meta name="theme-color"[^>]*>', '<meta name="theme-color" content="#24302a">', head, count=1)
  head = head.replace('</script>', '</script>\n  <link rel="stylesheet" href="/'+ev['slug']+'/event.css?v=5">\n  <script src="/'+ev['slug']+'/event.js?v=5" defer></script>', 1)
  shell = re.search(r'<a class="skip".*?<main id="main">', home, re.S)[0].removesuffix('<main id="main">')
  # On the event page the header's call to action is the ticket itself.
- shell = re.sub(r'<a class="header-invite"[^>]*>.*?</a>',
-  f'<a class="header-invite" href="{a(book_href(ev))}" data-book>Get Your Ticket {arrow()}</a>', shell, count=1, flags=re.S)
  shell = shell.replace(f'href="{ev["path"]}" data-event-until', f'href="{ev["path"]}" aria-current="page" data-event-until')
- shell = shell.replace('<div class="nav-right">', '<span class="event-mobile-title">Wellness Carnival</span><div class="nav-right">', 1)
  footer = re.search(r'<footer>.*?</footer>', home, re.S)[0]
  invitation = re.search(r'<dialog id="invitation-dialog".*?</dialog>', home, re.S)[0]
  # Hash links borrowed from the home page point back to it; the event's own in-page links stay on this page.

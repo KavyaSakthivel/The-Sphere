@@ -6,7 +6,7 @@ Only exposure, slight contrast and responsive resizing are applied. No originals
 are modified. data/media-selection.json records the source of every output.
 """
 from pathlib import Path
-import json, subprocess, tempfile
+import json, subprocess, sys, tempfile
 from PIL import Image, ImageOps, ImageEnhance
 ROOT=Path(__file__).resolve().parents[1]
 RAW=ROOT/'media/home/raw'
@@ -15,7 +15,9 @@ OUT=ROOT/'dist/assets'
 def main():
     selection=json.loads((ROOT/'data/media-selection.json').read_text())
     with tempfile.TemporaryDirectory() as tmp:
+        only=set(sys.argv[1:])  # optional: rebuild just the named outputs
         for item in selection['photos']+selection['stills']:
+            if only and item['name'] not in only: continue
             source=RAW/item['source']
             jpeg=Path(tmp)/(item['name']+'.jpg')
             if source.suffix.lower()=='.arw':

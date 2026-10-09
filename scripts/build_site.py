@@ -11,6 +11,17 @@ for asset in ('premium.css', 'motion.js'):
 with (ROOT/'dist/premium.css').open('a') as stylesheet:
  stylesheet.write('\n'+(ROOT/'templates/editorial.css').read_text())
  stylesheet.write('\n'+(ROOT/'templates/luxury.css').read_text())
+# The carnival shares the article pages' header exactly: every header rule written for
+# .article-page also applies to .event-page, so the navigation is identical on every page.
+def share_header(css):
+ header=re.compile(r'header|navigation-space|menu-toggle|mobile-nav|wordmark|desktop-nav|nav-right')
+ def widen(m):
+  parts=m[1].split(',')
+  extra=[x.replace('.article-page','.event-page') for x in parts if '.article-page' in x and header.search(x)]
+  return ','.join(parts+[x for x in extra if x not in parts])+'{'
+ return re.sub(r'([^{}@;]+)\{',widen,css)
+_premium=ROOT/'dist/premium.css'
+_premium.write_text(share_header(_premium.read_text()))
 journal_data=json.loads((ROOT/'data/journal.json').read_text())
 heads=['THE SPHERE','A SPACE THAT FEELS LIKE YOURS','WHY THE SPHERE?','THE SPHERE EXPERIENCE','MORE THAN WELLNESS','CURATED EXPERIENCES','IS WELLNESS A LUXURY OR A NECESSITY?','THE WOMEN OF THE SPHERE','A PRIVATE CIRCLE','THE SPHERE JOURNAL','A NOTE FROM THE SPHERE']
 sections={}

@@ -49,11 +49,11 @@ def build_articles(home,entries):
  footer=re.search(r'<footer>.*?</footer>',home,re.S)[0]
  invitation=re.search(r'<dialog id="invitation-dialog".*?</dialog>',home,re.S)[0]
  covers = {
-  'wellness-is-a-necessity': ('sphere-sound-session-1920.webp', 'Women resting during a genuine Sphere sound-healing gathering'),
-  'the-art-of-slowing-down': ('sphere-meditation-1920.webp', 'A woman meditating at The Sphere'),
-  'women-who-make-space-for-women': ('sphere-connection-1920.webp', 'Women seated in pairs connecting at The Sphere'),
+  'wellness-is-a-necessity': ('sphere-lanterns-1920.webp', 'Lanterns resting on a shelf at The Sphere'),
+  'the-art-of-slowing-down': ('sphere-greenery-1920.webp', 'A small green plant against a stone wall at The Sphere'),
+  'women-who-make-space-for-women': ('sphere-standing-smile-1920.webp', 'A member smiling during a conversation at The Sphere'),
   'beyond-the-checklist': ('sphere-rest-1920.webp', 'Women resting during a Sphere gathering'),
-  'the-modern-woman': ('sphere-smile-1920.webp', 'A participant smiling at a Sphere gathering'),
+  'the-modern-woman': ('sphere-welcome-1920.webp', 'A member smiling, seated on the studio floor at The Sphere'),
  }
  for entry in entries:
   path=ROOT/'dist/journal'/entry['slug'];path.mkdir(parents=True,exist_ok=True)

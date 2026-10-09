@@ -85,36 +85,15 @@ body .footer-bottom{font-size:14px!important;gap:20px;flex-wrap:wrap}
  body .circle-story{display:grid!important;grid-template-columns:1fr}
  body .circle-photo{grid-row:1}
 }
-/* Carnival uses the same square editorial controls, without a navigation dock. */
-body.event-page main :is(section,figure,div,button,a,li,details){border-radius:0!important}
-body.event-page .event-mobile-links,body.event-page .event-mobile-title{display:none!important}
-body.event-page .event-bar{left:0;right:0;bottom:0;border-radius:0;box-shadow:none;padding:12px 5%;grid-template-columns:1fr auto;background:var(--s-ivory);backdrop-filter:none}
-body.event-page.has-event-dock{padding-bottom:80px!important}
-body.event-page .event-mobile-price span,body.event-page .event-bar p{font-size:14px!important}
-body.event-page .event-cinematic{margin:0!important;border-radius:0!important}
-body.event-page .event-jump{display:flex;flex-wrap:wrap;gap:16px;padding:16px 7%}
-body.event-page .event-jump a{border:0;background:none!important;color:var(--s-ink)!important;flex:none;font-size:14px;min-height:44px}
-body.event-page .event-editorial-gallery figure{aspect-ratio:auto;overflow:visible}
-body.event-page .event-editorial-gallery img{height:340px;object-fit:cover}
-body.event-page .event-editorial-gallery figcaption{position:static;background:none;padding:20px 0;color:var(--s-ink)}
-body.event-page .event-editorial-gallery h3{color:var(--s-ink)}
-body.event-page .event-interlude{height:auto;min-height:0;max-height:none;margin:0;background:var(--s-ivory)}
-body.event-page .event-interlude figure{position:relative;height:55vw;max-height:600px}
-body.event-page .event-interlude img{filter:none}
-body.event-page .event-interlude>div{position:static;padding:32px 7%;color:var(--s-ink)}
-body.event-page .event-close{background:var(--s-stone)!important;color:var(--s-ink)}
-body.event-page .event-close p{color:var(--s-ink)!important}
 body .hero .light-link{color:var(--s-ivory)!important}
 body.premium-home main .hero-foot p{font-size:14px!important;line-height:1.6!important;max-width:180px}
 body .header .header-invite{gap:12px!important;white-space:nowrap}
 body .header .header-invite span{font-size:18px}
 body .hero-foot{bottom:24px}
-body .event-cinematic .event-scroll-cue{font-size:14px;min-height:44px}
 body .event-video-toggle,body .montage-toggle{font-size:14px!important;min-height:44px}
 @media(max-width:700px){body.premium-home main .hero-foot p{font-size:14px!important;max-width:135px}body .header .header-invite span{display:none!important}}
 :root body main .eyebrow.eyebrow{font-size:12px!important;line-height:1.7!important;letter-spacing:.1em}
 body main .form-small,body main .form-status,body main .optional,body main .event-photo-note{font-size:14px!important}
-body .event-card-action .button,body .event-bar .button{background:var(--s-ink)!important;color:var(--s-ivory)!important}
 
 body .circle-photo figcaption{position:static!important;background:none!important;color:var(--s-text)!important;padding:16px 0 0;margin:0;font-size:12px!important}
 :root body .hero-copy .eyebrow.eyebrow,:root body .mobile-nav .eyebrow.eyebrow{font-size:12px!important;line-height:1.7!important}
@@ -245,13 +224,6 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 /* Type laid over film or photographs stays ivory. */
 :root body .hero-copy :is(h1,p,a),:root body .event-cinematic :is(h1,h2,p,a,span,time){color:var(--s-ivory)!important}
 :root body .event-cinematic .eyebrow.eyebrow{color:#fff8ecd9!important}
-/* Carnival: terracotta stays its accent; large fills move to deep sage. */
-:root body.event-page .event-pass .event-pass-foot{background:var(--s-ink)!important}
-:root body.event-page .event-pass .event-pass-foot .button{background:var(--s-ivory)!important;color:var(--s-ink)!important}
-:root body.event-page .event-price{color:var(--s-ink)}
-:root body.event-page .event-pass-foot .event-price{color:var(--s-ivory)}
-:root body.event-page .event-quote{color:var(--s-clay);border-color:var(--s-clay)}
-:root body.event-page .event-bar{box-shadow:0 -1px 0 var(--s-rule)!important}
 :root body .hero-foot :is(p,a){color:var(--s-ivory)!important}
 @media(max-width:700px){
  :root body main p br{display:none}
@@ -267,7 +239,7 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 :root body.premium-home .home-invitation :is(li p,li>span){color:#fff8ecbf!important}
 :root body.premium-home .home-invitation :is(dl,dl>div,details,summary,ol,li){border-color:#fff8ec26!important}
 /* The page you are on keeps its double line in the navigation. */
-:root body .header .desktop-nav a[aria-current=page]{border-bottom-color:currentColor!important}
+:root body .header .desktop-nav a[aria-current=page]{border-bottom:1px solid currentColor!important}
 :root body .header .desktop-nav a[aria-current=page]:after{transform:scaleX(1)!important}
 :root body .mobile-nav a[aria-current=page]{color:var(--s-clay)!important;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:8px}
 /* Journal rows: a fine outline star in place of a photograph. */
@@ -276,15 +248,6 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 :root body .home-journal .journal-entry{grid-template-columns:56px minmax(0,1fr) 24px!important}
 @media(max-width:700px){:root body .home-journal .journal-entry{grid-template-columns:40px minmax(0,1fr) 20px!important}}
 @media(prefers-reduced-motion:reduce){:root body .journal-entry .journal-star{transition:none}:root body .journal-entry:hover .journal-star{transform:none}}
-/* Carnival: neighbouring sections take turns, ending on deep sage. */
-:root body.event-page .event-who{background:var(--s-stone)!important}
-:root body.event-page .event-tickets{background:var(--s-ivory)!important}
-:root body.event-page .event-tickets :is(.event-pass,.event-card){background:var(--s-stone)!important;box-shadow:none!important;border:1px solid var(--s-rule)!important}
-:root body.event-page .event-faq{background:var(--s-stone)!important}
-:root body.event-page .event-faq :is(details,summary){border-color:var(--s-rule)!important}
-:root body.event-page .event-close{background:var(--s-ink)!important}
-:root body.event-page .event-close :is(h2,p,span,a,time){color:var(--s-ivory)!important}
-:root body.event-page .event-close .eyebrow.eyebrow{color:var(--s-sage)!important}
 /* Our story: the founder chapter is the page's one deep sage moment.
    With a portrait: photo | name and words. Without one: name | words. */
 :root body .story-founder{background:var(--s-ink);color:var(--s-ivory);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:40px 7%;padding:clamp(80px,10vw,144px) 7%;align-items:start}
@@ -308,3 +271,86 @@ body .circle-photo figcaption{position:static!important;background:none!importan
  :root body .story-founder.has-photo>*{grid-area:auto}
  :root body .story-founder:not(.has-photo) .founder-text{border-left:0;padding-left:0;border-top:1px solid #fff8ec26;padding-top:28px}
 }
+/* The footer reads the same on every page, including the carnival. */
+:root body footer .footer-links a{text-transform:none;font-weight:400;letter-spacing:0;font-size:14px!important;line-height:1.6}
+:root body .header>.wordmark{justify-self:center}
+
+/* Our story: a short, curated read. Opening, founder, then three ideas, each given room. */
+:root body.story-page .st-opening{background:var(--s-ivory);padding:clamp(72px,9vw,128px) 7% clamp(48px,5vw,72px);border-bottom:1px solid var(--s-rule)}
+:root body.story-page .st-opening h1{font-size:clamp(48px,6vw,84px)!important;line-height:1.02!important;letter-spacing:-.02em;font-weight:400;color:var(--s-ink)!important;margin:16px 0 20px}
+:root body.story-page .st-opening p:not(.eyebrow){font-size:clamp(18px,1.4vw,20px)!important;color:var(--s-text)!important;margin:0}
+:root body.story-page .st-why{background:var(--s-ivory);padding:clamp(80px,9vw,128px) 7%;text-align:center}
+:root body.story-page .st-why h2{max-width:900px;margin:16px auto 40px!important;font-size:clamp(34px,3.8vw,54px)!important}
+:root body.story-page .st-roles{list-style:none;margin:0 auto;padding:22px 0;display:flex;flex-wrap:wrap;justify-content:center;gap:10px 0;border-top:1px solid var(--s-rule);border-bottom:1px solid var(--s-rule);max-width:1080px}
+:root body.story-page .st-roles li{font-size:clamp(17px,1.4vw,20px);color:var(--s-ink);padding:0 20px;white-space:nowrap}
+:root body.story-page .st-roles li+li{border-left:1px solid #834c4d59}
+:root body.story-page .st-why-close{max-width:620px;margin:40px auto 0}
+:root body.story-page .st-why-close p{margin:0 0 10px}
+:root body.story-page .st-emphasis{font-family:Georgia,"Times New Roman",serif;font-style:italic;font-size:clamp(21px,1.8vw,26px)!important;line-height:1.45!important;color:var(--s-clay)!important;margin-top:24px!important}
+:root body.story-page :is(.st-belief,.st-necessity){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,7vw,104px);align-items:center;padding:clamp(80px,9vw,128px) 7%}
+:root body.story-page .st-belief{background:var(--s-stone)}
+:root body.story-page .st-necessity{background:var(--s-ivory)}
+:root body.story-page :is(.st-belief,.st-necessity) .editorial-photo{margin:0;aspect-ratio:4/5;overflow:hidden;height:auto!important;max-height:none!important}
+:root body.story-page :is(.st-belief,.st-necessity) .editorial-photo img{width:100%;height:100%;object-fit:cover}
+:root body.story-page .st-copy{max-width:540px}
+:root body.story-page .st-copy h2{margin:16px 0 24px!important}
+:root body.story-page .st-copy p{margin:0 0 16px}
+:root body.story-page .st-lead{font-size:clamp(19px,1.5vw,22px)!important;line-height:1.55!important;color:var(--s-ink)!important}
+:root body.story-page .st-mantra{list-style:none;margin:28px 0;padding:0 0 0 24px;border-left:1px solid var(--s-clay)}
+:root body.story-page .st-mantra li{font-size:18px;line-height:1.9;color:var(--s-ink)}
+:root body.story-page .story-close{padding:clamp(72px,8vw,112px) 7%;text-align:center;background:var(--s-ivory);border-top:1px solid var(--s-rule)}
+@media(max-width:700px){
+ :root body.story-page :is(.st-belief,.st-necessity){grid-template-columns:1fr}
+ :root body.story-page .st-necessity .editorial-photo{order:-1}
+ :root body.story-page .st-roles{flex-direction:column;gap:8px;padding:20px 0}
+ :root body.story-page .st-roles li+li{border-left:0}
+ :root body.story-page .st-why{text-align:left}
+ :root body.story-page .st-why h2{margin-left:0!important}
+}
+/* The club's exclusivity line, set apart on Membership. */
+:root body.premium-home main .membership-notes p.membership-right-ones{font-family:Georgia,"Times New Roman",serif;font-style:italic;font-size:clamp(22px,2vw,28px)!important;line-height:1.45!important;color:var(--s-ivory)!important;margin:32px 0 40px!important;padding-left:24px;border-left:1px solid var(--s-sage)}
+/* Experiences: the "More than wellness" passage, photograph beside words. */
+:root body .more-wellness-story{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(40px,7vw,104px);align-items:center;padding:clamp(80px,9vw,128px) 7%;background:var(--s-ivory)}
+:root body .more-wellness-story .editorial-photo{margin:0;aspect-ratio:4/5;overflow:hidden;height:auto!important;max-height:none!important}
+:root body .more-wellness-story .editorial-photo img{width:100%;height:100%;object-fit:cover}
+:root body .more-wellness-story .st-copy{max-width:560px}
+:root body .more-wellness-story h2{margin:16px 0 24px!important}
+:root body.premium-home main .more-wellness-story p.st-lead{font-size:clamp(19px,1.5vw,22px)!important;line-height:1.55!important;color:var(--s-ink)!important}
+:root body.premium-home main .more-wellness-story p.st-emphasis{font-family:Georgia,"Times New Roman",serif;font-style:italic;font-size:clamp(21px,1.8vw,26px)!important;line-height:1.45!important;color:var(--s-clay)!important;margin-top:24px}
+@media(max-width:700px){:root body .more-wellness-story{grid-template-columns:1fr}}
+/* Photo-and-words sections stack below 900px: the photograph goes full width in a calm
+   landscape crop instead of shrinking beside a column of text. */
+@media(max-width:900px){
+ :root body .circle-story,:root body.premium-home .home-invitation,:root body .more-wellness-story,:root body.story-page :is(.st-belief,.st-necessity){display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:32px!important}
+ :root body .circle-story .circle-photo{grid-row:1;grid-column:1;width:100%!important;max-width:none!important;margin:0}
+ :root body .circle-story .circle-copy{grid-column:1}
+ :root body :is(.circle-photo,.intimate-photo,.more-wellness-story .editorial-photo,.st-belief .editorial-photo,.st-necessity .editorial-photo){width:100%!important;max-width:none!important;aspect-ratio:3/2!important;height:auto!important;overflow:hidden}
+ :root body :is(.circle-photo,.intimate-photo,.more-wellness-story .editorial-photo,.st-belief .editorial-photo,.st-necessity .editorial-photo) img{width:100%!important;height:100%!important;aspect-ratio:auto!important;object-fit:cover}
+ :root body.story-page .st-necessity .editorial-photo{order:-1}
+ :root body.premium-home .home-invitation .membership-notes{margin-top:8px}
+}
+@media(max-width:900px){
+ :root body.premium-home .home-invitation>*{grid-column:1!important;grid-row:auto!important;width:100%;max-width:none}
+ :root body.premium-home .home-invitation>.intimate-photo{order:-1}
+}
+/* The private-circle photograph always fills its frame. */
+:root body .intimate-photo{aspect-ratio:3/2;overflow:hidden}
+:root body .intimate-photo img{width:100%!important;height:100%!important;object-fit:cover!important}
+/* Focal points for the new stills. */
+:root body main img[src*="/sphere-standing-smile-"],:root body main img[src^="assets/sphere-standing-smile-"]{object-position:50% 16%!important}
+:root body main img[src*="/sphere-welcome-"],:root body main img[src^="assets/sphere-welcome-"]{object-position:50% 22%!important}
+:root body main img[src*="/sphere-greenery-"],:root body main img[src^="assets/sphere-greenery-"]{object-position:50% 72%!important}
+:root body main img[src*="/sphere-lanterns-"],:root body main img[src^="assets/sphere-lanterns-"]{object-position:50% 62%!important}
+:root body main img[src*="/sphere-kalari-floor-"],:root body main img[src^="assets/sphere-kalari-floor-"]{object-position:50% 62%!important}
+:root body main img[src*="/sphere-laughter-"],:root body main img[src^="assets/sphere-laughter-"]{object-position:50% 24%!important}
+:root body main img[src*="/sphere-arms-up-"],:root body main img[src^="assets/sphere-arms-up-"]{object-position:50% 25%!important}
+:root body main img[src*="/sphere-rest-bowls-"],:root body main img[src^="assets/sphere-rest-bowls-"]{object-position:50% 72%!important}
+:root body main img[src*="/sphere-hands-bowls-"],:root body main img[src^="assets/sphere-hands-bowls-"]{object-position:50% 60%!important}
+:root body main img[src*="/sphere-bowls-cushion-"],:root body main img[src^="assets/sphere-bowls-cushion-"]{object-position:50% 62%!important}
+:root body main img[src*="/sphere-kalari-partners-"],:root body main img[src^="assets/sphere-kalari-partners-"]{object-position:50% 30%!important}
+:root body main img[src*="/sphere-bowl-practice-"],:root body main img[src^="assets/sphere-bowl-practice-"]{object-position:50% 70%!important}
+:root body main img[src*="/sphere-facilitator-rest-"],:root body main img[src^="assets/sphere-facilitator-rest-"]{object-position:50% 62%!important}
+:root body main img[src*="/sphere-arms-raised-"],:root body main img[src^="assets/sphere-arms-raised-"]{object-position:50% 28%!important}
+:root body main img[src*="/sphere-circle-session-"],:root body main img[src^="assets/sphere-circle-session-"]{object-position:50% 85%!important}
+:root body main img[src*="/sphere-buddha-garden-"],:root body main img[src^="assets/sphere-buddha-garden-"]{object-position:50% 35%!important}
+:root body main img[src*="/sphere-conversation-"],:root body main img[src^="assets/sphere-conversation-"]{object-position:50% 35%!important}

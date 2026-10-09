@@ -32,6 +32,10 @@ for line in source.splitlines():
  found=[path for path,text in pages.items() if norm(line) in norm(text)]
  if not found:missing.append(line)
  coverage.append({'source':line.strip(),'pages':found})
+# Lines curated out on purpose are listed, with the reason, in data/retired-copy.json.
+retired=json.loads((ROOT/'data/retired-copy.json').read_text())['lines'] if (ROOT/'data/retired-copy.json').exists() else []
+assert all(r in source for r in retired),'Retired line not found in the source: '+repr([r for r in retired if r not in source])
+missing=[m for m in missing if m.strip() not in {r.strip() for r in retired}]
 assert not missing,'Missing source content: '+repr(missing)
 allcopy=' '.join(pages.values())
 for restored in ['A little more room for you', 'Room for thought']:
@@ -39,4 +43,4 @@ for restored in ['A little more room for you', 'Room for thought']:
 assert 'data-entry' in (ROOT/'dist/index.html').read_text()
 assert 'Try leaving a small part of your day unclaimed' in (ROOT/'data/journal.json').read_text()
 (ROOT/'notes/content-coverage.json').write_text(json.dumps(coverage,indent=2,ensure_ascii=False)+'\n')
-print(f'PASS: {len(coverage)} source lines are present across {len(pages)} pages; local links and assets resolve; original headlines and journal interactions restored.')
+print(f'PASS: {len(coverage)-len(retired)} source lines are present across {len(pages)} pages ({len(retired)} curated out, listed in data/retired-copy.json); local links and assets resolve; original headlines and journal interactions restored.')

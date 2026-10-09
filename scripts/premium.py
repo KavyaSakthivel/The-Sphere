@@ -9,12 +9,21 @@ from build_event import load, full_date, hours
 
 ROOT = Path(__file__).resolve().parents[1]
 
+# Every photograph on the site is used once. The home pillars and the Experiences page show
+# different moments from the club's own sessions.
 EXPERIENCE_PHOTOS = [
- ('sphere-meditation-1200.webp','Women seated on their mats at a Sphere gathering'),
- ('sphere-bowls-1200.webp','Singing bowls prepared for a Sphere sound-healing session'),
+ ('sphere-arms-up-1200.webp','A member moving with arms raised in a Sphere movement class'),
+ ('sphere-rest-bowls-1920.webp','Women resting beside singing bowls during sound healing'),
  ('sphere-listening-1200.webp','Women listening to one another at The Sphere'),
- ('sphere-facilitator-1920.webp','A facilitator playing a singing bowl at The Sphere'),
+ ('sphere-kalari-floor-1200.webp','A Kalaripayattu teacher demonstrating grounded floor movement'),
+ ('sphere-laughter-1200.webp','Women sharing a laugh at a Sphere gathering'),
+]
+ATLAS_PHOTOS = [
+ ('sphere-meditation-1200.webp','Women seated on their mats at a Sphere gathering'),
+ ('sphere-bowls-cushion-1200.webp','Singing bowls and a cushion laid out for sound healing'),
  ('sphere-conversation-standing-1200.webp','Women sharing a conversation at The Sphere'),
+ ('sphere-kalari-partners-1200.webp','A Kalaripayattu teacher guiding partner practice'),
+ ('sphere-connection-1200.webp','Women seated in pairs connecting at a Sphere gathering'),
 ]
 
 
@@ -30,7 +39,7 @@ def photo(filename, alt, eager=False):
 def experience_atlas(articles):
     cards = []
     for i, article in enumerate(re.findall(r'<article>.*?</article>', articles, re.S)):
-        filename, alt = EXPERIENCE_PHOTOS[i]
+        filename, alt = ATLAS_PHOTOS[i]
         title = re.search(r'<h3>(.*?)</h3>', article, re.S)[1]
         body = re.search(r'<p>.*?</p>', article, re.S)[0]
         cards.append(f'<article class="atlas-card" id="practice-{i+1}">{photo(filename, alt)}<div class="atlas-copy" data-reveal><p class="eyebrow">0{i+1} / THE SPHERE EXPERIENCE</p><h3>{title}</h3>{body}</div></article>')
@@ -127,7 +136,18 @@ def build_subpages(home, full_main):
     experience = re.sub(r'<div class="experience-gallery">.*?</div>', '', experience, flags=re.S)
     experience = re.sub(r'<div class="discover-line".*?</div>', '', experience, flags=re.S)
     experience = re.sub(r'<details class="experience-directory".*?</details>', experience_atlas(directory), experience, flags=re.S)
+    experience = re.sub(r'<h2>Curated\.<br><span class="accent">Not crowded\.</span></h2>', '<h2>Every gathering<br>has a purpose.</h2>', experience, count=1)
+    experience = re.sub(r'<p data-reveal>We believe meaningful experiences happen.*?</p>', '<p data-reveal>Our experiences are designed to create moments that stay with you.</p>', experience, count=1, flags=re.S)
+    more = ('<section class="more-wellness-story" aria-labelledby="more-title">'
+     + photo('sphere-buddha-garden-1200.webp', 'A Buddha figure among plants at The Sphere')
+     + '<div class="st-copy"><p class="eyebrow">MORE THAN WELLNESS</p><h2 id="more-title">A community built<br>around experiences.</h2>'
+     '<p class="st-lead">At The Sphere, you might begin your morning with yoga, discover the grounding power of Kalaripayattu, experience the stillness of sound healing, or explore a completely new form of movement.</p>'
+     '<p>You might sit across from a woman you’ve never met and leave with a conversation you’ll never forget.</p>'
+     '<p class="st-emphasis">Because sometimes wellness isn’t about what you do.<br>It’s about what you feel.</p></div></section>')
+    experience = experience + more
     membership = re.search(r'<section id="invitation".*?</section>', full_main, re.S)[0]
+    # Membership shows its own circle photograph rather than the homepage's.
+    membership = membership.replace('sphere-intimate-', 'sphere-facilitator-rest-').replace('A small circle of women meditating together around singing bowls at The Sphere', 'A facilitator seated among singing bowls as women rest')
     letter = re.search(r'<section class="home-letter\b[^\"]*".*?</section>', full_main, re.S)[0]
     for slug, title, description, body in [
         ('experiences', 'The experiences', 'Movement, sound healing, mindfulness and meaningful connection. Explore the thoughtfully curated experiences at The Sphere, Coimbatore.', experience),
@@ -137,7 +157,7 @@ def build_subpages(home, full_main):
         page_head = re.sub(r'<meta name="description"[^>]*>', '<meta name="description" content="'+escape(description, quote=True)+'">', page_head)
         meta = f'<link rel="canonical" href="{url("/"+slug+"/")}"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:title" content="{title} | The Sphere"><meta property="og:url" content="{url("/"+slug+"/")}"><meta property="og:description" content="{escape(description, quote=True)}"><meta property="og:image" content="{url("/assets/sphere-connection-1920.webp")}">'
         graph = {'@context':'https://schema.org','@graph':[org(),{'@type':'WebPage','url':url('/'+slug+'/'),'name':title+' | The Sphere'}]}
-        opening_photo = ('sphere-facilitator-1920.webp', 'A facilitator playing a singing bowl at The Sphere') if slug == 'experiences' else ('sphere-circle-1920.webp', 'Women seated together in a quiet circle at The Sphere')
+        opening_photo = ('sphere-hands-bowls-1920.webp', 'Hands playing singing bowls during a Sphere sound session') if slug == 'experiences' else ('sphere-bowl-practice-1920.webp', 'A facilitator walking among resting women with a singing bowl')
         opening = f'<section class="subpage-opening photo-opening">{photo(*opening_photo, eager=True)}<div class="photo-opening-copy"><p class="eyebrow">THE SPHERE / {slug.upper()}</p><h1>{title}.</h1><a class="text-link light-link" href="#'+('experiences' if slug == 'experiences' else 'invitation')+'">Discover more <span aria-hidden="true">↓</span></a></div></section>'
         html = f'<!doctype html><html lang="en-IN"><head>{page_head}{meta}<script type="application/ld+json">{json.dumps(graph,ensure_ascii=False)}</script></head><body class="premium-home club-subpage">{shell}<main id="main">{opening}{body}</main>{footer}{dialog}</body></html>'
         html = re.sub(r'(href|src)="(assets/|style.css|brand.css|premium.css|site.js|motion.js)', r'\1="/\2', html)
@@ -150,53 +170,39 @@ def build_subpages(home, full_main):
 
 def build_philosophy(home, sections, heads):
     head = re.search(r'<head>(.*?)</head>', home, re.S)[1]
-    head = re.sub(r'<title>.*?</title>', '<title>Our philosophy | The Sphere</title>', head)
+    head = re.sub(r'<title>.*?</title>', '<title>Our story | The Sphere</title>', head)
     head = re.sub(r'<meta name="description"[^>]*>', '<meta name="description" content="The ideas behind The Sphere: an intimate women’s wellness circle in Coimbatore, created around movement, stillness and meaningful connection.">', head)
     shell = re.search(r'<a class="skip".*?<main id="main">', home, re.S)[0].removesuffix('<main id="main">')
     footer = re.search(r'<footer>.*?</footer>', home, re.S)[0]
     dialog = re.search(r'<dialog id="invitation-dialog".*?</dialog>', home, re.S)[0]
-    chapters = []
-    imagery = [
-        ('sphere-connection-1200.webp', 'Women connecting in pairs at a Sphere gathering'),
-        ('sphere-meditation-circle-1200.webp', 'Women seated in a quiet meditation circle'),
-        ('sphere-listening-1200.webp', 'Women listening to one another at The Sphere'),
-        ('sphere-stretch-1200.webp', 'Women stretching together at The Sphere'),
-        ('sphere-meditation-1200.webp', 'A Sphere participant seated in meditation'),
-        ('sphere-bowls-1200.webp', 'Singing bowls prepared for a Sphere experience'),
-        ('sphere-rest-1200.webp', 'Women resting during a Sphere sound-healing session'),
-        ('sphere-conversation-standing-1200.webp', 'Women sharing a conversation at The Sphere'),
-        ('sphere-circle-1200.webp', 'A small seated meditation circle at The Sphere'),
-        ('sphere-welcome-1200.webp', 'A participant smiling during a Sphere gathering'),
-        ('sphere-sound-session-1200.webp', 'A facilitator with singing bowls at The Sphere'),
-    ]
-    for i, heading in enumerate(heads):
-        lines = sections[heading]
-        # This reading page preserves the complete supplied document without crowding the opening.
-        paragraphs = ''
-        for line in lines:
-            if line == '[Enter The Sphere]':
-                paragraphs += '<p><a class="text-link" href="/experiences/">Enter The Sphere <span aria-hidden="true">↗</span></a></p>'
-            elif line == '[Request an Invitation]':
-                paragraphs += '<p><button class="text-link" data-invitation>Request an invitation <span aria-hidden="true">↗</span></button></p>'
-            else:
-                paragraphs += '<p>' + escape(line) + '</p>'
-        if heading != 'THE SPHERE JOURNAL':
-            paragraphs = re.sub(r'(?:<p>[^<]{1,68}</p>){3,}', lambda m: '<p class="story-mantra">'+''.join('<span>'+line+'</span>' for line in re.findall(r'<p>(.*?)</p>', m[0]))+'</p>', paragraphs)
-        if heading == 'CURATED EXPERIENCES':
-            articles = ''.join('<article><h3>'+escape(line.split(':',1)[0].strip())+'</h3><p>'+escape(line.split(':',1)[1].strip())+'</p></article>' for line in lines[2:])
-            chapters.append(f'<section class="story-practices" id="curated-experiences"><div class="story-practices-heading" data-reveal><p class="eyebrow">{i+1:02} / {heading}</p><h2>{escape(lines[0])}</h2><p>{escape(lines[1])}</p></div>{experience_atlas(articles)}</section>')
-        else:
-            filename, alt = imagery[i]
-            title = heading.capitalize().replace('sphere', 'Sphere')
-            chapters.append(f'<section class="story-chapter" id="chapter-{i+1}">{photo(filename, alt)}<div class="story-chapter-copy" data-reveal><p class="eyebrow">{i+1:02} / OUR PHILOSOPHY</p><h2>{escape(title)}</h2><div class="story-prose">{paragraphs}</div></div></section>')
+    # Our story is curated, not the whole document: the founder first, then only the three ideas
+    # that appear nowhere else on the site. Every line is the client's own (notes/content.txt);
+    # sections already told on Home, Experiences, Membership or the Journal are not repeated here.
+    why, belief, necessity = sections[heads[2]], sections[heads[1]], sections[heads[6]]
+    p = lambda line, cls='': f'<p{" class=" + chr(34) + cls + chr(34) if cls else ""}>{escape(line)}</p>'
+    roles = ''.join(f'<li>{escape(line)}</li>' for line in why[1:7])
+    mantra = ''.join(f'<li>{escape(line)}</li>' for line in belief[2:7])
+    story = (
+        '<div data-founder-slot></div>'
+        f'<section class="st-why" id="why" aria-labelledby="why-title"><p class="eyebrow">{escape(heads[2])}</p>'
+        f'<h2 id="why-title">{escape(why[0])}</h2><ul class="st-roles">{roles}</ul>'
+        f'<div class="st-why-close">{p(why[7])}{p(why[8])}{p(why[9], "st-emphasis")}</div></section>'
+        f'<section class="st-belief" aria-labelledby="belief-title">{photo("sphere-meditation-circle-1200.webp", "Women seated together in a quiet meditation circle at The Sphere")}'
+        f'<div class="st-copy"><p class="eyebrow">{escape(heads[1])}</p><h2 id="belief-title">{escape(belief[0])}</h2>'
+        f'{p(belief[1], "st-lead")}<ul class="st-mantra">{mantra}</ul>{p(belief[7])}</div></section>'
+        f'<section class="st-necessity" aria-labelledby="necessity-title"><div class="st-copy"><p class="eyebrow">{escape(heads[6])}</p>'
+        f'<h2 id="necessity-title">{escape(necessity[0])}</h2>{p(necessity[1], "st-lead")}'
+        f'<p>{escape(necessity[2])} {escape(necessity[3])} {escape(necessity[4])}</p>{p(necessity[5], "st-emphasis")}</div>'
+        f'{photo("sphere-smile-1200.webp", "A participant smiling during a Sphere gathering")}</section>'
+    )
     html = f'''<!doctype html><html lang="en-IN"><head>{head}
     <link rel="canonical" href="{url('/philosophy/')}">
     <meta name="robots" content="index,follow,max-image-preview:large">
-    <meta property="og:title" content="Our philosophy | The Sphere">
+    <meta property="og:title" content="Our story | The Sphere">
     <meta property="og:url" content="{url('/philosophy/')}">
     <meta property="og:description" content="A space for the woman behind every role she carries.">
-    <script type="application/ld+json">{json.dumps({'@context':'https://schema.org', '@graph':[org(), {'@type':'WebPage','url':url('/philosophy/'),'name':'Our philosophy | The Sphere','about':{'@id':url('/#organization')}}]}, ensure_ascii=False)}</script>
-    </head><body class="story-page">{shell}<main id="main"><section class="story-opening"><div class="story-opening-copy"><a class="text-link" href="/">← The Sphere</a><p class="eyebrow">OUR PHILOSOPHY</p><h1>A space to<br>simply be.</h1><p>The thoughts behind the circle.</p><a class="text-link" href="#chapter-1">Discover our story <span aria-hidden="true">↓</span></a></div>{photo('sphere-smile-1200.webp','A participant smiling during a Sphere gathering',True)}</section>{''.join(chapters)}<div class="story-close"><p class="eyebrow">YOUR PLACE IN THE CIRCLE</p><h2>Come as you are.</h2><button class="text-link" data-invitation>Request an invitation <span aria-hidden="true">↗</span></button></div></main>{footer}{dialog}</body></html>'''
+    <script type="application/ld+json">{json.dumps({'@context':'https://schema.org', '@graph':[org(), {'@type':'WebPage','url':url('/philosophy/'),'name':'Our story | The Sphere','about':{'@id':url('/#organization')}}]}, ensure_ascii=False)}</script>
+    </head><body class="story-page">{shell}<main id="main"><section class="st-opening"><p class="eyebrow">OUR STORY</p><h1>A space to<br>simply be.</h1><p>The thoughts behind the circle.</p></section>{story}<div class="story-close"><p class="eyebrow">YOUR PLACE IN THE CIRCLE</p><h2>Come as you are.</h2><button class="text-link" data-invitation>Request an invitation <span aria-hidden="true">↗</span></button></div></main>{footer}{dialog}</body></html>'''
     html = re.sub(r'(href|src)="(assets/|style.css|brand.css|premium.css|site.js|motion.js)', r'\1="/\2', html)
     html = html.replace('href="#', 'href="/#').replace('href="/#main"', 'href="#main"').replace('href="/#chapter-', 'href="#chapter-')
     path = ROOT / 'dist/philosophy'; path.mkdir(exist_ok=True)
