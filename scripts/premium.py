@@ -147,6 +147,12 @@ def build_subpages(home, full_main):
     experience = experience + more
     membership = re.search(r'<section id="invitation".*?</section>', full_main, re.S)[0]
     # Membership shows its own circle photograph rather than the homepage's.
+    steps = re.findall(r'<li><span>(\d+)</span><div><h3>(.*?)</h3><p>(.*?)</p></div></li>', membership)
+    membership = re.sub(r'\s*<details id="joining".*?</details>', '', membership, flags=re.S)
+    joining = ('<section id="joining" class="join-steps" aria-labelledby="joining-title"><h2 id="joining-title">How joining works.</h2><ol>'
+        + ''.join(f'<li><span class="join-number">{n}</span><h3>{h}</h3><p>{t}</p></li>' for n, h, t in steps)
+        + '</ol><button class="soft-hero-cta join-cta" type="button" data-invitation aria-haspopup="dialog">Request an invitation <span aria-hidden="true">→</span></button></section>')
+    membership = membership + joining
     membership = membership.replace('sphere-intimate-', 'sphere-facilitator-rest-').replace('A small circle of women meditating together around singing bowls at The Sphere', 'A facilitator seated among singing bowls as women rest')
     letter = re.search(r'<section class="home-letter\b[^\"]*".*?</section>', full_main, re.S)[0]
     for slug, title, description, body in [
@@ -157,13 +163,19 @@ def build_subpages(home, full_main):
         page_head = re.sub(r'<meta name="description"[^>]*>', '<meta name="description" content="'+escape(description, quote=True)+'">', page_head)
         meta = f'<link rel="canonical" href="{url("/"+slug+"/")}"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:title" content="{title} | The Sphere"><meta property="og:url" content="{url("/"+slug+"/")}"><meta property="og:description" content="{escape(description, quote=True)}"><meta property="og:image" content="{url("/assets/sphere-connection-1920.webp")}">'
         graph = {'@context':'https://schema.org','@graph':[org(),{'@type':'WebPage','url':url('/'+slug+'/'),'name':title+' | The Sphere'}]}
-        opening_photo = ('sphere-hands-bowls-1920.webp', 'Hands playing singing bowls during a Sphere sound session') if slug == 'experiences' else ('sphere-bowl-practice-1920.webp', 'A facilitator walking among resting women with a singing bowl')
-        opening = f'<section class="subpage-opening photo-opening">{photo(*opening_photo, eager=True)}<div class="photo-opening-copy"><p class="eyebrow">THE SPHERE / {slug.upper()}</p><h1>{title}.</h1><a class="text-link light-link" href="#'+('experiences' if slug == 'experiences' else 'invitation')+'">Discover more <span aria-hidden="true">↓</span></a></div></section>'
+        if slug == 'experiences':
+            opening = (f'<section class="soft-hero" aria-labelledby="opening-title">{photo("sphere-soft-bowls-1920.webp", "Singing bowls in soft focus at The Sphere", eager=True)}'
+                '<div class="soft-hero-copy"><p class="eyebrow">THE SPHERE / EXPERIENCES</p><h1 id="opening-title">The experiences.</h1>'
+                '<a class="soft-hero-link" href="#experiences">Discover more <span aria-hidden="true">↓</span></a></div></section>')
+        else:
+            opening = (f'<section class="soft-hero soft-hero-centred" aria-labelledby="opening-title">{photo("sphere-soft-circle-1920.webp", "A circle of women gathered at The Sphere, in soft focus", eager=True)}'
+                '<div class="soft-hero-copy"><p class="eyebrow">THE SPHERE / MEMBERSHIP</p><h1 id="opening-title">Your place in the circle.</h1>'
+                '<button class="soft-hero-cta" type="button" data-invitation aria-haspopup="dialog">Request an invitation <span aria-hidden="true">→</span></button></div></section>')
         html = f'<!doctype html><html lang="en-IN"><head>{page_head}{meta}<script type="application/ld+json">{json.dumps(graph,ensure_ascii=False)}</script></head><body class="premium-home club-subpage">{shell}<main id="main">{opening}{body}</main>{footer}{dialog}</body></html>'
         html = re.sub(r'(href|src)="(assets/|style.css|brand.css|premium.css|site.js|motion.js)', r'\1="/\2', html)
         html = html.replace('srcset="assets/', 'srcset="/assets/').replace(', assets/', ', /assets/')
         html = html.replace('href="#', 'href="/#').replace('href="/#main"', 'href="#main"')
-        html = html.replace('href="/#experiences"', 'href="#experiences"') if slug == 'experiences' else html.replace('href="/#invitation">Discover more', 'href="#invitation">Discover more')
+        html = html.replace('href="/#experiences"', 'href="#experiences"') if slug == 'experiences' else html
         path = ROOT/'dist'/slug; path.mkdir(exist_ok=True)
         (path/'index.html').write_text(html)
 
@@ -202,7 +214,7 @@ def build_philosophy(home, sections, heads):
     <meta property="og:url" content="{url('/philosophy/')}">
     <meta property="og:description" content="A space for the woman behind every role she carries.">
     <script type="application/ld+json">{json.dumps({'@context':'https://schema.org', '@graph':[org(), {'@type':'WebPage','url':url('/philosophy/'),'name':'Our story | The Sphere','about':{'@id':url('/#organization')}}]}, ensure_ascii=False)}</script>
-    </head><body class="story-page">{shell}<main id="main"><section class="st-opening"><p class="eyebrow">OUR STORY</p><h1>A space to<br>simply be.</h1><p>The thoughts behind the circle.</p></section>{story}<div class="story-close"><p class="eyebrow">YOUR PLACE IN THE CIRCLE</p><h2>Come as you are.</h2><button class="text-link" data-invitation>Request an invitation <span aria-hidden="true">↗</span></button></div></main>{footer}{dialog}</body></html>'''
+    </head><body class="story-page">{shell}<main id="main"><section class="soft-hero" aria-labelledby="story-title">{photo('sphere-soft-garden-1920.webp','Leaves and a Buddha figure in soft focus at The Sphere',True)}<div class="soft-hero-copy"><p class="eyebrow">OUR STORY</p><h1 id="story-title">A space to<br>simply be.</h1><p>The thoughts behind the circle.</p></div></section>{story}<section class="soft-band" aria-labelledby="close-title">{photo('sphere-soft-rest-1920.webp','Women resting together at The Sphere, in soft focus')}<div class="soft-hero-copy"><p class="eyebrow">YOUR PLACE IN THE CIRCLE</p><h2 id="close-title">Come as you are.</h2><button class="soft-hero-cta" type="button" data-invitation aria-haspopup="dialog">Request an invitation <span aria-hidden="true">→</span></button></div></section></main>{footer}{dialog}</body></html>'''
     html = re.sub(r'(href|src)="(assets/|style.css|brand.css|premium.css|site.js|motion.js)', r'\1="/\2', html)
     html = html.replace('href="#', 'href="/#').replace('href="/#main"', 'href="#main"').replace('href="/#chapter-', 'href="#chapter-')
     path = ROOT / 'dist/philosophy'; path.mkdir(exist_ok=True)

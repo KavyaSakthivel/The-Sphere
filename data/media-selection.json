@@ -66,6 +66,12 @@
       "source": "DSC09837.ARW",
       "name": "sphere-conversation",
       "exposure": 1.12
+    },
+    {
+      "source": "DSC09830.ARW",
+      "name": "sphere-soft-garden",
+      "exposure": 1.1,
+      "soft": true
     }
   ],
   "stills": [
@@ -176,6 +182,27 @@
       "time": 9.9,
       "name": "sphere-arms-up",
       "exposure": 1.05
+    },
+    {
+      "source": "C0028.MP4",
+      "time": 3.5,
+      "name": "sphere-soft-bowls",
+      "exposure": 1.05,
+      "soft": true
+    },
+    {
+      "source": "C0002.MP4",
+      "time": 1.9,
+      "name": "sphere-soft-circle",
+      "exposure": 1.05,
+      "soft": true
+    },
+    {
+      "source": "C0021.MP4",
+      "time": 8.3,
+      "name": "sphere-soft-rest",
+      "exposure": 1.05,
+      "soft": true
     }
   ],
   "page_selections": {

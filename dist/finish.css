@@ -354,3 +354,52 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 :root body main img[src*="/sphere-circle-session-"],:root body main img[src^="assets/sphere-circle-session-"]{object-position:50% 85%!important}
 :root body main img[src*="/sphere-buddha-garden-"],:root body main img[src^="assets/sphere-buddha-garden-"]{object-position:50% 35%!important}
 :root body main img[src*="/sphere-conversation-"],:root body main img[src^="assets/sphere-conversation-"]{object-position:50% 35%!important}
+
+/* Soft-focus openings (Experiences, Membership, Our story): the photograph sets the mood,
+   the words sit on it in ivory. Centred variant carries the invitation. */
+:root body .soft-hero,:root body .soft-band{position:relative;overflow:hidden;background:var(--s-ink);color:var(--s-ivory);display:flex;align-items:flex-end}
+:root body .soft-hero{min-height:clamp(480px,74vh,780px)}
+:root body .soft-band{min-height:clamp(380px,52vh,520px);align-items:center;justify-content:center;text-align:center}
+:root body :is(.soft-hero,.soft-band)>.editorial-photo{position:absolute!important;inset:0;margin:0;height:100%!important;max-height:none!important;aspect-ratio:auto!important}
+:root body :is(.soft-hero,.soft-band)>.editorial-photo img{width:100%;height:100%!important;object-fit:cover;object-position:50% 50%!important;filter:none!important}
+:root body :is(.soft-hero,.soft-band):after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,#24302acc 0%,#24302a59 45%,#24302a1a 100%);pointer-events:none}
+:root body .soft-band:after{background:#24302ab3}
+:root body .soft-hero-copy{position:relative;z-index:1;padding:0 7% clamp(56px,8vh,96px);max-width:900px}
+:root body .soft-band .soft-hero-copy{padding:72px 7%;max-width:760px}
+:root body .soft-hero-centred{align-items:center;justify-content:center;text-align:center}
+:root body .soft-hero-centred .soft-hero-copy{padding:96px 7%;margin:0 auto}
+:root body :is(.soft-hero,.soft-band) .eyebrow.eyebrow{color:#fff8ecd9!important}
+:root body main :is(.soft-hero,.soft-band) :is(h1,h2){color:var(--s-ivory)!important;font-weight:400;margin:16px 0 20px}
+:root body main .soft-hero h1{font-size:clamp(48px,6.4vw,92px)!important;line-height:1.02!important;letter-spacing:-.02em}
+:root body main .soft-band h2{font-size:clamp(40px,4.6vw,64px)!important}
+:root body main :is(.soft-hero,.soft-band) p:not(.eyebrow){color:#fff8ece6!important;font-size:clamp(18px,1.4vw,20px)!important;margin:0}
+:root body .soft-hero-link{display:inline-flex;gap:14px;align-items:center;color:var(--s-ivory);border-bottom:1px solid #fff8ec80;padding:10px 0;font-size:15px;margin-top:8px}
+:root body .soft-hero-cta{display:inline-flex;align-items:center;gap:18px;min-height:56px;padding:16px 30px;background:var(--s-clay);color:var(--s-ivory);border:0;font:500 16px/1 var(--sans);letter-spacing:.02em;cursor:pointer;margin-top:12px;transition:background .25s,color .25s}
+:root body .soft-hero-cta:hover{background:var(--s-ivory);color:var(--s-ink)}
+:root body .soft-hero-cta:focus-visible{outline:2px solid var(--s-ivory);outline-offset:4px}
+
+/* Membership: how joining works, visible as three steps with one clear action. */
+:root body .join-steps{background:var(--s-stone);padding:clamp(80px,9vw,128px) 7%;text-align:center}
+:root body main .join-steps h2{margin:0 0 clamp(40px,5vw,64px)!important}
+:root body .join-steps ol{list-style:none;margin:0 auto;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;max-width:1120px;text-align:left}
+:root body .join-steps li{background:var(--s-ivory);padding:clamp(28px,3vw,40px);display:flex;flex-direction:column;gap:12px}
+:root body .join-number{font-size:clamp(40px,4vw,56px);line-height:1;color:var(--s-clay);font-weight:300;letter-spacing:-.02em}
+:root body main .join-steps h3{margin:8px 0 0!important}
+:root body main .join-steps li p{margin:0;font-size:17px!important}
+:root body .join-steps .join-cta{margin-top:clamp(40px,5vw,56px)}
+@media(max-width:800px){:root body .join-steps ol{grid-template-columns:1fr}}
+
+/* "Intentionally intimate": the photograph fills its whole side, words beside it, no empty corner. */
+@media(min-width:901px){
+ :root body.premium-home .home-invitation{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)!important;grid-template-rows:auto auto;column-gap:7%!important;row-gap:0!important;align-items:stretch!important}
+ :root body.premium-home .home-invitation>.intimate-photo{grid-column:1!important;grid-row:1 / span 2!important;aspect-ratio:auto!important;height:100%!important;min-height:520px;align-self:stretch}
+ :root body.premium-home .home-invitation>.invitation-heading{grid-column:2!important;grid-row:1!important;align-self:end;padding-top:24px}
+ :root body.premium-home .home-invitation>.membership-notes{grid-column:2!important;grid-row:2!important;align-self:start;margin-top:40px!important}
+}
+
+/* Instagram in every footer. */
+:root body footer .footer-instagram{display:inline-flex;align-items:center;gap:10px;margin-top:20px;color:var(--s-ivory)!important;font-size:14px;min-height:44px}
+:root body footer .footer-instagram svg{fill:none;stroke:currentColor;stroke-width:1.5}
+:root body footer .footer-instagram:hover{color:var(--s-sage)!important}
+:root body .circle-photo img{aspect-ratio:3/2!important;height:auto!important}
+@media(min-width:901px){:root body.premium-home .home-invitation>.intimate-photo{max-height:760px;align-self:start}}

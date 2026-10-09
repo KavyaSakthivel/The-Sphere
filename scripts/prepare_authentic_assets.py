@@ -7,7 +7,7 @@ are modified. data/media-selection.json records the source of every output.
 """
 from pathlib import Path
 import json, subprocess, sys, tempfile
-from PIL import Image, ImageOps, ImageEnhance
+from PIL import Image, ImageOps, ImageEnhance, ImageFilter
 ROOT=Path(__file__).resolve().parents[1]
 RAW=ROOT/'media/home/raw'
 OUT=ROOT/'dist/assets'
@@ -28,6 +28,11 @@ def main():
                 image=ImageOps.exif_transpose(raw).convert('RGB')
             image=ImageEnhance.Brightness(image).enhance(item['exposure'])
             image=ImageEnhance.Contrast(image).enhance(1.025)
+            if item.get('soft'):
+                # Soft-focus openings: a deliberate out-of-focus wash in the warm palette, so the
+                # photograph sets a mood behind the words (and no face or equipment reads clearly).
+                image=image.filter(ImageFilter.GaussianBlur(image.width*0.009))
+                image=Image.blend(image,Image.new('RGB',image.size,(196,160,128)),0.14)
             for width in (640,1200,1920):
                 resized=image.resize((width,round(image.height*width/image.width)),Image.Resampling.LANCZOS)
                 path=OUT/f'{item["name"]}-{width}.webp'

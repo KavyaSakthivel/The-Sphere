@@ -4,6 +4,9 @@ import re,json,base64,math
 ROOT=Path(__file__).resolve().parents[1]
 COVERS=['sphere-sound-session','sphere-meditation','sphere-connection','sphere-rest','sphere-smile']
 STAR='<svg class="journal-star" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false"><path d="M12 2.6l2.8 5.7 6.3.9-4.55 4.45 1.07 6.27L12 16.97l-5.62 2.95 1.07-6.27L2.9 9.2l6.3-.9z"/></svg>'
+INSTAGRAM=('<a class="footer-instagram" href="https://www.instagram.com/thespherewomen/" target="_blank" rel="noopener noreferrer" aria-label="The Sphere on Instagram (opens in a new tab)">'
+ '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1"/></svg>'
+ '<span>@thespherewomen</span></a>')
 # Pages that close with the "Stay close" inbox, as the homepage does.
 INBOX_PAGES={'experiences','membership','philosophy'}
 NAV_TARGETS={'philosophy':'/philosophy/','experiences':'/experiences/','membership':'/membership/','carnival':'/carnival/'}
@@ -49,6 +52,8 @@ def build():
   if where=='philosophy':
    s=s.replace('<div data-founder-slot></div>',founder_html,1)
   s=current_page(s,where)
+  if 'footer-instagram' not in s:
+   s=re.sub(r'(<p class="footer-location">.*?</p>)',r'\1'+INSTAGRAM,s,count=1,flags=re.S)
   # The footer names the page as the navigation does.
   s=re.sub(r'(<footer>.*?)>Our philosophy<',r'\1>Our story<',s,count=1,flags=re.S)
   s=re.sub(r'<dialog[^>]*data-carnival-popup.*?</dialog>','',s,flags=re.S)
