@@ -10,16 +10,21 @@ from build_event import load, full_date, hours
 ROOT = Path(__file__).resolve().parents[1]
 
 EXPERIENCE_PHOTOS = [
-    ('session-movement-960.webp', 'Mindful movement at a Sphere gathering'),
-    ('session-sound-1920.webp', 'Sound healing at a Sphere gathering'),
-    ('editorial-journal-1200.webp', 'A quiet moment of reading and reflection'),
-    ('editorial-making-1200.webp', 'Two women exploring pottery together'),
-    ('session-group-960.webp', 'Three women sharing a conversation at The Sphere'),
+ ('sphere-meditation-1200.webp','Women seated on their mats at a Sphere gathering'),
+ ('sphere-bowls-1200.webp','Singing bowls prepared for a Sphere sound-healing session'),
+ ('sphere-listening-1200.webp','Women listening to one another at The Sphere'),
+ ('sphere-facilitator-1920.webp','A facilitator playing a singing bowl at The Sphere'),
+ ('sphere-conversation-standing-1200.webp','Women sharing a conversation at The Sphere'),
 ]
 
 
 def photo(filename, alt, eager=False):
-    return f'<figure class="editorial-photo" data-image-reveal><img src="/assets/{filename}" alt="{escape(alt, quote=True)}" {"fetchpriority=high" if eager else "loading=lazy"} decoding="async"></figure>'
+    stem = re.sub(r'-(640|1200|1920)\.webp$', '', filename)
+    responsive = f' srcset="/assets/{stem}-640.webp 640w, /assets/{stem}-1200.webp 1200w, /assets/{stem}-1920.webp 1920w" sizes="(max-width: 700px) 100vw, 60vw"' if stem.startswith('sphere-') else ''
+    if stem.startswith('editorial-'):
+        responsive = f' srcset="/assets/{stem}-640.webp 640w, /assets/{stem}-1200.webp 1200w" sizes="(max-width: 700px) 100vw, 60vw"'
+    treatment = ' aesthetic-photo' if stem.startswith('editorial-') else ''
+    return f'<figure class="editorial-photo{treatment}" data-image-reveal><img src="/assets/{filename}"{responsive} alt="{escape(alt, quote=True)}" {"fetchpriority=high" if eager else "loading=lazy"} decoding="async"></figure>'
 
 
 def experience_atlas(articles):
@@ -34,7 +39,7 @@ def experience_atlas(articles):
 
 def experience_browser(articles):
     """Progressively enhanced pillars: readable in full when JavaScript is unavailable."""
-    labels = ['Move', 'Pause', 'Reflect', 'Discover', 'Connect']
+    labels = ['Move & Reconnect', 'Pause & Restore', 'Talk & Reflect', 'Explore & Experience', 'Meet & Connect']
     tabs, panels = [], []
     for i, article in enumerate(re.findall(r'<article>.*?</article>', articles, re.S)):
         filename, alt = EXPERIENCE_PHOTOS[i]
@@ -71,7 +76,6 @@ def render_home(html):
     main = re.sub(r'<section class="home-letter\b[^\"]*".*?</section>', '', main, flags=re.S)
     main = re.sub(r'<div class="membership-notes".*?</dl></div>', '<div class="membership-notes" data-reveal><p>A small circle. A monthly rhythm.<br>A personal conversation first.</p><a class="text-link" href="/membership/">Discover membership <span aria-hidden="true">↗</span></a></div>', main, flags=re.S)
     main = re.sub(r'<details id="joining".*?</details>', '', main, flags=re.S)
-    main = main.replace('<section id="invitation" class="home-invitation section-pad">', '<section id="invitation" class="home-invitation section-pad">'+photo('editorial-flowers-1200.webp', 'Flowers in soft afternoon light, an invitation to slow down'))
     main = re.sub(r'^[ \t]+$', '', main, flags=re.M)
     if not CONFIG.get('gatherings_csv'):
         main = re.sub(r'[ \t]*<section id="gatherings".*?</section>', '', main, flags=re.S)
@@ -105,7 +109,7 @@ def render_home(html):
         if datetime.now(datetime.fromisoformat(until).tzinfo) < datetime.fromisoformat(until):
             popup = f'''<dialog id="carnival-dialog" class="carnival-popup" aria-labelledby="carnival-popup-title" aria-describedby="carnival-popup-description" data-carnival-popup data-promotion-until="{escape(until, quote=True)}" data-promotion-key="{escape(event['slug'] + event['start'], quote=True)}">
               <button type="button" class="dialog-close carnival-close" aria-label="Close carnival invitation">×</button>
-              <div class="carnival-popup-layout"><div class="carnival-popup-photo"><img src="/assets/session-circle-1200.webp" alt="Women gathering together at The Sphere" width="1200" height="800"></div>
+              <div class="carnival-popup-layout"><div class="carnival-popup-photo"><img src="/assets/sphere-circle-1200.webp" alt="Women gathering together at The Sphere" width="1200" height="800"></div>
               <div class="carnival-popup-copy"><p class="eyebrow">AN INVITATION TO COME TOGETHER</p><p class="carnival-popup-brand">The Sphere presents</p><h2 id="carnival-popup-title">Wellness<br>Carnival.</h2><p id="carnival-popup-description">{escape(event['tagline'])}</p>
               <div class="carnival-popup-details"><p>{full_date(event['start_at'])} · {hours(event)}</p><p>{escape(event['venue'])}, {escape(event['city'])}</p><p>{escape(event['audience'])}</p></div>
               <a class="carnival-popup-cta" href="{event['path']}">Discover the carnival <span aria-hidden="true">↗</span></a><button type="button" class="carnival-continue" data-dismiss-carnival>Continue to The Sphere</button></div></div></dialog>'''
@@ -131,9 +135,9 @@ def build_subpages(home, full_main):
     ]:
         page_head = re.sub(r'<title>.*?</title>', '<title>'+title+' | The Sphere</title>', head)
         page_head = re.sub(r'<meta name="description"[^>]*>', '<meta name="description" content="'+escape(description, quote=True)+'">', page_head)
-        meta = f'<link rel="canonical" href="{url("/"+slug+"/")}"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:title" content="{title} | The Sphere"><meta property="og:url" content="{url("/"+slug+"/")}"><meta property="og:description" content="{escape(description, quote=True)}"><meta property="og:image" content="{url("/assets/session-together-1920.webp")}">'
+        meta = f'<link rel="canonical" href="{url("/"+slug+"/")}"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:title" content="{title} | The Sphere"><meta property="og:url" content="{url("/"+slug+"/")}"><meta property="og:description" content="{escape(description, quote=True)}"><meta property="og:image" content="{url("/assets/sphere-connection-1920.webp")}">'
         graph = {'@context':'https://schema.org','@graph':[org(),{'@type':'WebPage','url':url('/'+slug+'/'),'name':title+' | The Sphere'}]}
-        opening_photo = ('session-sound-1920.webp', 'A sound-healing experience with women at The Sphere') if slug == 'experiences' else ('session-together-1920.webp', 'Women coming together in The Sphere circle')
+        opening_photo = ('sphere-facilitator-1920.webp', 'A facilitator playing a singing bowl at The Sphere') if slug == 'experiences' else ('sphere-circle-1920.webp', 'Women seated together in a quiet circle at The Sphere')
         opening = f'<section class="subpage-opening photo-opening">{photo(*opening_photo, eager=True)}<div class="photo-opening-copy"><p class="eyebrow">THE SPHERE / {slug.upper()}</p><h1>{title}.</h1><a class="text-link light-link" href="#'+('experiences' if slug == 'experiences' else 'invitation')+'">Discover more <span aria-hidden="true">↓</span></a></div></section>'
         html = f'<!doctype html><html lang="en-IN"><head>{page_head}{meta}<script type="application/ld+json">{json.dumps(graph,ensure_ascii=False)}</script></head><body class="premium-home club-subpage">{shell}<main id="main">{opening}{body}</main>{footer}{dialog}</body></html>'
         html = re.sub(r'(href|src)="(assets/|style.css|brand.css|premium.css|site.js|motion.js)', r'\1="/\2', html)
@@ -153,17 +157,17 @@ def build_philosophy(home, sections, heads):
     dialog = re.search(r'<dialog id="invitation-dialog".*?</dialog>', home, re.S)[0]
     chapters = []
     imagery = [
-        ('session-together-1920.webp', 'Women seated together in a Sphere sound-healing circle'),
-        ('editorial-flowers-1200.webp', 'Sunlight falling on flowers and a ceramic vase'),
-        ('editorial-journal-1200.webp', 'A woman taking a quiet moment to read'),
-        ('session-movement-960.webp', 'Grounded movement at a Sphere gathering'),
-        ('session-group-960.webp', 'Women connecting in conversation at The Sphere'),
-        ('editorial-making-1200.webp', 'Women learning a creative practice together'),
-        ('misty-meadow-1920.webp', 'A peaceful meadow beneath softly misted mountains'),
-        ('session-connection-960.webp', 'A woman sharing her perspective in the circle'),
-        ('session-circle-1200.webp', 'An intimate meditation circle at The Sphere'),
-        ('editorial-reading-1200.webp', 'A woman reading and making time for herself'),
-        ('session-bowls-1200.webp', 'Singing bowls and a cushion prepared for a moment of stillness'),
+        ('sphere-connection-1200.webp', 'Women connecting in pairs at a Sphere gathering'),
+        ('sphere-meditation-circle-1200.webp', 'Women seated in a quiet meditation circle'),
+        ('sphere-listening-1200.webp', 'Women listening to one another at The Sphere'),
+        ('sphere-stretch-1200.webp', 'Women stretching together at The Sphere'),
+        ('sphere-meditation-1200.webp', 'A Sphere participant seated in meditation'),
+        ('sphere-bowls-1200.webp', 'Singing bowls prepared for a Sphere experience'),
+        ('sphere-rest-1200.webp', 'Women resting during a Sphere sound-healing session'),
+        ('sphere-conversation-standing-1200.webp', 'Women sharing a conversation at The Sphere'),
+        ('sphere-circle-1200.webp', 'A small seated meditation circle at The Sphere'),
+        ('sphere-welcome-1200.webp', 'A participant smiling during a Sphere gathering'),
+        ('sphere-sound-session-1200.webp', 'A facilitator with singing bowls at The Sphere'),
     ]
     for i, heading in enumerate(heads):
         lines = sections[heading]
@@ -192,7 +196,7 @@ def build_philosophy(home, sections, heads):
     <meta property="og:url" content="{url('/philosophy/')}">
     <meta property="og:description" content="A space for the woman behind every role she carries.">
     <script type="application/ld+json">{json.dumps({'@context':'https://schema.org', '@graph':[org(), {'@type':'WebPage','url':url('/philosophy/'),'name':'Our philosophy | The Sphere','about':{'@id':url('/#organization')}}]}, ensure_ascii=False)}</script>
-    </head><body class="story-page">{shell}<main id="main"><section class="story-opening"><div class="story-opening-copy"><a class="text-link" href="/">← The Sphere</a><p class="eyebrow">OUR PHILOSOPHY</p><h1>A space to<br>simply be.</h1><p>The thoughts behind the circle.</p><a class="text-link" href="#chapter-1">Discover our story <span aria-hidden="true">↓</span></a></div>{photo('editorial-flowers-1200.webp','A sunlit floral arrangement in soft, earthy colours',True)}</section>{''.join(chapters)}<div class="story-close"><p class="eyebrow">YOUR PLACE IN THE CIRCLE</p><h2>Come as you are.</h2><button class="text-link" data-invitation>Request an invitation <span aria-hidden="true">↗</span></button></div></main>{footer}{dialog}</body></html>'''
+    </head><body class="story-page">{shell}<main id="main"><section class="story-opening"><div class="story-opening-copy"><a class="text-link" href="/">← The Sphere</a><p class="eyebrow">OUR PHILOSOPHY</p><h1>A space to<br>simply be.</h1><p>The thoughts behind the circle.</p><a class="text-link" href="#chapter-1">Discover our story <span aria-hidden="true">↓</span></a></div>{photo('sphere-smile-1200.webp','A participant smiling during a Sphere gathering',True)}</section>{''.join(chapters)}<div class="story-close"><p class="eyebrow">YOUR PLACE IN THE CIRCLE</p><h2>Come as you are.</h2><button class="text-link" data-invitation>Request an invitation <span aria-hidden="true">↗</span></button></div></main>{footer}{dialog}</body></html>'''
     html = re.sub(r'(href|src)="(assets/|style.css|brand.css|premium.css|site.js|motion.js)', r'\1="/\2', html)
     html = html.replace('href="#', 'href="/#').replace('href="/#main"', 'href="#main"').replace('href="/#chapter-', 'href="#chapter-')
     path = ROOT / 'dist/philosophy'; path.mkdir(exist_ok=True)

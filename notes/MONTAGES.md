@@ -1,3 +1,11 @@
+# Updated 8 October 2026
+
+The homepage edit below has been superseded by the calm, single-frame edit in
+`notes/MEDIA-REVIEW.md`. Current shot list: `data/montage-home.json`.
+Desktop 15.8 seconds; phone 19.08 seconds. Carnival remains independent.
+
+## Previous edit record
+
 # Independent landing-page films
 
 Both pages use only footage from the supplied Sphere collection in `media/home/raw/`.

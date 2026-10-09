@@ -43,30 +43,12 @@ document.querySelectorAll('[data-pillar-browser]').forEach(browser => {
   let frame = 0;
   const revealTargets = [...document.querySelectorAll('[data-reveal], [data-image-reveal]')];
   const initialiseReveals = () => {
-    observer?.disconnect();
-    if (reduced.matches || !('IntersectionObserver' in window)) {
-      revealTargets.forEach(el => el.classList.remove('will-reveal'));
-      return;
-    }
-    observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: .08, rootMargin: '0px 0px -24px 0px' });
-    revealTargets.forEach(el => {
-      // Do not hide an already visible heading while the page initialises or a preference changes.
-      if (el.getBoundingClientRect().top < window.innerHeight - 24) el.classList.add('is-visible');
-      el.classList.add('will-reveal');
-      observer.observe(el);
-    });
+    revealTargets.forEach(el => { el.classList.remove('will-reveal'); el.classList.add('is-visible'); });
   };
   const update = () => {
     frame = 0;
     if (!stage || !film || !copy) return;
-    if (reduced.matches || small.matches) {
+    if (reduced.matches || small.matches || stage.offsetHeight <= window.innerHeight + 2) {
       film.style.removeProperty('--film-inset');
       copy.style.removeProperty('--film-copy-y');
       copy.style.removeProperty('--film-copy-opacity');
@@ -94,23 +76,4 @@ document.querySelectorAll('[data-pillar-browser]').forEach(browser => {
   window.addEventListener('resize', schedule, { passive: true });
   reduced.addEventListener('change', () => { initialiseReveals(); schedule(); });
   small.addEventListener('change', schedule);
-})();
-
-// A seasonal invitation on entry, once per tab session, with a fixed India-time expiry.
-(() => {
-  const popup = document.querySelector('[data-carnival-popup]');
-  if (!popup) return;
-  const until = Date.parse(popup.dataset.promotionUntil);
-  if (!Number.isFinite(until) || Date.now() >= until) { popup.remove(); return; }
-  const key = `sphere-promotion:${popup.dataset.promotionKey}`;
-  try { if (sessionStorage.getItem(key)) return; } catch (_) { /* Storage may be disabled. */ }
-  if (typeof popup.showModal !== 'function') return;
-  const previousFocus = document.activeElement;
-  popup.querySelector('[data-dismiss-carnival]').addEventListener('click', () => popup.close());
-  popup.addEventListener('close', () => {
-    if (previousFocus instanceof HTMLElement && previousFocus !== document.body) previousFocus.focus({ preventScroll: true });
-    else document.querySelector('.header .wordmark')?.focus({ preventScroll: true });
-  });
-  popup.showModal();
-  try { sessionStorage.setItem(key, 'seen'); } catch (_) { /* Still usable without storage. */ }
 })();

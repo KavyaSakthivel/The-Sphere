@@ -98,16 +98,16 @@ def render_triptych(shot, source, w, h, target, tmp):
   '-r', str(FPS), '-c:v', 'libx264', '-crf', '15', '-preset', 'fast', '-pix_fmt', 'yuv420p', str(target)])
 
 
-def join(segments, holds, target):
+def join(segments, holds, target, fade=FADE):
  """Crossfade shot into shot, and the last back into the first, trimmed so the loop has no seam."""
  chain, holds = segments+[segments[0]], holds+[holds[0]]
  inputs = sum((['-i', str(p)] for p in chain), [])
  graph, last, offset = [], '[0:v]', 0.0
  for i in range(1, len(chain)):
-  offset += holds[i-1]-FADE
-  graph.append(f'{last}[{i}:v]xfade=transition=fade:duration={FADE}:offset={offset:.3f}[x{i}]')
+  offset += holds[i-1]-fade
+  graph.append(f'{last}[{i}:v]xfade=transition=fade:duration={fade}:offset={offset:.3f}[x{i}]')
   last = f'[x{i}]'
- graph.append(f'{last}trim=start={FADE}:duration={offset:.3f},setpts=PTS-STARTPTS,format=yuv420p[out]')
+ graph.append(f'{last}trim=start={fade}:duration={offset:.3f},setpts=PTS-STARTPTS,format=yuv420p[out]')
  run(['ffmpeg', '-v', 'error', '-y']+inputs+['-filter_complex', ';'.join(graph), '-map', '[out]', '-an',
   '-c:v', 'libx264', '-crf', '14', '-preset', 'medium', str(target)])
  return offset
@@ -159,7 +159,12 @@ def main():
     render_shot(shot, target['source'], w, h, segment, tmp)
     segments.append(segment)
    master = Path(tmp)/f'{name}-master.mp4'
-   loop = join(segments, [s.get('hold', HOLD) for s in shots], master)
+   manifest = ROOT/f'data/montage-{key}.json'
+   settings = json.loads(manifest.read_text()) if manifest.exists() else {}
+   fade = settings.get('fade', FADE)
+   if not 0 < fade < min(s.get('hold', HOLD) for s in shots):
+    sys.exit('The dissolve must be shorter than every shot.')
+   loop = join(segments, [s.get('hold', HOLD) for s in shots], master, fade)
    encode(master, target['out'], name)
    sizes = ', '.join(f"{p.name} {p.stat().st_size/1e6:.1f} MB" for p in sorted(target['out'].glob(f'{name}*')))
    print(f'{name} {w}x{h}: {len(shots)} shots, {loop:.1f}s loop — {sizes}')

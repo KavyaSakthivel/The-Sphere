@@ -56,3 +56,34 @@ reflection, discovery and quiet rituals; they do not depict Sphere members, venu
 Downloaded from each image's Pexels CDN URL, encoded at 640 and 1200 pixels with
 `scripts/prepare_editorial_assets.py`. Natural colour retained; layout crops and mild desaturation
 are applied in CSS. No endorsement implied.
+
+## Brand moodboard editorial replacements, 8 October 2026
+
+These replace the non-Drive indoor reading photographs on the homepage Journal
+and two reflective articles. Actual Sphere/Drive photographs remain unchanged.
+All are illustrative editorial photography, not Sphere attendees or venues.
+
+- `editorial-flow-*.webp`: KoolShooters, outdoor yoga stretch, Pexels photo 8534435.
+  Source: https://www.pexels.com/photo/8534435/
+- `editorial-sky-*.webp`: Ketut Subiyanto, Woman Practising Yoga Outdoors Under Blue Sky.
+  Source: https://www.pexels.com/photo/woman-practising-yoga-outdoors-under-blue-sky-4909322/
+- `editorial-air-*.webp`: cottonbro studio, A Woman in White Long Sleeves with Her Eyes Closed.
+  Source: https://www.pexels.com/photo/a-woman-in-white-long-sleeves-with-her-eyes-closed-7289120/
+
+License checked: https://www.pexels.com/license/ . Encoded as responsive WebP by
+scripts/prepare_wellness_editorial.py. Colour wash and grain are applied as CSS
+overlays, leaving original source photography unchanged.
+
+## Experience editorial imagery, 8 October 2026
+
+The landing experience selector and Experiences atlas use the same five licensed
+illustrative photos. They represent types of experiences, not Sphere attendees.
+The Experiences opening uses the credited editorial-sky photograph above.
+
+- Move: KoolShooters, https://www.pexels.com/photo/a-flexible-woman-in-beige-activewear-stretching-her-arm-8534772/
+- Pause: KATRIN BOLOVTSOVA, https://www.pexels.com/photo/a-woman-using-a-singing-bowl-while-sitting-7113299/
+- Reflect: Cliff Booth, https://www.pexels.com/photo/two-women-having-a-chat-after-workout-4057861/
+- Explore: cottonbro studio, existing editorial-making asset, Pexels 6694742 (credited above).
+- Connect: Elina Fairytale, https://www.pexels.com/photo/group-of-fit-female-friends-3822725/
+
+License: https://www.pexels.com/license/ . Grain and colour wash use CSS overlays.

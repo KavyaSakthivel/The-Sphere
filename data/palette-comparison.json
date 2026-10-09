@@ -1,0 +1,108 @@
+[
+  {
+    "slug": "olive-earth",
+    "name": "Olive & Earth",
+    "reference": 1,
+    "colors": [
+      "#26250E",
+      "#A6998A",
+      "#26150B",
+      "#82725B",
+      "#402116"
+    ],
+    "primary": "#26250E",
+    "surface": "#A6998A",
+    "deep": "#26150B",
+    "accent": "#402116",
+    "detail": "#82725B",
+    "impression": "Earthy, understated, heritage-inspired."
+  },
+  {
+    "slug": "fairway",
+    "name": "Fairway & Bluebird",
+    "reference": 2,
+    "colors": [
+      "#FAF7EA",
+      "#B1C2CF",
+      "#687656",
+      "#052F17"
+    ],
+    "primary": "#052F17",
+    "surface": "#FAF7EA",
+    "deep": "#052F17",
+    "accent": "#687656",
+    "detail": "#B1C2CF",
+    "impression": "Fresh, composed, with a country-club character."
+  },
+  {
+    "slug": "camel-rubine",
+    "name": "Camel & Rubine",
+    "reference": 3,
+    "colors": [
+      "#C6B39A",
+      "#7B694E",
+      "#8D3A3C",
+      "#3B1319",
+      "#280B0F"
+    ],
+    "primary": "#3B1319",
+    "surface": "#C6B39A",
+    "deep": "#280B0F",
+    "accent": "#8D3A3C",
+    "detail": "#7B694E",
+    "impression": "Warm, expressive, with a boutique-hotel character."
+  },
+  {
+    "slug": "green-velvet",
+    "name": "Green Velvet & Plum",
+    "reference": 4,
+    "colors": [
+      "#29281E",
+      "#857861",
+      "#E7D4BB",
+      "#48252F",
+      "#101211"
+    ],
+    "primary": "#29281E",
+    "surface": "#E7D4BB",
+    "deep": "#101211",
+    "accent": "#48252F",
+    "detail": "#857861",
+    "impression": "Rich, intimate, and balanced between green and plum."
+  },
+  {
+    "slug": "pale-jade",
+    "name": "Pale Jade & Forest",
+    "reference": 5,
+    "colors": [
+      "#BCB893",
+      "#5C5936",
+      "#474329",
+      "#332C0F"
+    ],
+    "primary": "#474329",
+    "surface": "#BCB893",
+    "deep": "#332C0F",
+    "accent": "#5C5936",
+    "detail": "#5C5936",
+    "impression": "Botanical, tonal, with a quiet retreat character.",
+    "note": "Mossy Green uses #5C5936, sampled from the visible olive swatch. The reference prints #EAC3BF, which is pink."
+  },
+  {
+    "slug": "pine-old-lace",
+    "name": "Pine & Old Lace",
+    "reference": 6,
+    "colors": [
+      "#020202",
+      "#232D23",
+      "#6D6A61",
+      "#F7F8E5"
+    ],
+    "primary": "#232D23",
+    "surface": "#F7F8E5",
+    "deep": "#020202",
+    "accent": "#6D6A61",
+    "detail": "#6D6A61",
+    "impression": "Restrained, crisp, with a private-estate character."
+  }
+]

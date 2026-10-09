@@ -144,7 +144,7 @@ def hero_visual(ev):
    'data-tall-webm="/assets/montage-carnival/tall.webm" data-tall-mp4="/assets/montage-carnival/tall.mp4"></video>'
    '<button class="event-video-toggle montage-toggle" type="button" hidden aria-label="Pause background film">Pause</button>')
  if not has_montage():
-  return ('<img src="/assets/session-bowls-1200.webp" srcset="/assets/session-bowls-640.webp 640w, /assets/session-bowls-1200.webp 1200w" '
+  return ('<img src="/assets/sphere-bowls-1200.webp" srcset="/assets/sphere-bowls-640.webp 640w, /assets/sphere-bowls-1200.webp 1200w" '
    'sizes="(max-width: 900px) 88vw, 40vw" alt="Singing bowls, a cushion and mats laid out before a Sphere session" fetchpriority="high" width="1200" height="1800">')
  # The club's own montage (scripts/build_montage.py). The poster is its first frame, so the swap is invisible;
  # site.js only starts the video when motion and data use are welcome. It adds nothing to the page's words.
@@ -164,6 +164,12 @@ def date_chip(ev):
 def jump_links(): return ''.join(f'<a href="#{i}">{t}</a>' for i, t in SECTIONS)
 
 
+def mobile_links():
+ icons = ['leaf', 'clock', 'calendar', 'heart']
+ return ''.join(f'<a href="#{section}" tabindex="-1">{icon(symbol)}<span>{label}</span></a>'
+  for (section, label), symbol in zip(SECTIONS, icons))
+
+
 def page(ev):
  book = book_href(ev)
  price = rupees(ev['price_inr'])
@@ -178,8 +184,9 @@ def page(ev):
  <div class="event-hero-copy">
   <nav class="event-crumb" aria-label="Breadcrumb"><a href="/">The Sphere</a><span aria-hidden="true">/</span><span aria-current="page">Wellness Carnival</span></nav>
   <p class="eyebrow">{escape(ev['name']).upper()}</p>
-  <h1 id="event-title">Pause. Connect.<br>Celebrate.</h1>
+  <h1 id="event-title"><span>Pause.</span> <span>Connect.</span><br><span>Celebrate.</span></h1>
   <p class="event-tagline">{date} &nbsp;·&nbsp; Coimbatore</p>
+  <p class="event-mobile-meta">{icon('clock')}{time}</p>
   <p data-book><a class="button button-dark event-hero-cta" href="{a(book)}">Reserve your spot {arrow()}</a></p>
  </div>
  <a class="event-scroll-cue" href="#event-details" aria-label="Explore the carnival">SCROLL TO DISCOVER <span aria-hidden="true">↓</span></a>
@@ -214,15 +221,18 @@ def page(ev):
 <section id="experience" class="event-experience section-pad" aria-labelledby="experience-title">
  <div class="event-heading"><p class="eyebrow">THE EXPERIENCE</p><h2 id="experience-title">Come for the experience.<br><em>Stay for the feeling.</em></h2>
  <p>An evening thoughtfully brought together around well-being, community and celebration.</p></div>
- <div class="event-editorial-gallery">
-  <figure data-image-reveal><img src="/assets/session-movement-960.webp" alt="Mindful movement at a Sphere gathering" width="960" height="1280" loading="lazy"><figcaption><span>01 / MOVE</span><h3>Return to your body.</h3></figcaption></figure>
-  <figure data-image-reveal><img src="/assets/session-bowls-1200.webp" alt="Singing bowls prepared for sound healing" width="1200" height="1800" loading="lazy"><figcaption><span>02 / PAUSE</span><h3>Make room for stillness.</h3></figcaption></figure>
-  <figure data-image-reveal><img src="/assets/session-group-960.webp" alt="Women connecting in conversation at The Sphere" width="960" height="1280" loading="lazy"><figcaption><span>03 / CONNECT</span><h3>Find your people.</h3></figcaption></figure>
+ <div class="event-editorial-gallery" id="event-gallery" role="region" aria-label="Moments from The Sphere’s past gatherings" tabindex="0">
+  <figure data-image-reveal><img src="/assets/sphere-movement-1200.webp" alt="Mindful movement at a Sphere gathering" width="960" height="1280" loading="lazy"><figcaption><span>01 / MOVE</span><h3>Return to your body.</h3></figcaption></figure>
+  <figure data-image-reveal><img src="/assets/sphere-bowls-1200.webp" alt="Singing bowls prepared for sound healing" width="1200" height="1800" loading="lazy"><figcaption><span>02 / PAUSE</span><h3>Make room for stillness.</h3></figcaption></figure>
+  <figure data-image-reveal><img src="/assets/sphere-conversation-standing-1200.webp" alt="Women connecting in conversation at The Sphere" width="960" height="1280" loading="lazy"><figcaption><span>03 / CONNECT</span><h3>Find your people.</h3></figcaption></figure>
+ </div><div class="event-gallery-tools" hidden>
+  <p>Swipe to explore <span aria-hidden="true">↔</span></p>
+  <div><button type="button" data-gallery-prev aria-label="Previous experience" aria-controls="event-gallery">←</button><span data-gallery-count aria-live="polite" aria-atomic="true">1 / 3</span><button type="button" data-gallery-next aria-label="Next experience" aria-controls="event-gallery">→</button></div>
  </div><p class="event-photo-note">Moments from The Sphere’s past gatherings.</p>
  <details class="event-experience-details"><summary>Explore the evening’s experiences <span aria-hidden="true">+</span></summary><ul class="event-grid">{experiences}</ul></details>
 </section>
 
-<section class="event-interlude" aria-label="Together at The Sphere"><figure data-image-reveal><img src="/assets/session-together-1920.webp" alt="A group of women seated together in a Sphere sound-healing circle" width="1920" height="1080" loading="lazy"></figure><div><p class="eyebrow">A LITTLE LESS RUSH. A LITTLE MORE YOU.</p><p>Come as you are.<br>Leave a little lighter.</p></div></section>
+<section class="event-interlude" aria-label="Together at The Sphere"><figure data-image-reveal><img src="/assets/sphere-connection-1920.webp" alt="Women connecting in pairs at a Sphere gathering" width="1920" height="1080" loading="lazy"></figure><div><p class="eyebrow">A LITTLE LESS RUSH. A LITTLE MORE YOU.</p><p>Come as you are.<br>Leave a little lighter.</p></div></section>
 
 <section id="schedule" class="event-schedule section-pad" aria-labelledby="schedule-title">
  <div class="event-schedule-side">
@@ -281,15 +291,17 @@ def page(ev):
 </main>
 <div class="event-bar" data-event-bar aria-hidden="true">
  <p><strong>{ev['start_at'].strftime('%-d %b %Y')} &middot; {place}</strong><span>{time} &middot; Entry {price} + Applicable Fee</span></p>
+ <p class="event-mobile-price"><strong>{price}</strong><span>{escape(ev['price_note'])}</span></p>
  <nav class="event-bar-links" aria-label="On this page">{jump_links().replace('<a ', '<a tabindex="-1" ')}</nav>
- <a class="button button-dark" href="{a(book)}" tabindex="-1">Book Your Experience {arrow()}</a>
+ <a class="button button-dark event-dock-cta" href="{a(book)}" tabindex="-1">{'View tickets' if ev['mode'] == 'soon' else 'Book Your Experience'} {arrow()}</a>
+ <nav class="event-mobile-links" aria-label="Carnival navigation">{mobile_links()}</nav>
 </div>'''
 
 
 # ---------------------------------------------------------------- assembly
 
 def seo(ev, path, title):
- image = url('/assets/session-bowls-1200.webp')
+ image = url('/assets/sphere-bowls-1200.webp')
  meta = f'''
   <link rel="canonical" href="{a(url(path))}">
   <meta name="robots" content="index,follow,max-image-preview:large">
@@ -324,12 +336,15 @@ def assemble(home, ev, path, title, body):
  head = re.search(r'<head>(.*?)</head>', (ROOT/'templates/original-index.html').read_text(), re.S)[1]
  head = re.sub(r'<title>.*?</title>', '<title>'+escape(title)+'</title>', head, count=1)
  head = re.sub(r'<meta name="description"[^>]*>', f'<meta name="description" content="{a(ev["description"])}">', head, count=1)
+ head = head.replace('width=device-width,initial-scale=1', 'width=device-width,initial-scale=1,viewport-fit=cover')
+ head = re.sub(r'<meta name="theme-color"[^>]*>', '<meta name="theme-color" content="#123e46">', head, count=1)
  head = head.replace('</script>', '</script>\n  <link rel="stylesheet" href="/'+ev['slug']+'/event.css?v=5">\n  <script src="/'+ev['slug']+'/event.js?v=5" defer></script>', 1)
  shell = re.search(r'<a class="skip".*?<main id="main">', home, re.S)[0].removesuffix('<main id="main">')
  # On the event page the header's call to action is the ticket itself.
  shell = re.sub(r'<a class="header-invite"[^>]*>.*?</a>',
   f'<a class="header-invite" href="{a(book_href(ev))}" data-book>Get Your Ticket {arrow()}</a>', shell, count=1, flags=re.S)
  shell = shell.replace(f'href="{ev["path"]}" data-event-until', f'href="{ev["path"]}" aria-current="page" data-event-until')
+ shell = shell.replace('<div class="nav-right">', '<span class="event-mobile-title">Wellness Carnival</span><div class="nav-right">', 1)
  footer = re.search(r'<footer>.*?</footer>', home, re.S)[0]
  invitation = re.search(r'<dialog id="invitation-dialog".*?</dialog>', home, re.S)[0]
  # Hash links borrowed from the home page point back to it; the event's own in-page links stay on this page.

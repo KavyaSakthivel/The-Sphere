@@ -1,30 +1,72 @@
-[
-  {
-    "video": "dist/assets/montage-carnival/wide.mp4",
-    "frames": 470,
-    "seam_pixel_difference": 12.25,
-    "within_loop_difference_p95": 9.756,
-    "largest_difference": 18.68
-  },
-  {
-    "video": "dist/assets/montage-carnival/tall.mp4",
-    "frames": 388,
-    "seam_pixel_difference": 0.851,
-    "within_loop_difference_p95": 1.5,
-    "largest_difference": 2.523
-  },
-  {
-    "video": "dist/assets/montage/wide.mp4",
-    "frames": 483,
-    "seam_pixel_difference": 4.401,
-    "within_loop_difference_p95": 6.714,
-    "largest_difference": 10.5
-  },
-  {
-    "video": "dist/assets/montage/tall.mp4",
-    "frames": 448,
-    "seam_pixel_difference": 0.86,
-    "within_loop_difference_p95": 2.261,
-    "largest_difference": 3.633
-  }
-]
+{
+  "date": "2026-10-08",
+  "home": [
+    {
+      "variant": "wide",
+      "duration": 15.8,
+      "first_last_mean_pixel_difference": 6.115,
+      "samples_seconds": [
+        0,
+        2.37,
+        4.74,
+        7.11,
+        9.48,
+        11.85,
+        14.22,
+        15.760000000000002
+      ],
+      "sources": "data/montage-home.json"
+    },
+    {
+      "variant": "tall",
+      "duration": 19.08,
+      "first_last_mean_pixel_difference": 3.475,
+      "samples_seconds": [
+        0,
+        2.86,
+        5.72,
+        8.59,
+        11.45,
+        14.31,
+        17.17,
+        19.04
+      ],
+      "sources": "data/montage-home.json"
+    }
+  ],
+  "carnival": [
+    {
+      "variant": "wide",
+      "duration": 18.8,
+      "first_last_mean_pixel_difference": 13.208,
+      "samples_seconds": [
+        0,
+        2.82,
+        5.64,
+        8.46,
+        11.28,
+        14.1,
+        16.92,
+        18.76
+      ],
+      "sources": "data/montage-carnival.json"
+    },
+    {
+      "variant": "tall",
+      "duration": 15.52,
+      "first_last_mean_pixel_difference": 5.275,
+      "samples_seconds": [
+        0,
+        2.33,
+        4.66,
+        6.98,
+        9.31,
+        11.64,
+        13.97,
+        15.48
+      ],
+      "sources": "data/montage-carnival.json"
+    }
+  ],
+  "note": "All samples decoded. Beginning, middle and end frames are recorded in the revised contact sheets. The seam metric measures adjacent end/start frames and is not a substitute for visual review."
+}

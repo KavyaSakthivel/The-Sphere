@@ -1,0 +1,314 @@
+/* Cool petrol teal, mineral mist and pearl. Original logo artwork is unchanged.
+   Legacy token names are aliases so all existing components share one hue. */
+:root {
+  --paper: #C6B39A;
+  --sage: #9ab7a8;
+  --blue: #7B694E;
+  --beige: #C6B39A;
+  --card: #C6B39A;
+  --light-sage: #C6B39A;
+  --terracotta: #3B1319;
+  --forest: #3B1319;
+  --forest-deep: #280B0F;
+  --wine: var(--forest);
+  --champagne: #C6B39A;
+  --brass: #C6B39A;
+  --ink: #3B1319;
+  --muted: #3B1319;
+  --rule: #7B694E;
+}
+::selection { background: var(--wine); color: var(--paper); }
+.premium-home .section-pad { padding: clamp(60px, 5.5vw, 88px) 7%; }
+
+/* The original ivory logo has contrast on a deep green navigation bar. */
+body.premium-home .header.is-scrolled,
+body.premium-home .header.is-nav-open,
+body.premium-home.club-subpage .header:not(.is-scrolled):not(.is-nav-open),
+body.story-page .header,
+body.story-page .header.is-scrolled,
+body.article-page .header,
+body.article-page .header.is-scrolled,
+body.event-page .header {
+  background: var(--forest); color: var(--paper);
+  box-shadow: 0 1px 0 #C6B39A24;
+}
+body .header .wordmark .wordmark-primary { display: none; }
+body .header .wordmark .wordmark-light { display: block; opacity: 1 !important; }
+body .header .desktop-nav .carnival-nav { color: var(--paper); }
+body .header .nav-right .header-invite,
+body .header.is-scrolled .nav-right .header-invite {
+  background: var(--champagne); color: var(--forest-deep);
+}
+body .header .nav-right .header-invite:hover { background: var(--paper); color: var(--forest-deep); }
+body .header a:focus-visible, body .header button:focus-visible { outline-color: var(--paper); }
+body .mobile-nav:not([hidden]), body.premium-home .mobile-nav:not([hidden]) {
+  background: var(--forest); color: var(--paper);
+  --rule: #C6B39A33;
+}
+body .mobile-nav a:focus-visible { outline-color: var(--brass); }
+body .mobile-nav .carnival-nav { color: var(--paper); }
+
+/* Light text is scoped to the few dark surfaces. */
+.landing-page .home-introduction,
+.premium-home .home-invitation,
+.premium-home .home-letter,
+.story-close,
+body footer {
+  --ink: #C6B39A;
+  --muted: #C6B39A;
+  --terracotta: #C6B39A;
+  --rule: #C6B39A33;
+  color: var(--ink);
+}
+.landing-page .home-introduction {
+  position: relative; isolation: isolate; overflow: hidden;
+  background: var(--paper); text-align: left;
+  --ink: #3B1319; --muted: #3B1319; --terracotta: #3B1319; --rule: #7B694E;
+}
+.landing-page .home-introduction:before {
+  content: none;
+}
+.landing-page .home-introduction > .eyebrow { color: var(--muted); }
+.landing-page .intro-composition {
+  display: grid; grid-template-columns: 1.1fr 1fr;
+  gap: 9%; align-items: start; margin: 28px 0 0;
+}
+.landing-page .intro-composition h2 {
+  font-size: clamp(42px, 4.4vw, 66px); margin: 0; line-height: 1.12;
+}
+.landing-page .intro-composition .accent { color: inherit; }
+.landing-page .intro-prose { max-width: 510px; margin: 0; padding: 0; }
+.landing-page .intro-prose .lead { font-size: 21px; }
+.landing-page .intro-end { margin-top: 38px; padding-top: 20px; }
+.landing-page .presence-story { height: 70svh; min-height: 520px; max-height: 760px; }
+.presence-image img { filter: brightness(.72) saturate(1); }
+.landing-page.premium-home .hero-visual.has-montage img,
+.landing-page.premium-home .hero-montage { filter: brightness(.78) saturate(1); }
+.editorial-photo img, .circle-photo img, .experience-card img { filter: saturate(1); }
+
+.premium-home .home-experiences { background: var(--champagne); }
+.landing-page .home-experiences .editorial-heading { margin-bottom: 28px; }
+.pillar-tabs { margin-bottom: 28px; border-bottom-color: #3B131933; }
+.pillar-tabs button { color: var(--forest); }
+.pillar-tabs button[aria-selected=true] { color: var(--wine); border-bottom-color: var(--wine); }
+.pillar-panel { grid-template-columns: 1.1fr 1fr; gap: 7%; margin-bottom: 0; }
+.pillar-panel .editorial-photo { height: clamp(370px, 34vw, 490px); }
+.pillar-copy { max-width: 410px; }
+.pillar-copy > .eyebrow { margin-bottom: 18px; }
+.premium-home .pillar-copy h3 { margin-bottom: 20px; }
+.pillar-copy > p:not(.eyebrow) { margin-bottom: 20px; }
+
+.landing-page .circle-story {
+  background: var(--paper); padding-top: clamp(60px, 5.5vw, 88px);
+  padding-bottom: clamp(60px, 5.5vw, 88px); gap: 8%;
+}
+.landing-page .circle-photo img { height: 480px; }
+.landing-page .circle-copy h2 { margin: 24px 0; }
+.landing-page .circle-values { color: var(--wine) !important; }
+.premium-home .home-invitation { background: var(--wine); }
+.landing-page .home-invitation { gap: 0 7%; }
+.landing-page .home-invitation > .editorial-photo { height: 510px; }
+.home-invitation .eyebrow, .home-letter .eyebrow { color: var(--brass); }
+.home-invitation .accent { color: var(--paper); }
+.home-invitation .invitation-heading .text-link {
+  background: var(--paper); color: var(--wine); border: 0;
+  padding: 15px 20px; margin-top: 22px;
+}
+.home-invitation .invitation-heading .text-link:hover { background: var(--champagne); }
+.home-invitation .text-link:focus-visible,
+.home-letter .text-link:focus-visible { outline-color: var(--paper); }
+.home-invitation .joining-directory li > span { color: var(--brass); }
+.premium-home .home-letter { background: var(--forest); }
+.club-subpage .home-letter { padding-top: 78px; }
+.letter-prose { padding-top: 12px; }
+
+.premium-home .home-journal { background: var(--paper); }
+.home-journal .editorial-heading { margin-bottom: 28px; }
+.premium-home .journal-entry { padding-top: 22px; padding-bottom: 22px; }
+.premium-home .journal-entry:hover { background: #3B131908; }
+.premium-home .inbox { background: var(--champagne); padding-top: 58px; padding-bottom: 58px; }
+.premium-home .inbox h2 { font-size: 43px; margin-top: 18px; }
+.inbox .sphere-form-inline { margin-top: 26px; }
+.sphere-form button[type=submit] { background: var(--wine); color: var(--paper); border-color: var(--wine); }
+.sphere-form button[type=submit]:hover { background: var(--forest-deep); border-color: var(--forest-deep); }
+.sphere-form input:focus-visible, .sphere-form textarea:focus-visible { outline-color: var(--forest); }
+body footer, .premium-home footer { background: var(--forest-deep); padding: 60px 7% 22px; }
+.premium-home .footer-grid { padding-bottom: 38px; }
+body footer .footer-brand p, body footer .footer-invitation > p:not(.eyebrow),
+body footer .footer-bottom { color: var(--muted); }
+body footer .footer-invitation > a { color: var(--paper); border-color: var(--brass); }
+body footer .footer-invitation > a:hover { color: var(--sage); border-color: var(--sage); }
+body footer a:focus-visible { outline-color: var(--brass); }
+
+/* Apply the same material palette and tighter rhythm to the reading pages. */
+.story-opening { background: var(--champagne); min-height: 0; padding: 55px 7% 60px; gap: 7%; }
+.story-opening .editorial-photo { height: 540px; }
+.story-opening-copy > .eyebrow { margin-top: 36px; }
+.story-chapter { padding: 70px 7%; gap: 7%; }
+.story-chapter:nth-of-type(odd) { background: var(--paper); }
+.story-chapter > .editorial-photo { height: min(500px, 65svh); }
+.story-practices { background: var(--champagne); padding: 70px 7%; }
+.story-practices-heading { margin-bottom: 38px; }
+.experience-atlas { gap: 45px 36px; margin-top: 36px; }
+.atlas-copy { padding-top: 22px; }
+.story-close { background: var(--wine); padding: 65px 7%; }
+.story-close button { color: var(--wine); }
+.carnival-popup .carnival-popup-copy {
+  background: var(--forest); --ink: #C6B39A; --muted: #C6B39A;
+  --terracotta: #C6B39A; --rule: #C6B39A33; color: var(--ink);
+}
+.carnival-popup .carnival-popup-copy > .eyebrow { color: var(--brass); }
+.carnival-popup .carnival-popup-cta { background: var(--champagne); color: var(--forest-deep); }
+.carnival-popup .carnival-popup-cta:hover { background: var(--paper); }
+.carnival-popup .carnival-popup-copy button:focus-visible,
+.carnival-popup .carnival-popup-cta:focus-visible { outline-color: var(--paper); }
+.carnival-popup-photo img { filter: saturate(1); }
+
+@media (max-width: 1000px) {
+  .pillar-panel .editorial-photo { height: 400px; }
+  .landing-page .circle-photo img { height: 440px; }
+}
+@media (max-width: 700px) {
+  body .header .menu-toggle { min-width: 44px; justify-content: center; }
+  body.story-page .header .menu-toggle,
+  body.article-page .header .menu-toggle { font-size: 0; gap: 0; }
+  body.story-page .header .menu-toggle span,
+  body.article-page .header .menu-toggle span { font-size: 24px; }
+  .premium-home .section-pad { padding: 52px 7%; }
+  .landing-page .intro-composition { grid-template-columns: 1fr; gap: 26px; }
+  .landing-page .intro-composition h2 { font-size: 42px; }
+  .landing-page .intro-prose .lead { font-size: 19px; }
+  .landing-page .intro-end { margin-top: 28px; }
+  .landing-page .presence-story { height: 65svh; min-height: 430px; }
+  .pillar-panel { grid-template-columns: 1fr; gap: 26px; }
+  .pillar-panel .editorial-photo { height: auto; aspect-ratio: 4/3; }
+  .landing-page .circle-story { gap: 26px; }
+  .landing-page .circle-photo img { height: auto; aspect-ratio: 4/3; }
+  .landing-page .home-invitation { gap: 28px; }
+  .landing-page .home-invitation > .editorial-photo { height: auto; aspect-ratio: 4/3; }
+  .premium-home .inbox h2 { font-size: 37px; }
+  .premium-home footer, body footer { padding: 48px 7% 20px; }
+  .story-opening { padding: 36px 7% 48px; }
+  .story-opening .editorial-photo { height: auto; aspect-ratio: 4/3; }
+  .story-chapter { padding: 52px 7%; gap: 28px; }
+  .story-chapter > .editorial-photo { height: auto; aspect-ratio: 4/3; }
+  .story-practices, .story-close { padding: 52px 7%; }
+  .experience-atlas { gap: 36px; }
+}
+@media (max-width: 360px) {
+  body .header > .wordmark { width: 100px; min-width: 100px; }
+  body.premium-home .header > .wordmark,
+  body.story-page .header > .wordmark,
+  body.article-page .header > .wordmark { width: 100px; min-width: 100px; }
+  body .header .nav-right { flex-shrink: 0; }
+  body.premium-home .header,
+  body.story-page .header,
+  body.article-page .header,
+  body.event-page .header { gap: 8px; }
+  body .header .nav-right .header-invite { padding-left: 10px; padding-right: 10px; }
+  body .header .nav-right .header-invite span { display: none; }
+}
+
+/* One heading color and one dark surface family throughout the site. */
+.premium-home h2 .accent { color: inherit; }
+.home-journal .journal-title { color: var(--ink); }
+.letter-rings { display: none; }
+.landing-page.premium-home .film-stage { height: 100svh; min-height: 620px; }
+.landing-page.premium-home .header:not(.is-scrolled):not(.is-nav-open) { background: var(--forest); color: var(--paper); }
+.landing-page.premium-home .hero { position: relative; }
+.landing-page.premium-home .hero-visual.has-montage img,
+.landing-page.premium-home .hero-montage { filter: brightness(.86) saturate(1); transform: none; }
+.landing-page.premium-home .hero-visual:after {
+  background: linear-gradient(0deg, #280B0Fc2, #280B0F16 62%, #280B0F40);
+}
+.landing-page.premium-home .hero-copy { text-align: left; inset: auto 7% 16%; }
+.landing-page.premium-home .hero h1 { max-width: 680px; font-size: clamp(44px, 4.5vw, 68px); }
+.club-subpage .photo-opening-copy { bottom: 9%; }
+.club-subpage .photo-opening:after { background: linear-gradient(0deg, #280B0Fbf, #280B0F08 70%); }
+.story-opening .editorial-photo img { object-position: center 38%; }
+@media(max-width:700px) {
+  .landing-page.premium-home .film-stage { min-height: 650px; }
+  .landing-page.premium-home .hero-copy { inset: auto 7% 18%; text-align: left; }
+  .landing-page.premium-home .hero h1 { margin-left: 0; font-size: 42px; max-width: 330px; }
+}
+
+/* A small, coherent cool family: pearl, mineral mist, petrol and deep teal. */
+.landing-page .circle-story { background: var(--champagne); }
+.premium-home .home-experiences { background: var(--paper); }
+.premium-home .inbox { background: var(--champagne); }
+.premium-home .home-invitation { grid-template-columns: 1.35fr 1fr; gap: 38px 7%; align-items: center; }
+.premium-home .home-invitation > .intimate-photo {
+  grid-column: 1; grid-row: 1; height: auto; aspect-ratio: 3 / 2;
+  margin: 0; width: 100%;
+}
+.home-invitation > .intimate-photo img { object-fit: contain; object-position: center; }
+.home-invitation > .invitation-heading { grid-column: 2; grid-row: 1; }
+.home-invitation .invitation-heading h2 { font-size: clamp(38px, 4vw, 60px); }
+.home-invitation > .membership-notes {
+  grid-column: 1 / -1; padding-top: 28px; max-width: none;
+  border-top: 1px solid var(--rule);
+}
+.landing-page .home-invitation > .membership-notes {
+  display: flex; justify-content: space-between; align-items: center; gap: 24px;
+}
+.landing-page .membership-notes > p { margin: 0; }
+.home-invitation .membership-notes dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; }
+.home-invitation .membership-notes dl > div { border: 0; padding-bottom: 0; }
+.home-invitation .joining-directory { margin-top: 8px; }
+
+/* A personal letter has its own paper, type and boundary, separate from joining. */
+.premium-home .home-letter {
+  display: block; background: #7B694E; color: #3B1319;
+  --ink: #3B1319; --muted: #3B1319; --rule: #7B694E;
+  padding: clamp(48px, 5vw, 72px) 7%;
+}
+.letter-sheet {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8%;
+  padding: clamp(32px, 4vw, 60px); background: #C6B39A;
+  border: 1px solid #7B694E; box-shadow: 0 12px 32px #280B0F08;
+}
+.home-letter .eyebrow { color: #3B1319; margin: 0; }
+.premium-home .letter-heading h2 {
+  font-family: Georgia, 'Times New Roman', serif; font-style: italic;
+  font-size: clamp(34px, 3.5vw, 51px); line-height: 1.2;
+  letter-spacing: -.035em; margin: 30px 0 0; color: #3B1319;
+}
+.letter-sheet .letter-prose {
+  max-width: none; padding: 0 0 0 32px; border-left: 1px solid #7B694E;
+}
+.letter-sheet .letter-prose p { font-size: 16px; line-height: 1.85; color: #280B0F; margin-bottom: 22px; }
+.letter-sheet .letter-prose .letter-signoff { margin-top: 28px; }
+.letter-sheet .signature { display: block; margin-top: 22px; color: #3B1319; }
+.premium-home .home-letter + footer { border-top: 0; }
+.story-opening { background: var(--champagne); }
+.article-page .article, .article-page main { background: var(--paper); }
+.premium-home .home-gatherings { background: var(--champagne); }
+body .button:hover { background: var(--forest-deep); border-color: var(--forest-deep); }
+body .event .button:hover, body .event-bar .button:hover { background: #280B0F; border-color: #280B0F; }
+
+@media(max-width:1000px) {
+  .letter-sheet { gap: 6%; padding: 32px; }
+  .letter-sheet .letter-prose { padding-left: 24px; }
+}
+@media(max-width:700px) {
+  .premium-home .home-invitation { grid-template-columns: 1fr; gap: 28px; }
+  .premium-home .home-invitation > .intimate-photo { grid-column: 1; grid-row: auto; }
+  .home-invitation > .invitation-heading { grid-column: 1; grid-row: auto; }
+  .landing-page .home-invitation > .membership-notes { display: block; }
+  .landing-page .membership-notes > .text-link { margin-top: 20px; }
+  .home-invitation .membership-notes dl { grid-template-columns: 1fr; gap: 0; }
+  .home-invitation .membership-notes dl > div { border-top: 1px solid var(--rule); padding-bottom: 20px; }
+  .premium-home .home-letter { padding: 36px 5%; }
+  .letter-sheet { grid-template-columns: 1fr; gap: 28px; padding: 28px 22px; }
+  .premium-home .letter-heading h2 { font-size: 36px; margin-top: 24px; }
+  .letter-sheet .letter-prose { border-left: 0; border-top: 1px solid #7B694E; padding: 26px 0 0; }
+}
+
+/* Preview-only role mapping: accent is selective, text remains readable. */
+:root{--wine:#3B1319;--palette-accent:#8D3A3C;--palette-detail:#7B694E;}
+.premium-home .letter-heading h2{color:#8D3A3C;}
+.home-invitation .invitation-heading .text-link,.sphere-form button[type=submit],body .header .nav-right .header-invite{background:#8D3A3C;color:#fff8ec;}
+.home-invitation .invitation-heading .text-link:hover,body .header .nav-right .header-invite:hover{background:#280B0F;color:#fff8ec;}
+.event .event-card{--ink:#280B0F;--muted:#3B1319;--rule:#7B694E;}
+.event .event-tickets-copy{--ink:#C6B39A;--muted:#C6B39A;}
+.palette-preview-return{position:fixed;right:16px;bottom:80px;z-index:80;padding:12px 18px;background:#280B0F;color:#C6B39A;border:1px solid #C6B39A;font:14px 'Nunito Sans',sans-serif;text-decoration:none;box-shadow:0 4px 20px #0002;}

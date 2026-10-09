@@ -1,4 +1,4 @@
-/* One-off event page. Uses only the brand tokens from brand.css; nothing here outlives the event folder.
+/* One-off event page. Uses the shared brand and extended luxury tokens.
    Laid out like a ticketed event page: everything needed to decide and book sits in the first screen,
    then what the evening is, the hour-by-hour plan, who it is for, the ticket, and questions. */
 .event{--card:#fffdf8}
@@ -293,3 +293,164 @@
 @media(max-width:1100px){.event-pass{grid-template-columns:minmax(0,1fr) 250px;gap:35px;padding:60px 5%}.event-pass .event-facts{gap:22px}.event-pass .event-facts dd{font-size:20px}.event-pass .event-pass-foot{padding:30px 24px}.event-pass .event-pass-price strong{font-size:58px}}
 @media(max-width:900px){.event-pass{grid-template-columns:1fr;gap:35px}.event-pass-heading,.event-pass .event-facts,.event-pass .event-pass-foot{grid-column:1;grid-row:auto}.event-pass .event-pass-foot{flex-direction:row;align-items:center;justify-content:space-between;gap:30px}.event-pass .event-pass-foot [data-book]{min-width:220px}.event-pass .event-pass-price strong{font-size:55px}}
 @media(max-width:700px){.event-pass{padding:50px 7%;gap:32px}.event-pass-heading h2{font-size:43px}.event-pass .event-facts{grid-template-columns:1fr;gap:25px}.event-pass .event-facts>div{grid-template-columns:24px 1fr;gap:8px 15px}.event-pass .event-facts dd{grid-column:2;font-size:22px;margin-top:0}.event-pass .event-facts dd span{font-size:14px;margin-top:7px}.event-pass .event-pass-foot{flex-direction:column;align-items:stretch;padding:30px 25px;gap:24px}.event-pass .event-pass-price strong{font-size:62px}.event-pass .event-pass-foot [data-book]{min-width:0}}
+
+/* Carry the club's restrained evergreen palette into the public event. */
+body.event-page .header { background: var(--forest); color: var(--paper); }
+.event .section-pad { padding-top: clamp(56px, 5.5vw, 80px); padding-bottom: clamp(56px, 5.5vw, 80px); }
+.event .event-pass { background: var(--champagne); padding-top: 55px; padding-bottom: 55px; }
+.event .event-pass .event-pass-foot { background: var(--wine); }
+.event .event-experience { background: var(--paper); }
+.event .event-tickets { background: var(--forest); }
+.event-tickets .event-tickets-copy { --ink: #fff8ec; --muted: #fff8ec; color: var(--ink); }
+.event-tickets-copy > .eyebrow { color: var(--brass); }
+.event .event-card { --ink: #30362e; --muted: #45483e; --rule: #7e857180; }
+.event-card-action .button { background: var(--wine); border-color: var(--wine); color: var(--paper); }
+.event-card-action .button:hover { background: var(--forest-deep); }
+.event .event-close { background: var(--wine); }
+.event .event-who { padding-top: 60px !important; padding-bottom: 60px !important; }
+@media(max-width:700px){
+ .event .section-pad { padding-top: 52px; padding-bottom: 52px; }
+ .event .event-pass { padding-top: 44px; padding-bottom: 44px; }
+ .event .event-who { padding-top: 52px !important; padding-bottom: 52px !important; }
+}
+
+/* Mobile carnival: a compact event home, native swipe cards and a thumb-reachable dock. */
+.event-mobile-title,.event-mobile-meta,.event-bar .event-mobile-price,.event-mobile-links,.event-gallery-tools { display: none; }
+.event-jump a[aria-current="location"] { color: var(--forest); box-shadow: inset 0 -2px var(--forest); }
+@media(max-width:700px) {
+ html:has(.event-page) { scroll-padding-top: calc(80px + env(safe-area-inset-top)); scroll-padding-bottom: calc(150px + env(safe-area-inset-bottom)); }
+ body.event-page { --navigation-height: 68px; background: var(--paper); }
+ body.event-page.has-event-dock { padding-bottom: calc(140px + env(safe-area-inset-bottom)); }
+ body.event-page .header { height: calc(68px + env(safe-area-inset-top)); min-height: 68px; padding: calc(10px + env(safe-area-inset-top)) 18px 10px; gap: 12px; }
+ .event-page .navigation-space { height: calc(68px + env(safe-area-inset-top)); }
+ body.event-page .header > .wordmark { width: 98px; min-width: 98px; }
+ body.event-page .header .nav-right { display: none; }
+ .event-mobile-title { display: block; margin-left: auto; font-size: 12px; letter-spacing: -.015em; }
+ body.event-page .header .menu-toggle { width: 44px; height: 44px; flex: none; border: 1px solid #ffffff30; border-radius: 14px; padding: 0; justify-content: center; }
+ body.event-page .mobile-nav:not([hidden]) { top: calc(68px + env(safe-area-inset-top)); max-height: calc(100dvh - 68px - env(safe-area-inset-top)); overflow-y: auto; padding: 18px 24px 26px; border-radius: 0 0 22px 22px; }
+ body.event-page:has(.header.is-nav-open) .event-bar { visibility: hidden; }
+ .event-cinematic { height: clamp(410px, calc(100svh - 240px), 540px); min-height: 0; margin: 12px 12px 0; border-radius: 26px; }
+ .event-cinematic .event-hero-visual { aspect-ratio: auto; }
+ .event-cinematic .event-hero-copy { left: 24px; right: 24px; bottom: 66px; }
+ .event-cinematic .eyebrow { font-size: 9px !important; letter-spacing: .12em; }
+ .event-cinematic h1 { font-size: clamp(43px, 12.5vw, 62px); line-height: 1.02; margin: 16px 0 18px; }
+ .event-cinematic h1 span { display: block; }
+ .event-cinematic h1 br { display: none; }
+ .event-cinematic .event-tagline { font-size: 12px; margin-bottom: 6px; letter-spacing: 0; }
+ .event-mobile-meta { display: flex; align-items: center; gap: 7px; font-size: 11px; line-height: 1.6; color: var(--paper); }
+ .event-mobile-meta .event-icon { width: 14px; height: 14px; color: inherit; }
+ .event-cinematic [data-book] { margin-top: 20px; }
+ .event-cinematic .event-hero-cta { min-width: 0; min-height: 48px; border-radius: 14px; padding: 12px 18px; gap: 35px; font-size: 12px; }
+ .event-cinematic .event-scroll-cue { left: 24px; bottom: 24px; min-height: 24px; font-size: 8px; gap: 12px; }
+ .event-cinematic .event-video-toggle { right: 20px; bottom: 14px; min-height: 44px; border-radius: 12px; }
+ .event .button { border-radius: 14px; }
+ .event .section-pad { padding: 38px 20px; }
+ .event [data-reveal].will-reveal,.event [data-image-reveal].will-reveal { opacity: 1; transform: none; clip-path: none; transition: none; }
+ .event [data-image-reveal].will-reveal img { transform: none; transition: none; }
+ .event h2 { font-size: clamp(30px, 8.5vw, 38px); line-height: 1.12; }
+ .event .event-pass { margin: 12px; border-radius: 24px; padding: 26px 20px; gap: 22px; }
+ .event-pass-heading .eyebrow { margin-bottom: 10px; font-size: 9px !important; }
+ .event-pass-heading h2 { font-size: 32px; }
+ .event-pass .event-facts { grid-template-columns: 1fr 1fr; gap: 10px; }
+ .event-pass .event-facts > div { display: grid; grid-template-columns: 20px 1fr; padding: 16px 13px; gap: 9px 7px; background: var(--paper); border-radius: 16px; }
+ .event-pass .event-facts > div:nth-child(2) { grid-column: 1 / -1; grid-row: 2; }
+ .event-pass .event-facts .event-icon { width: 18px; height: 18px; }
+ .event-pass .event-facts dt { font-size: 9px; }
+ .event-pass .event-facts dd { grid-column: 1 / -1; font-size: 16px; line-height: 1.4; }
+ .event-pass .event-facts dd span { font-size: 11px; margin-top: 5px; }
+ .event-pass .event-pass-foot { border-radius: 18px; padding: 18px; gap: 16px; }
+ .event-pass .event-pass-price .eyebrow { margin-bottom: 6px; }
+ .event-pass .event-pass-price strong { display: inline; font-size: 36px; margin: 0 8px 0 0; }
+ .event-pass .event-pass-price { font-size: 11px; }
+ .event-pass .event-pass-foot .button { border-radius: 12px; min-height: 48px; }
+ .event-jump { border: 0; padding: 8px 16px; gap: 5px; }
+ .event-jump a { padding: 12px 10px; min-height: 44px; border: 1px solid var(--rule); border-radius: 100px; font-size: 11px; letter-spacing: 0; flex: 1; justify-content: center; }
+ .event-jump a[aria-current="location"] { background: var(--forest); color: var(--paper); box-shadow: none; border-color: var(--forest); }
+ .event-intro { gap: 24px; }
+ .event-intro h2,.event-schedule h2,.event-faq h2,.event-who h2,.event-tickets-copy h2 { margin-top: 12px; }
+ .event-intro .prose { margin-top: 18px; }
+ .event-intro .prose p { font-size: 14px; line-height: 1.75; }
+ .event-intro .prose .event-lead { font-size: 16px; }
+ .event-quote { background: var(--champagne); padding: 22px; border-radius: 18px; font-size: 23px; line-height: 1.45; }
+ .event-pillars { margin: 0 20px; gap: 6px; }
+ .event-pillars li:nth-child(n) { font-size: 8px; letter-spacing: .08em; }
+ .event .event-experience.section-pad { padding: 36px 20px; }
+ .event-experience .event-heading h2 { font-size: 32px; margin-top: 12px; }
+ .event-experience .event-heading > p:not(.eyebrow) { font-size: 14px; margin-top: 14px; }
+ .event-editorial-gallery { display: flex; gap: 12px; margin: 24px -8px 0; padding: 0 8px 8px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: 8px; scrollbar-width: none; }
+ .event-editorial-gallery::-webkit-scrollbar { display: none; }
+ .event-editorial-gallery figure:nth-child(n) { flex: 0 0 88%; aspect-ratio: 4 / 5; border-radius: 20px; scroll-snap-align: start; }
+ .event-editorial-gallery [data-image-reveal] { opacity: 1; transform: none; clip-path: none; }
+ .event-editorial-gallery figcaption { padding: 55px 20px 24px; }
+ .event-editorial-gallery h3 { font-size: 28px; }
+ .event-gallery-tools:not([hidden]) { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; font-size: 11px; color: var(--muted); }
+ .event-gallery-tools > p span { margin-left: 6px; }
+ .event-gallery-tools > div { display: flex; align-items: center; gap: 10px; }
+ .event-gallery-tools button { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--rule); background: var(--paper); font-size: 20px; }
+ .event-gallery-tools button:disabled { opacity: .35; cursor: default; }
+ .event-photo-note { font-size: 10px; margin-top: 12px; }
+ .event-experience-details { margin-top: 24px; padding: 12px 16px; background: var(--champagne); border: 0; border-radius: 16px; }
+ .event-experience-details > summary { font-size: 13px; gap: 12px; }
+ .event-grid { margin-bottom: 0; }
+ .event-grid li { padding: 20px 0; }
+ .event-grid h3 { font-size: 20px; }
+ .event-interlude { margin: 0 12px; border-radius: 24px; height: 400px; min-height: 0; }
+ .event-interlude > div { left: 24px; right: 24px; bottom: 35px; }
+ .event-interlude > div > p:last-child { font-size: 38px; margin-top: 16px; }
+ .event-interlude .eyebrow { font-size: 8px !important; }
+ .event-schedule { gap: 24px; }
+ .event-schedule-facts { display: none; }
+ .event-timeline { display: grid; gap: 10px; }
+ .event-timeline li { border: 1px solid var(--rule); background: var(--card); border-radius: 16px; padding: 18px; }
+ .event-timeline li::before { display: none; }
+ .event-timeline .event-time { margin: 0 0 7px; font-size: 11px; color: var(--forest); }
+ .event-timeline li > div { padding: 0; }
+ .event-timeline h3 { font-size: 21px; }
+ .event-timeline li > div p { font-size: 13px; line-height: 1.65; }
+ .event .event-who { margin: 0 12px 12px; padding: 28px 20px !important; border: 0; border-radius: 24px; background: var(--champagne); }
+ .event-who p:not(.eyebrow) { font-size: 14px; margin-top: 16px; }
+ .event .event-tickets { margin: 0 12px; padding: 30px 20px; border-radius: 24px; gap: 24px; }
+ .event-tickets-copy > p:not(.eyebrow) { font-size: 14px; margin-top: 16px; }
+ .event-tickets-copy .event-welcome { font-size: 11px !important; }
+ .event-card { border-radius: 18px; overflow: hidden; }
+ .event-card-top { padding: 24px; }
+ .event-price { font-size: 58px; }
+ .event-card-body { padding: 20px 24px 24px; }
+ .event-card-facts li { font-size: 13px; gap: 10px; }
+ .event-card-note { font-size: 12px !important; }
+ .event-faq { gap: 24px; }
+ .event-questions { display: grid; gap: 10px; margin: 0; }
+ .event-questions details { background: var(--champagne); border: 0; border-radius: 16px; padding: 12px 16px; }
+ .event-questions summary { font-size: 14px; line-height: 1.5; padding: 0; }
+ .event-questions details p { font-size: 13px; line-height: 1.75; }
+ .event .event-close { margin: 0 12px 12px; border-radius: 24px; padding: 32px 24px; }
+ .event-close h2 { font-size: 34px; }
+ .event-close p:not(.eyebrow) { font-size: 14px; }
+ .event-close-meta { font-size: 11px !important; }
+ .event-bar { left: 12px; right: 12px; bottom: calc(10px + env(safe-area-inset-bottom)); border: 1px solid var(--rule); border-radius: 22px; display: grid; grid-template-columns: 1fr auto; gap: 10px 16px; padding: 12px 14px 8px; background: #f6f8f6f5; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 8px 35px #082c3326; }
+ .event-bar > p:not(.event-mobile-price),.event-bar-links { display: none; }
+ .event-bar .event-mobile-price { display: flex; flex-direction: column; }
+ .event-bar .event-mobile-price strong { font-size: 23px; line-height: 1.2; font-weight: 600; letter-spacing: -.04em; }
+ .event-bar .event-mobile-price span { display: block; color: var(--muted); font-size: 10px; line-height: 1.6; }
+ .event-bar .event-dock-cta { border-radius: 12px; min-height: 44px; padding: 12px 18px; font-size: 12px; gap: 20px; }
+ .event-mobile-links { display: grid; grid-column: 1 / -1; grid-template-columns: repeat(4,1fr); gap: 4px; border-top: 1px solid var(--rule); padding-top: 6px; }
+ .event-mobile-links a { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 3px; min-height: 46px; border-radius: 12px; font-size: 9px; color: var(--muted); }
+ .event-mobile-links .event-icon { width: 18px; height: 18px; color: inherit; }
+ .event-mobile-links a[aria-current="location"] { background: var(--champagne); color: var(--forest); font-weight: 600; }
+ .event-mobile-links a:active,.event-gallery-tools button:active { background: var(--champagne); }
+ .event-bar a:focus-visible { outline-offset: 2px; }
+}
+
+/* Supplied brand palette; this stylesheet loads after the shared site styles. */
+.event .event-pass { background: var(--sage); }
+.event .event-who { background: var(--blue); }
+.event .event-tickets { background: var(--beige); }
+.event-tickets .event-tickets-copy { --ink: #30362e; --muted: #45483e; color: #30362e; }
+.event .event-close { background: var(--wine); }
+.event .event-close .button { color: #30362e; }
+.event .event-pass .event-pass-foot { background: var(--wine); }
+.event .event-card-action .button:hover,.event-bar .button:hover { background: #30362e; border-color: #30362e; }
+.event .event-pass .event-pass-foot .button { color: #30362e; }
+/* Quiet neutral surfaces follow the shared editorial palette. */
+.event .event-pass, .event .event-who, .event .event-tickets { background:var(--paper); }
+.event .event-quote, .event .event-experience-details { background:#f0ece3; }

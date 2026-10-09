@@ -1,0 +1,92 @@
+{
+  "note": "Reviewed local RAW photographs and six temporal samples from each of 36 clips. DSC09844 was subsequently selected by the client and retrieved from the shared Drive folder. All public editorial photography depicts authentic Sphere gatherings. Exposure correction and responsive exports only; no synthetic or stock images.",
+  "photos": [
+    {
+      "source": "DSC09831.ARW",
+      "name": "sphere-smile",
+      "exposure": 1.12
+    },
+    {
+      "source": "DSC09834.ARW",
+      "name": "sphere-conversation-standing",
+      "exposure": 1.12
+    },
+    {
+      "source": "DSC09836.ARW",
+      "name": "sphere-listening",
+      "exposure": 1.12
+    },
+    {
+      "source": "DSC09840.ARW",
+      "name": "sphere-bowls",
+      "exposure": 1.12
+    },
+    {
+      "source": "DSC09846.ARW",
+      "name": "sphere-meditation-circle",
+      "exposure": 1.12
+    },
+    {
+      "source": "DSC09847.ARW",
+      "name": "sphere-meditation",
+      "exposure": 1.12
+    },
+    {
+      "source": "DSC09852.ARW",
+      "name": "sphere-sound-session",
+      "exposure": 1.16
+    },
+    {
+      "source": "DSC09876.ARW",
+      "name": "sphere-facilitator",
+      "exposure": 1.14
+    },
+    {
+      "source": "DSC09881.ARW",
+      "name": "sphere-rest",
+      "exposure": 1.12
+    },
+    {
+      "source": "DSC09893.ARW",
+      "name": "sphere-circle",
+      "exposure": 1.14
+    },
+    {
+      "source": "DSC09897.ARW",
+      "name": "sphere-connection",
+      "exposure": 1.14
+    },
+    {
+      "source": "DSC09844.ARW",
+      "name": "sphere-intimate",
+      "exposure": 1.12,
+      "provenance": "Original RAW downloaded from user-provided Google Drive folder; file 1r54uwAkbsJHr2ehft2LRuMoQBSTg3Vtv."
+    }
+  ],
+  "stills": [
+    {
+      "source": "C4417.MP4",
+      "time": 2.1,
+      "name": "sphere-movement",
+      "exposure": 1.05
+    },
+    {
+      "source": "C4451.MP4",
+      "time": 3.8,
+      "name": "sphere-welcome",
+      "exposure": 1.05
+    },
+    {
+      "source": "C0059.MP4",
+      "time": 2.6,
+      "name": "sphere-stretch",
+      "exposure": 1.05
+    }
+  ],
+  "page_selections": {
+    "our_story": "sphere-smile / sphere-connection / sphere-listening / sphere-meditation",
+    "experiences": "sphere-facilitator / sphere-movement / sphere-meditation / sphere-bowls / sphere-connection",
+    "membership": "sphere-connection opening / sphere-intimate at Intentionally intimate",
+    "journal": "sphere-sound-session / sphere-meditation / sphere-connection / sphere-rest / sphere-smile"
+  }
+}

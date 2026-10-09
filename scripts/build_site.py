@@ -10,6 +10,7 @@ for asset in ('premium.css', 'motion.js'):
  shutil.copyfile(ROOT/'templates'/asset,ROOT/'dist'/asset)
 with (ROOT/'dist/premium.css').open('a') as stylesheet:
  stylesheet.write('\n'+(ROOT/'templates/editorial.css').read_text())
+ stylesheet.write('\n'+(ROOT/'templates/luxury.css').read_text())
 journal_data=json.loads((ROOT/'data/journal.json').read_text())
 heads=['THE SPHERE','A SPACE THAT FEELS LIKE YOURS','WHY THE SPHERE?','THE SPHERE EXPERIENCE','MORE THAN WELLNESS','CURATED EXPERIENCES','IS WELLNESS A LUXURY OR A NECESSITY?','THE WOMEN OF THE SPHERE','A PRIVATE CIRCLE','THE SPHERE JOURNAL','A NOTE FROM THE SPHERE']
 sections={}
@@ -206,6 +207,10 @@ def stamp(page):
  # iOS draws a bare ↗ as a colour emoji; the text-presentation selector (U+FE0E) keeps it a quiet glyph.
  html=re.sub('(?:↗|&#8599;)(?!\ufe0e|&#xFE0E;)','↗&#xFE0E;',html)
  page.write_text(re.sub(r'((?:/|\.\./)*[\w/.-]*\.(?:css|js|mp4|webm|jpg))(?:\?v=[^"]*)?"',version,html))
+from finish_site import build as finish_site
+finish_site()
+from build_palette_study import build as build_palette_study
+build_palette_study()
 for page in (ROOT/'dist').rglob('*.html'):
  stamp(page)
 print('Built the premium homepage, full philosophy, journal and event pages.')

@@ -13,13 +13,13 @@ menuButton.addEventListener('click', () => {
   const expanded = menuButton.getAttribute('aria-expanded') === 'true';
   menuButton.setAttribute('aria-expanded', String(!expanded));
   mobileNav.hidden = expanded;
-  menuButton.querySelector('span').textContent = expanded ? '+' : '−';
+  menuButton.querySelector('span').textContent = expanded ? '☰' : '×';
   syncNavState();
 });
 mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
   mobileNav.hidden = true;
   menuButton.setAttribute('aria-expanded', 'false');
-  menuButton.querySelector('span').textContent = '+';
+  menuButton.querySelector('span').textContent = '☰';
   syncNavState();
 }));
 document.querySelectorAll('dialog').forEach(dialog => {
@@ -63,7 +63,7 @@ document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && !mobileNav.hidden) {
     mobileNav.hidden = true;
     menuButton.setAttribute('aria-expanded', 'false');
-    menuButton.querySelector('span').textContent = '+';
+    menuButton.querySelector('span').textContent = '☰';
     syncNavState();
     menuButton.focus();
   }

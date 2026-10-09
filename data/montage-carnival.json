@@ -1,5 +1,5 @@
 {
-  "note": "Preserve the existing movement, wellness and conversation clips, adding Kalari from a separate C4438 interval and the steadier early floor sequence in C4441. C0064 appears in both formats. Distinct page edits with one-second crossfades.",
+  "note": "The camera-facing speaking/portrait scenes C4451, C0064 and C0006 have been removed. The Carnival edit uses seated participation, movement, bowl practice and room preparation. The phone composition opens on the group. No speaking-to-camera portrait appears in either montage.",
   "wide": [
     {
       "file": "C0059.MP4",
@@ -21,11 +21,10 @@
       "speed": 0.8
     },
     {
-      "file": "C0064.MP4",
-      "start": 1,
+      "file": "C0028.MP4",
+      "start": 0.6,
       "hold": 5,
-      "speed": 0.8,
-      "focus_y": 0.28
+      "speed": 0.8
     },
     {
       "file": "C0020.MP4",
@@ -36,10 +35,11 @@
   ],
   "tall": [
     {
-      "file": "C0006.MP4",
-      "start": 0.5,
+      "file": "C0051.MP4",
+      "start": 1.0,
       "hold": 5,
-      "speed": 0.8
+      "speed": 0.8,
+      "focus": 0.82
     },
     {
       "file": "C4441.MP4",
@@ -48,14 +48,14 @@
       "speed": 0.8
     },
     {
-      "file": "C4451.MP4",
-      "start": 5,
+      "file": "C4368.MP4",
+      "start": 1.0,
       "hold": 5,
       "speed": 0.8
     },
     {
-      "file": "C0064.MP4",
-      "start": 1,
+      "file": "C9998.MP4",
+      "start": 0.6,
       "hold": 5,
       "speed": 0.8
     }
