@@ -403,3 +403,14 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 :root body footer .footer-instagram:hover{color:var(--s-sage)!important}
 :root body .circle-photo img{aspect-ratio:3/2!important;height:auto!important}
 @media(min-width:901px){:root body.premium-home .home-invitation>.intimate-photo{max-height:760px;align-self:start}}
+/* Closing sections sit closer together and alternate surfaces, so the end of a page reads as
+   one composed sequence instead of three separate empty rooms. */
+:root body .join-steps{padding:clamp(56px,6vw,88px) 7%!important}
+:root body main .join-steps h2{margin:0 0 clamp(28px,3vw,40px)!important}
+:root body .join-steps li{padding:clamp(24px,2.4vw,32px)!important;gap:8px}
+:root body .join-steps .join-cta{margin-top:clamp(28px,3vw,40px)}
+:root body main .home-letter.section-pad,:root body.club-subpage main .home-letter.section-pad{background:var(--s-ivory)!important;padding:clamp(56px,6vw,88px) 7%!important}
+:root body .home-letter .letter-sheet{margin:0 auto;max-width:1120px}
+:root body main .inbox.section-pad{padding:clamp(56px,6vw,80px) 7%!important}
+:root body main .inbox h2{margin:12px 0 14px!important}
+:root body main .inbox .inbox-intro{margin:0 auto 24px!important}
