@@ -76,9 +76,9 @@ def build():
   # Arrow meaning follows destination, not decoration.
   def arrows(m):
    arrow='→' if 'data-invitation' in m[0] else ('↗' if re.search(r'href="https?://',m[0]) else ('↓' if re.search(r'href="(?:/)?#',m[0]) else '→'))
-   return re.sub(r'↗(?:&#xFE0E;|\ufe0e)?',arrow,m[0])
+   return re.sub(r'(?:↗|&#8599;)(?:&#xFE0E;|\ufe0e)?',arrow,m[0])
   s=re.sub(r'<a\b[^>]*>.*?</a>',arrows,s,flags=re.S)
-  s=re.sub(r'(<button\b[^>]*>.*?</button>)',lambda m:re.sub(r'↗(?:&#xFE0E;|\ufe0e)?','→',m[0]),s,flags=re.S)
+  s=re.sub(r'(<button\b[^>]*>.*?</button>)',lambda m:re.sub(r'(?:↗|&#8599;)(?:&#xFE0E;|\ufe0e)?','→',m[0]),s,flags=re.S)
   # Remove photo-overlay copy, retaining the full-width hero film headline.
   s=s.replace('class="photo-opening-copy"','class="photo-opening-copy reading-opening-copy"')
   # Hide unavailable booking actions while retaining existing booking-open copy.

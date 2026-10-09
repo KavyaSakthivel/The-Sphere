@@ -3,7 +3,7 @@
   python3 scripts/set_payment.py "https://rzp.io/rzp/xxxxxx"        # any https payment link
   python3 scripts/set_payment.py '<form><script ... data-payment_button_id="pl_xxx" ...></form>'
   python3 scripts/set_payment.py pl_xxxxxxxxxxxxxx                    # a Razorpay Payment Button id
-  python3 scripts/set_payment.py --off                                # back to "available at checkout"
+  python3 scripts/set_payment.py --off                                # back to "Ticket booking will open soon."
 
 A plain link (Razorpay Payment Link or Payment Page, or another provider) makes every booking button
 on the page go straight to it. A Razorpay Payment Button id (or the embed code that contains one)
@@ -47,7 +47,7 @@ def main():
  elif button:
   print(f'Booking is live: Razorpay button {button} is embedded in the ticket card on /{event["slug"]}/')
  else:
-  print(f'Booking is off: /{event["slug"]}/ shows "Payment and ticketing link will be available at checkout."')
+  print(f'Booking is off: /{event["slug"]}/ shows "Ticket booking will open soon."')
 
 
 if __name__ == '__main__':
