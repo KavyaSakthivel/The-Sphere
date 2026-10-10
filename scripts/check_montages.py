@@ -32,8 +32,8 @@ for page, folder in [('home', 'montage'), ('carnival', 'montage-carnival')]:
             source = ROOT/'media/home/raw'/shot['file']
             metadata = json.loads(subprocess.check_output(['ffprobe','-v','error','-show_streams','-show_format','-of','json',str(source)]))
             assert 0 <= shot['start'] < shot['start'] + shot['hold'] * shot.get('speed',1) <= float(metadata['format']['duration']) - .04, 'Source interval must not require a frozen frame'
-            if page == 'home' and variant == 'wide' and shot['file'] != 'C4345.MP4':
-                # C4345 is the one client-requested exception: a portrait movement class, framed as a wide band.
+            if page == 'home' and variant == 'wide' and shot['file'] not in {'C4345.MP4','C0063.MP4','C0015.MP4','C0016.MP4'}:
+                # Client-requested exceptions: portrait clips (C4345 movement class, C0063/C0015/C0016 openers), framed as wide bands.
                 original = next(s for s in metadata['streams'] if s['codec_type'] == 'video')
                 assert original['width'] > original['height']
                 assert not any(abs(d.get('rotation',0)) == 90 for d in original.get('side_data_list',[])), 'Desktop must use native landscape footage'
