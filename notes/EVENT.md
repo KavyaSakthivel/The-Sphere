@@ -91,8 +91,7 @@ price, a confirmation message — should come from the club before it goes on th
 
 ## Still to confirm with the club
 
-- **Couples:** one ticket each (₹2,899 × 2), or a couple price? If different, add a second amount
-  field in Razorpay and put the wording in `ticket_note`.
+- **Audience:** women only (confirmed 13 October 2026), so there is no couple price.
 - **Refunds and transfers:** put the policy in `refund_policy`; it then appears as a question in the
   FAQ. It is deliberately not shown until it exists.
 - **Capacity**, for the Razorpay stock limit.

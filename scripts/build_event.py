@@ -282,7 +282,7 @@ def page(ev):
   <p class="eyebrow">TICKETS</p>
   <h2 id="tickets-title">Choose your moment<br>to join us.</h2>
   <p>Your ticket to an evening of wellness, connection, nourishing food and celebration.</p>
-  <p class="cv-welcome">{icon('people')}Women &amp; Couples Welcome</p>
+  <p class="cv-welcome">{icon('people')}Women Welcome</p>
  </div>
  <div class="cv-ticket">
   <div class="cv-ticket-top">
