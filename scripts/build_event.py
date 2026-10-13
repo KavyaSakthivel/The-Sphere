@@ -122,7 +122,6 @@ FAQS = [
 # Details from the club's Razorpay payment page (13 October 2026), word for word.
 TICKET_LINE = 'An evening of conscious celebration.'
 TICKET_ABOUT = 'A festival of wellness, music and connection. The Sphere Wellness Carnival brings together the calm of wellness and the spirit of an open-air festival. Step into a space where breathwork, sound, food, fire and play come together, because true celebration feels better when it\u2019s mindful.'
-TICKET_HIGHLIGHTS = 'Highlights: wellness experiences, curated stalls, nourishing food and music, and a 100% alcohol-free celebration. Private event.'
 HOSTED_BY = 'Hosted by The Sphere, founded by Sumi Rengaraj.'
 CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_SHOWN = 'thespherewomen@gmail.com', '+919843133380', '+91 98431 33380'
 OWNER = 'THE SPHERE WELLNESS FOUNDATION'
@@ -312,7 +311,6 @@ def page(ev):
   <h2 id="tickets-title">Choose your moment<br>to join us.</h2>
   <p class="cv-ticket-line">{TICKET_LINE}</p>
   <p>{TICKET_ABOUT}</p>
-  <p>{TICKET_HIGHLIGHTS}</p>
   <p class="cv-welcome">{icon('people')}{audience}</p>
   <p class="cv-hosted">{HOSTED_BY}</p>
   <p class="cv-contact"><a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a> &nbsp;&middot;&nbsp; <a href="tel:{CONTACT_PHONE}">{CONTACT_PHONE_SHOWN}</a> &nbsp;&middot;&nbsp; <a href="/terms/">Terms &amp; Conditions</a></p>
