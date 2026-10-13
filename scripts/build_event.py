@@ -110,9 +110,9 @@ AGENDA = [
  ('NOURISHMENT', 'Nutrition &amp; Wellness Talk', 'Simple, meaningful insights on nourishing yourself from within.'),
  ('RELEASE', 'Fire Performance &amp; Ecstatic Dance', 'A symbolic moment to release, renew and let go.'),
 ]
-# "05 \u2013 The Celebration". The PDF's Dinner line is cut off mid-sentence ("...and time to"), so it is left out until the club sends the full line.
+# "05 \u2013 The Celebration". The PDF's Dinner line is cut off mid-sentence ("...and time to"), so Dinner carries the club's earlier line from preview.html until the full sentence arrives.
 CELEBRATION = [
- ('bowl', 'Dinner', ''),
+ ('bowl', 'Dinner', 'Nourishing food, conversations and community.'),
  ('flame', 'Fire Ceremony', 'A symbolic moment to release, renew and let go.'),
  ('music', 'DJ Party', 'Wellness can also mean music, movement, laughter and dancing.'),
 ]
@@ -262,7 +262,7 @@ def page(ev):
  <ol class="cv-timeline">{agenda}</ol>
 </section>
 
-<section class="cv-interlude" aria-label="Together at The Sphere"><img src="/assets/sphere-circle-session-1920.webp" srcset="/assets/sphere-circle-session-1200.webp 1200w, /assets/sphere-circle-session-1920.webp 1920w" sizes="100vw" alt="A facilitator leading a seated circle beside singing bowls" width="1920" height="1280" loading="lazy" decoding="async"><div><p class="eyebrow">A LITTLE LESS RUSH. A LITTLE MORE YOU.</p><p>Come as you are.<br>Leave a little lighter.</p></div></section>
+<section class="cv-interlude" aria-label="Together at The Sphere"><img src="/assets/sphere-circle-calm-1920.webp" srcset="/assets/sphere-circle-calm-1200.webp 1200w, /assets/sphere-circle-calm-1920.webp 1920w" sizes="100vw" alt="Women seated in meditation in a circle around a facilitator and singing bowls at The Sphere" width="1920" height="1280" loading="lazy" decoding="async"><div><p class="eyebrow">A LITTLE LESS RUSH. A LITTLE MORE YOU.</p><p>Come as you are.<br>Leave a little lighter.</p></div></section>
 
 <section id="celebration" class="cv-experience" aria-labelledby="celebration-title">
  <div class="cv-heading"><div><p class="eyebrow">THE CELEBRATION</p><h2 id="celebration-title">And then,<br>we celebrate.</h2></div>
