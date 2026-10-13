@@ -1,5 +1,5 @@
 {
-  "note": "The camera-facing speaking/portrait scenes C4451, C0064 and C0006 have been removed. The Carnival edit uses seated participation, movement, bowl practice and room preparation. The phone composition opens on the group. No speaking-to-camera portrait appears in either montage. On 9 October 2026 the second shot of both cuts became C4345 (22.0 to 25.2 s: three women reaching their arms out), the same clip the homepage uses at 5.0 to 7.6 s, replacing the Kalari clips there. On 13 October 2026 the Carnival film was made to open on C0063, the same opening shot (same interval) as the home page film.",
+  "note": "The camera-facing speaking/portrait scenes C4451, C0064 and C0006 have been removed. The Carnival edit uses seated participation, movement, bowl practice and room preparation. The phone composition opens on the group. No speaking-to-camera portrait appears in either montage. On 9 October 2026 the second shot of both cuts became C4345 (22.0 to 25.2 s: three women reaching their arms out), the same clip the homepage uses at 5.0 to 7.6 s, replacing the Kalari clips there. On 13 October 2026 the Carnival film was made to open on C0063, the same opening shot (same interval) as the home page film. On 14 October 2026 C0059 (the seated forward-stretch clip) was removed from the desktop cut at the client's request.",
   "wide": [
     {
       "file": "C0063.MP4",
@@ -7,12 +7,6 @@
       "hold": 5.5,
       "speed": 0.85,
       "focus_y": 0.5
-    },
-    {
-      "file": "C0059.MP4",
-      "start": 1.9,
-      "hold": 5,
-      "speed": 0.8
     },
     {
       "file": "C4345.MP4",
