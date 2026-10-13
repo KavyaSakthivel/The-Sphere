@@ -128,8 +128,39 @@ FAQS = [
  ('Can I attend alone?', 'Yes. The event is designed to encourage community and meaningful connections.'),
  ('Is dinner included?', 'Dinner is part of the event schedule.'),
 ]
+# Details from the club's Razorpay payment page (13 October 2026), word for word.
+TICKET_LINE = 'An evening of conscious celebration.'
+TICKET_ABOUT = 'A festival of wellness, music and connection. The Sphere Wellness Carnival brings together the calm of wellness and the spirit of an open-air festival. Step into a space where breathwork, sound, food, fire and play come together, because true celebration feels better when it\u2019s mindful.'
+TICKET_HIGHLIGHTS = 'Highlights: wellness experiences, curated stalls, nourishing food and music, and a 100% alcohol-free celebration. Private event.'
+HOSTED_BY = 'Hosted by The Sphere, founded by Sumi Rengaraj.'
+CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_SHOWN = 'thespherewomen@gmail.com', '+919843133380', '+91 98431 33380'
+OWNER = 'THE SPHERE WELLNESS FOUNDATION'
+SCHEDULE = [
+ ('3:00 PM', 'Arrival &amp; registration'),
+ ('4:30 PM', 'Inauguration'),
+ ('5:00 &ndash; 6:00 PM', 'Cacao &amp; Breathwork'),
+ ('6:00 &ndash; 7:00 PM', 'Sound Healing'),
+ ('7:00 &ndash; 7:15 PM', 'Nutrition Speech'),
+ ('7:15 &ndash; 8:30 PM', 'Dinner'),
+ ('8:30 &ndash; 10:00 PM', 'Fire Ceremony &amp; DJ Sober Party'),
+]
+# Terms & Conditions: the club's own wording. Section 1 states the event details from data/event.json so the
+# page can never disagree with the rest of the site.
+TERMS = [
+ ('Event details', None),
+ ('Entry and eligibility', 'Private, ticketed event for registered guests only. Open to women only. One ticket admits one person and is non-transferable. Please carry your payment receipt for check-in. The organisers may ask for a valid photo ID.'),
+ ('Alcohol-free event', 'This is a 100% alcohol-free event. Alcohol, tobacco and other intoxicants are not permitted. The organisers may refuse entry to, or ask to leave, any guest who breaks this rule.'),
+ ('Health and wellbeing', 'Activities such as ice plunge, salt bath, breathwork, sound healing and the fire ceremony are optional and taken at your own discretion and risk. If you have a medical condition, are pregnant or have any health concerns, please consult your doctor first. Wellness experiences are not medical treatment.'),
+ ('Schedule and activities', 'The programme, timings, facilitators and activities may change for operational or safety reasons. The organisers will make reasonable efforts to inform guests of major changes.'),
+ ('Photography and media', 'The event may be photographed or filmed for documentation and promotion by The Sphere. By attending, you agree that your image may appear in this material. If you prefer not to be photographed, please tell the team at check-in.'),
+ ('Conduct', 'Guests are expected to respect others, the venue and its staff. The organisers may ask anyone who behaves disruptively or unsafely to leave without a refund.'),
+ ('Belongings', 'The organisers and the venue are not responsible for loss of or damage to personal belongings.'),
+ ('Privacy', 'Details shared while booking (name, email, phone) are used only for event registration, entry and event-related communication.'),
+ ('Contact', None),
+]
+TERMS_CONSENT = f'You agree to share information entered on this page with {OWNER} (owner of this page) and Razorpay, adhering to applicable laws.'
 # The preview's own header links, reused as a jump row so a reader can go straight to what they need.
-SECTIONS = [('experience', 'Experience'), ('celebration', 'Celebration'), ('tickets', 'Tickets'), ('faq', 'FAQs')]
+SECTIONS = [('experience', 'Experience'), ('schedule', 'Schedule'), ('celebration', 'Celebration'), ('tickets', 'Tickets'), ('faq', 'FAQs')]
 
 
 def faqs(ev):
@@ -184,7 +215,7 @@ def jump_links(): return ''.join(f'<a href="#{i}">{t}</a>' for i, t in SECTIONS)
 
 
 def mobile_links():
- icons = ['leaf', 'clock', 'calendar', 'heart']
+ icons = ['leaf', 'clock', 'bowl', 'calendar', 'heart']
  return ''.join(f'<a href="#{section}" tabindex="-1">{icon(symbol)}<span>{label}</span></a>'
   for (section, label), symbol in zip(SECTIONS, icons))
 
@@ -203,6 +234,7 @@ def page(ev):
  audience = escape(ev['audience'])
  agenda = ''.join(f'<li><p class="cv-time">{w}</p><div><h3>{t}</h3><p>{d}</p></div></li>' for w, t, d in AGENDA)
  celebrate = ''.join(f'<li><span class="cv-icon">{icon(i)}</span><h3>{t}</h3>{f"<p>{d}</p>" if d else ""}</li>' for i, t, d in CELEBRATION)
+ timed = ''.join(f'<li><p class="cv-time">{w}</p><div><h3>{t}</h3></div></li>' for w, t in SCHEDULE)
  arc = ''.join(f'<li><h3>{t}</h3><p>{k}</p></li>' for t, k in ARC)
  chips = ''.join(f'<li>{c}</li>' for c in CHIPS)
  moments = ''.join(f'<figure><img src="/assets/{f}-1200.webp" srcset="/assets/{f}-640.webp 640w, /assets/{f}-1200.webp 1200w" sizes="(max-width:700px) 86vw, 28vw" alt="{alt}" width="1200" height="1500" loading="lazy" decoding="async"><figcaption><span>{k}</span>{h}</figcaption></figure>'
@@ -266,6 +298,18 @@ def page(ev):
  <ol class="cv-timeline">{agenda}</ol>
 </section>
 
+<section id="schedule" class="cv-schedule" aria-labelledby="schedule-title">
+ <div class="cv-schedule-side">
+  <p class="eyebrow">THE EVENING</p><h2 id="schedule-title">The evening.</h2>
+  <ul class="cv-facts">
+   <li>{icon('calendar')}Sunday, {date}</li>
+   <li>{icon('clock')}{time}</li>
+   <li>{icon('pin')}{place}</li>
+  </ul>
+ </div>
+ <ol class="cv-timeline">{timed}</ol>
+</section>
+
 <section class="cv-interlude" aria-label="Together at The Sphere"><img src="/assets/sphere-circle-calm-1920.webp" srcset="/assets/sphere-circle-calm-1200.webp 1200w, /assets/sphere-circle-calm-1920.webp 1920w" sizes="100vw" alt="Women seated in meditation in a circle around a facilitator and singing bowls at The Sphere" width="1920" height="1280" loading="lazy" decoding="async"><div><p class="eyebrow">A LITTLE LESS RUSH. A LITTLE MORE YOU.</p><p>Come as you are.<br>Leave a little lighter.</p></div></section>
 
 <section id="celebration" class="cv-experience" aria-labelledby="celebration-title">
@@ -285,8 +329,12 @@ def page(ev):
  <div class="cv-tickets-copy">
   <p class="eyebrow">TICKETS</p>
   <h2 id="tickets-title">Choose your moment<br>to join us.</h2>
-  <p>Your ticket to an evening of wellness, connection, nourishing food and celebration.</p>
-  <p class="cv-welcome">{icon('people')}Women Welcome</p>
+  <p class="cv-ticket-line">{TICKET_LINE}</p>
+  <p>{TICKET_ABOUT}</p>
+  <p>{TICKET_HIGHLIGHTS}</p>
+  <p class="cv-welcome">{icon('people')}{audience}</p>
+  <p class="cv-hosted">{HOSTED_BY}</p>
+  <p class="cv-contact"><a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a> &nbsp;&middot;&nbsp; <a href="tel:{CONTACT_PHONE}">{CONTACT_PHONE_SHOWN}</a> &nbsp;&middot;&nbsp; <a href="/terms/">Terms &amp; Conditions</a></p>
  </div>
  <div class="cv-ticket">
   <div class="cv-ticket-top">
@@ -376,6 +424,30 @@ def assemble(home, ev, path, title, body):
  return html
 
 
+
+def terms_page(home, ev):
+ """/terms/: the club's Terms & Conditions, in the site's own shell."""
+ head = re.search(r'<head>(.*?)</head>', (ROOT/'templates/original-index.html').read_text(), re.S)[1]
+ title, desc = 'Terms & Conditions | The Sphere Wellness Carnival', f"Terms and Conditions for {ev['name']}, {full_date(ev['start_at'])}, {where(ev)}."
+ head = re.sub(r'<title>.*?</title>', '<title>'+escape(title)+'</title>', head, count=1)
+ head = re.sub(r'<meta name="description"[^>]*>', f'<meta name="description" content="{a(desc)}">', head, count=1)
+ meta = (f'\n  <link rel="canonical" href="{a(url("/terms/"))}">\n  <meta name="robots" content="index,follow">'
+  f'\n  <meta property="og:title" content="{a(title)}">\n  <meta property="og:url" content="{a(url("/terms/"))}">\n  <meta property="og:description" content="{a(desc)}">\n')
+ shell = re.search(r'<a class="skip".*?<main id="main">', home, re.S)[0].removesuffix('<main id="main">')
+ footer = re.search(r'<footer>.*?</footer>', home, re.S)[0]
+ invitation = re.search(r'<dialog id="invitation-dialog".*?</dialog>', home, re.S)[0]
+ details = f"{ev['name']} takes place on Sunday, {full_date(ev['start_at'])}, {hours(ev)} at {where(ev)}."
+ contact = f'For any questions, write to <a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a>'
+ items = ''.join(f'<section><h2>{i}. {h}</h2><p>{escape(details) if i == 1 else (contact if h == "Contact" else escape(t))}</p></section>'
+  for i, (h, t) in enumerate(TERMS, 1))
+ body = (f'<main id="main"><article class="article-reading terms-page"><p class="eyebrow">{escape(ev["name"]).upper()}</p>'
+  f'<h1>Terms &amp; Conditions</h1><div class="article-prose terms-prose">{items}</div>'
+  f'<p class="terms-consent">{escape(TERMS_CONSENT)}</p></article></main>')
+ html = f'<!doctype html><html lang="en-IN"><head>{head}{meta}</head><body class="article-page">{shell}{body}{footer}{invitation}</body></html>'
+ html = re.sub(r'(href|src|srcset)="(assets/|style.css|brand.css|premium.css|site.js|motion.js)', r'\1="/\2', html)
+ return html.replace('href="#', 'href="/#').replace('href="/#main"', 'href="#main"')
+
+
 def build(home):
  ev = load()
  folder = ROOT/'dist'/(ev['slug'] if ev else 'carnival')
@@ -392,10 +464,15 @@ def build(home):
    shutil.copyfile(MONTAGE/name, folder/name)
  title = f"{ev['name']} | {full_date(ev['start_at'])}, {ev['city']}"
  (folder/'index.html').write_text(assemble(home, ev, ev['path'], title, page(ev)))
+ terms = ROOT/'dist/terms'; terms.mkdir(exist_ok=True)
+ (terms/'index.html').write_text(terms_page(home, ev))
  sitemap = ROOT/'dist/sitemap.xml'
  loc = '  <url><loc>'+escape(url(ev['path']))+'</loc></url>\n'
  if loc not in sitemap.read_text():
   sitemap.write_text(sitemap.read_text().replace('</urlset>', loc+'</urlset>'))
+ terms_loc = '  <url><loc>'+escape(url('/terms/'))+'</loc></url>\n'
+ if terms_loc not in sitemap.read_text():
+  sitemap.write_text(sitemap.read_text().replace('</urlset>', terms_loc+'</urlset>'))
  print(f"Built {ev['path']} ({ev['mode']} booking mode, {'montage' if has_montage() or (ROOT/'dist/assets/montage-carnival/wide.mp4').exists() else 'photo'} hero).")
 
 
@@ -408,4 +485,8 @@ def retire(folder):
  (folder/'index.html').write_text('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
   '<meta http-equiv="refresh" content="0;url=/"><title>The Sphere</title><meta name="robots" content="noindex,follow"></head>'
   '<body><a href="/">Enter The Sphere</a></body></html>')
+ # The carnival's Terms & Conditions go with it.
+ terms = folder.parent/'terms'
+ if terms.exists():
+  (terms/'index.html').write_text((folder/'index.html').read_text())
  print(f'Retired /{folder.name}/ to a redirect.')

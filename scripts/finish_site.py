@@ -7,6 +7,8 @@ STAR='<svg class="journal-star" viewBox="0 0 24 24" width="28" height="28" aria-
 INSTAGRAM=('<a class="footer-instagram" href="https://www.instagram.com/thespherewomen/" target="_blank" rel="noopener noreferrer" aria-label="The Sphere on Instagram (opens in a new tab)">'
  '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1"/></svg>'
  '<span>@thespherewomen</span></a>')
+CONTACT=('<p class="footer-contact"><a href="mailto:thespherewomen@gmail.com">thespherewomen@gmail.com</a>'
+ '<a href="tel:+919843133380">+91 98431 33380</a></p>')
 # Pages that close with the "Stay close" inbox, as the homepage does.
 INBOX_PAGES={'experiences','membership','philosophy'}
 NAV_TARGETS={'philosophy':'/philosophy/','experiences':'/experiences/','membership':'/membership/','carnival':'/carnival/'}
@@ -54,6 +56,11 @@ def build():
   s=current_page(s,where)
   if 'footer-instagram' not in s:
    s=re.sub(r'(<p class="footer-location">.*?</p>)',r'\1'+INSTAGRAM,s,count=1,flags=re.S)
+  if 'footer-contact' not in s:
+   s=s.replace(INSTAGRAM,INSTAGRAM+CONTACT,1)
+  # The legal owner named on the payment page, and the Terms & Conditions, in every footer.
+  if 'Wellness Foundation</span>' not in s:
+   s=s.replace('The Sphere</span><span>PEACE. PURPOSE. CONNECTION.</span>','The Sphere Wellness Foundation</span><a href="/terms/">Terms &amp; Conditions</a>',1)
   # The footer names the page as the navigation does.
   s=re.sub(r'(<footer>.*?)>Our philosophy<',r'\1>Our story<',s,count=1,flags=re.S)
   s=re.sub(r'<dialog[^>]*data-carnival-popup.*?</dialog>','',s,flags=re.S)

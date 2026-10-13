@@ -54,7 +54,7 @@ for route in paths:
   assert all('/journal/'+e['slug']+'/' in p.links for e in entries)
   assert 'Coimbatore' in ' '.join(p.text)
 locs=[x.text for x in ET.parse(DIST/'sitemap.xml').iter('{http://www.sitemaps.org/schemas/sitemap/0.9}loc')]
-assert locs==[base+p for p in paths+['/philosophy/','/experiences/','/membership/']+([event_path] if event else [])]
+assert locs==[base+p for p in paths+['/philosophy/','/experiences/','/membership/']+([event_path,'/terms/'] if event else [])]
 for slug in ['experiences','membership']:
  page=Page().read(DIST/slug/'index.html')
  assert page.h1==1 and page.canon==[base+'/'+slug+'/'] and len(page.jsons)==1

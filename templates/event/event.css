@@ -203,3 +203,10 @@ body.is-past [data-book],body.is-past .event-bar{display:none!important}
 @media(max-width:900px){.cv-arc{grid-template-columns:1fr}.cv-arc li{min-height:0}.cv-join{grid-template-columns:1fr}}
 @media(max-width:700px){.cv-offer-three{grid-template-columns:1fr}}
 .cv-who p:not(.eyebrow):not(.cv-tagline){margin:0 0 14px}
+
+/* Payment-page details: ticket line, hosted-by, contact and terms link. */
+:root body.event-page .carnival .cv-ticket-line{font-size:clamp(20px,1.7vw,24px)!important;line-height:1.35!important;margin:0 0 12px;color:var(--s-ivory)!important}
+.cv-hosted{margin:14px 0 0}
+.cv-contact{margin:10px 0 0;font-size:15px!important}
+.cv-contact a{text-decoration:underline;text-underline-offset:3px}
+.cv-tickets-copy p:not(.eyebrow):not(.cv-welcome){margin:0 0 14px}

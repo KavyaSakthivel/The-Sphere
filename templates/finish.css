@@ -444,3 +444,12 @@ body .circle-photo figcaption{position:static!important;background:none!importan
  .element-card .editorial-photo{aspect-ratio:16/11}
  .element-card .editorial-photo img[src*="/sphere-move-reach-"]{object-position:50% 14%}
 }
+
+/* Contact lines in every footer, and the Terms & Conditions page. */
+:root body footer .footer-contact{display:flex;flex-direction:column;gap:0;margin:6px 0 0}
+:root body footer .footer-contact a{min-height:36px;display:flex;align-items:center;font-size:14px}
+.terms-prose section{margin:0 0 30px}
+:root body .terms-prose h2{font-size:clamp(20px,1.7vw,24px)!important;margin:0 0 8px;font-weight:500}
+.terms-prose p{margin:0}
+.terms-prose a{text-decoration:underline;text-underline-offset:3px}
+:root body .terms-consent{margin:38px 0 0;padding-top:22px;border-top:1px solid var(--s-rule);font-size:14px!important;color:var(--s-text)}
