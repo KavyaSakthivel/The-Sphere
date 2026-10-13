@@ -1,6 +1,7 @@
 """Build the one-off event page from data/event.json, and retire it cleanly once that file is gone.
 
-All visible copy is the client's own, taken word for word from preview.html. Do not add facts here
+All visible copy is the client's own, taken word for word from preview.html and, for the 2026 agenda, from
+TheSphere_All Page new.pdf (the updated carnival information). Do not add facts here
 that the client has not supplied.
 
 Everything the event adds lives in dist/<slug>/ plus a few marked hooks on the home page, so removing
@@ -85,36 +86,50 @@ ICON_PATHS = {
  'bell': '<path d="M5 15h14l-1.5-2V10a5.5 5.5 0 0 0-11 0v3z"/><path d="M10 18.5a2 2 0 0 0 4 0"/>',
  'bowl': '<path d="M3.5 11h17a8.5 8.5 0 0 1-17 0z"/><path d="M9 7c0-1.5 1-1.5 1-3M13 7c0-1.5 1-1.5 1-3"/>',
  'music': '<path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/>',
+ 'flame': '<path d="M12 21c-3.6 0-6-2.4-6-5.6 0-3.4 2.6-5 3.4-8.2 1.9 1.3 3.2 3 3.4 5 1-.7 1.6-1.8 1.7-3.2 2.4 2 3.5 4.2 3.5 6.4 0 3.2-2.4 5.6-6 5.6z"/>',
  'heart': '<path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20z"/>',
 }
 def icon(name): return f'<svg class="event-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">{ICON_PATHS[name]}</svg>'
 
-EXPERIENCES = [
- ('leaf', 'Mindful Experiences', 'Moments designed to help you slow down, reconnect and be present.'),
- ('breath', 'Breath &amp; Movement', 'A guided Breath Walk to help you reconnect with yourself.'),
- ('bell', 'Sound Healing', 'An immersive experience created around relaxation and mindful connection.'),
- ('bowl', 'Nourishing Food', 'A curated dinner to enjoy alongside meaningful conversations.'),
- ('music', 'Sober Party', 'Music, movement and celebration &mdash; without alcohol.'),
- ('heart', 'Community &amp; Connection', 'Meet like-minded people and create new connections.'),
+# The updated carnival information (TheSphere_All Page new.pdf), word for word.
+ABOUT = ('More than<br>a community.',
+ 'The Sphere is a women\u2019s wellness community created to bring together experiences that nurture the mind, body and soul.',
+ 'Through thoughtfully curated gatherings, wellness practices and meaningful connections, Sphere creates spaces for women to pause, reconnect and celebrate life.',
+ 'Calmness crafted for The Modern Women.')
+CARNIVAL = ('Where wellness<br>meets celebration.',
+ 'Ancient rituals. Mindful practices. Music &amp; community. All in one evening.',
+ 'The Sphere Wellness Carnival brings together ancient rituals, mindful practices, expert conversations, nourishment and music \u2013 all in one immersive evening. A journey that moves from connection and reflection to energy and celebration.')
+ARC = [('Come to pause.', 'STILLNESS'), ('Stay to connect.', 'COMMUNITY'), ('Leave with a little more lightness.', 'RENEWAL')]
+CHIPS = ['CACAO', 'BREATHWORK', 'SOUND HEALING', 'FIRE CEREMONY', 'CELEBRATION', 'MUSIC', 'NUTRITION']
+# "04 \u2013 The Experience": the first line carries the time; the others carry the PDF's own labels.
+AGENDA = [
+ ('03:00 PM', 'Arrival &amp; Welcome', 'Step in, settle down and connect with the Sphere community.'),
+ ('PRACTICE', 'Breathwork (Yoga &amp; Pranayama)', 'Breathe deeper. Release tension. Create space.'),
+ ('RITUAL', 'Cacao Ceremony', 'A mindful, heart-centred experience to slow down and connect.'),
+ ('HEALING', 'Sound Healing', 'A calming journey through sound, vibration and stillness.'),
+ ('NOURISHMENT', 'Nutrition &amp; Wellness Talk', 'Simple, meaningful insights on nourishing yourself from within.'),
+ ('RELEASE', 'Fire Performance &amp; Ecstatic Dance', 'A symbolic moment to release, renew and let go.'),
 ]
-SCHEDULE = [
- ('3:00 – 5:00 PM', 'Settle In', 'Arrive, register, get comfortable and connect with fellow attendees.'),
- ('5:00 – 5:30 PM', 'Inauguration', 'A warm welcome to begin the evening.'),
- ('5:30 – 6:00 PM', 'Breath Walk', 'A guided breathwork experience to help you slow down and become present.'),
- ('6:00 – 7:00 PM', 'Sound Healing', 'An immersive sound healing experience designed for relaxation and mindful connection.'),
- ('7:00 – 8:00 PM', 'Dinner', 'Nourishing food, conversations and community.'),
- ('8:00 – 10:00 PM', 'Sober Party', 'Music, movement and celebration to close the evening.'),
+# "05 \u2013 The Celebration". The PDF's Dinner line is cut off mid-sentence ("...and time to"), so it is left out until the club sends the full line.
+CELEBRATION = [
+ ('bowl', 'Dinner', ''),
+ ('flame', 'Fire Ceremony', 'A symbolic moment to release, renew and let go.'),
+ ('music', 'DJ Party', 'Wellness can also mean music, movement, laughter and dancing.'),
 ]
+JOIN = ('One Evening.<br>Many Experiences.<br>One Community.',
+ 'The Sphere Wellness Carnival brings together a curated community of women, creators, entrepreneurs, wellness enthusiasts and conscious brands.',
+ 'We invite influencers, collaborators, wellness brands, marketing partners and sponsors to be part of an experience designed to create genuine connection and lasting memories.',
+ 'Let\u2019s create something meaningful together.')
 FAQS = [
- ('What is The Sphere Wellness Carnival?', 'A wellness-led social experience bringing together mindful activities, sound healing, food, music and community.'),
- ('When and where is the event?', "20 December 2026, from 3:00 PM to 10:00 PM at Jenney's Residency, Coimbatore."),
+ ('What is The Sphere Wellness Carnival?', 'The Sphere Wellness Carnival brings together ancient rituals, mindful practices, expert conversations, nourishment and music \u2013 all in one immersive evening. A journey that moves from connection and reflection to energy and celebration.'),
+ ('When and where is the event?', "20 December 2026, from 3:00 PM to 10:00 PM at Jenney's Club, Coimbatore."),
  ('Do I need prior wellness experience?', 'No. The experience is designed to be accessible to participants.'),
- ('Is alcohol served?', 'No. The evening concludes with a sober party featuring music, movement and social experiences.'),
+ ('Is alcohol served?', 'No. An alcohol-free celebration bringing everyone together through music and good energy.'),
  ('Can I attend alone?', 'Yes. The event is designed to encourage community and meaningful connections.'),
  ('Is dinner included?', 'Dinner is part of the event schedule.'),
 ]
 # The preview's own header links, reused as a jump row so a reader can go straight to what they need.
-SECTIONS = [('experience', 'Experience'), ('schedule', 'Schedule'), ('tickets', 'Tickets'), ('faq', 'FAQs')]
+SECTIONS = [('experience', 'Experience'), ('celebration', 'Celebration'), ('tickets', 'Tickets'), ('faq', 'FAQs')]
 
 
 def faqs(ev):
@@ -182,8 +197,10 @@ def page(ev):
  ticket_note = f'<p class="cv-ticket-note">{escape(ev["ticket_note"])}</p>' if ev.get('ticket_note') else ''
  date, time, place = full_date(ev['start_at']), hours(ev), escape(where(ev))
  audience = escape(ev['audience'])
- offer = ''.join(f'<li><span class="cv-icon">{icon(i)}</span><h3>{t}</h3><p>{d}</p></li>' for i, t, d in EXPERIENCES)
- schedule = ''.join(f'<li><p class="cv-time">{w}</p><div><h3>{t}</h3><p>{d}</p></div></li>' for w, t, d in SCHEDULE)
+ agenda = ''.join(f'<li><p class="cv-time">{w}</p><div><h3>{t}</h3><p>{d}</p></div></li>' for w, t, d in AGENDA)
+ celebrate = ''.join(f'<li><span class="cv-icon">{icon(i)}</span><h3>{t}</h3>{f"<p>{d}</p>" if d else ""}</li>' for i, t, d in CELEBRATION)
+ arc = ''.join(f'<li><h3>{t}</h3><p>{k}</p></li>' for t, k in ARC)
+ chips = ''.join(f'<li>{c}</li>' for c in CHIPS)
  moments = ''.join(f'<figure><img src="/assets/{f}-1200.webp" srcset="/assets/{f}-640.webp 640w, /assets/{f}-1200.webp 1200w" sizes="(max-width:700px) 86vw, 28vw" alt="{alt}" width="1200" height="1500" loading="lazy" decoding="async"><figcaption><span>{k}</span>{h}</figcaption></figure>'
   for f, alt, k, h in [('sphere-move-smile', 'A woman smiling as she stretches her arms overhead in a Sphere movement class', '01 / MOVE', 'Return to your body.'),
                         ('sphere-bowls', 'Singing bowls prepared for sound healing', '02 / PAUSE', 'Make room for stillness.'),
@@ -204,7 +221,7 @@ def page(ev):
 
 <section id="event-details" class="cv-glance" aria-label="Your evening, at a glance">
  <dl>
-  <div>{icon('calendar')}<dt>WHEN</dt><dd><strong>{date}</strong><span>{time}</span></dd></div>
+  <div>{icon('calendar')}<dt>WHEN</dt><dd><strong>{date}</strong><span>Sunday &nbsp;&middot;&nbsp; {time}</span></dd></div>
   <div>{icon('pin')}<dt>WHERE</dt><dd><strong>{place}</strong></dd></div>
   <div>{icon('people')}<dt>WHO</dt><dd><strong>{audience}</strong></dd></div>
   <div class="cv-glance-price"><dt>ENTRY TICKET</dt><dd><strong>{price}</strong><span>{escape(ev['price_note'])}</span></dd></div>
@@ -216,40 +233,48 @@ def page(ev):
 
 <section class="cv-intro" aria-labelledby="intro-title">
  <div class="cv-intro-copy">
-  <p class="eyebrow">MORE THAN AN EVENT</p>
-  <h2 id="intro-title">Make space<br>for yourself.</h2>
-  <p class="cv-lead">Step away from the rush of everyday life and into an evening created around wellness, connection and celebration.</p>
-  <p>The Sphere Wellness Carnival brings together mindful experiences, movement, sound, nourishing food, music and community &mdash; creating a space where you can slow down, reconnect and enjoy the moment.</p>
-  <blockquote class="cv-quote">&ldquo;Sometimes, you simply need a space to pause, breathe deeply, meet new people and leave feeling a little lighter.&rdquo;</blockquote>
+  <p class="eyebrow">THE WELLNESS CARNIVAL</p>
+  <h2 id="intro-title">{CARNIVAL[0]}</h2>
+  <p class="cv-rhythm">{CARNIVAL[1]}</p>
+  <p class="cv-lead">{CARNIVAL[2]}</p>
+  <ul class="cv-arc">{arc}</ul>
  </div>
  <aside class="cv-who" aria-labelledby="who-title">
-  <p class="eyebrow">WHO IS IT FOR?</p>
-  <h2 id="who-title">Come as you are.</h2>
-  <p><strong>Women &amp; Couples are welcome.</strong> Whether you want to slow down, reconnect, meet new people, explore wellness, enjoy good food or simply dance freely &mdash; there is space for you at The Sphere.</p>
-  <ul class="cv-pillars"><li>WELLNESS</li><li>NOURISH</li><li>MUSIC</li><li>COMMUNITY</li></ul>
+  <p class="eyebrow">ABOUT THE SPHERE</p>
+  <h2 id="who-title">{ABOUT[0]}</h2>
+  <p>{ABOUT[1]}</p>
+  <p>{ABOUT[2]}</p>
+  <p class="cv-tagline">{ABOUT[3]}</p>
+  <ul class="cv-pillars">{chips}</ul>
  </aside>
 </section>
 
-<section id="experience" class="cv-experience" aria-labelledby="experience-title">
- <div class="cv-heading"><div><p class="eyebrow">THE EXPERIENCE</p><h2 id="experience-title">Come for the experience.<br>Stay for the feeling.</h2></div>
- <p>An evening thoughtfully brought together around well-being, community and celebration.</p></div>
- <ul class="cv-offer">{offer}</ul>
- <div class="cv-moments">{moments}</div>
- <p class="cv-photo-note">Moments from The Sphere’s past gatherings.</p>
+<section id="experience" class="cv-schedule" aria-labelledby="experience-title">
+ <div class="cv-schedule-side">
+  <p class="eyebrow">THE EXPERIENCE</p><h2 id="experience-title">An evening to<br>experience.</h2>
+  <p class="cv-sub">Where every hour holds something sacred.</p>
+  <ul class="cv-facts">
+   <li>{icon('calendar')}{date}</li>
+   <li>{icon('clock')}Sunday &nbsp;&middot;&nbsp; {time}</li>
+   <li>{icon('pin')}{place}</li>
+  </ul>
+ </div>
+ <ol class="cv-timeline">{agenda}</ol>
 </section>
 
 <section class="cv-interlude" aria-label="Together at The Sphere"><img src="/assets/sphere-circle-session-1920.webp" srcset="/assets/sphere-circle-session-1200.webp 1200w, /assets/sphere-circle-session-1920.webp 1920w" sizes="100vw" alt="A facilitator leading a seated circle beside singing bowls" width="1920" height="1280" loading="lazy" decoding="async"><div><p class="eyebrow">A LITTLE LESS RUSH. A LITTLE MORE YOU.</p><p>Come as you are.<br>Leave a little lighter.</p></div></section>
 
-<section id="schedule" class="cv-schedule" aria-labelledby="schedule-title">
- <div class="cv-schedule-side">
-  <p class="eyebrow">YOUR EVENING</p><h2 id="schedule-title">A little preview<br>of your day.</h2>
-  <ul class="cv-facts">
-   <li>{icon('calendar')}{date}</li>
-   <li>{icon('clock')}{time}</li>
-   <li>{icon('pin')}{place}</li>
-  </ul>
- </div>
- <ol class="cv-timeline">{schedule}</ol>
+<section id="celebration" class="cv-experience" aria-labelledby="celebration-title">
+ <div class="cv-heading"><div><p class="eyebrow">THE CELEBRATION</p><h2 id="celebration-title">And then,<br>we celebrate.</h2></div>
+ <p>An alcohol-free celebration bringing everyone together through music and good energy.</p></div>
+ <ul class="cv-offer cv-offer-three">{celebrate}</ul>
+ <div class="cv-moments">{moments}</div>
+ <p class="cv-photo-note">Moments from The Sphere’s past gatherings.</p>
+</section>
+
+<section class="cv-join" aria-labelledby="join-title">
+ <div><p class="eyebrow">JOIN THE SPHERE</p><h2 id="join-title">{JOIN[0]}</h2></div>
+ <div class="cv-join-copy"><p>{JOIN[1]}</p><p>{JOIN[2]}</p><p class="cv-quote">{JOIN[3]}</p></div>
 </section>
 
 <section id="tickets" class="cv-tickets" aria-labelledby="tickets-title">

@@ -69,13 +69,20 @@
   {
     "source": "To connect.",
     "pages": [
+      "carnival/index.html",
       "index.html",
       "membership/index.html",
+      "palette-study/camel-rubine/carnival/index.html",
       "palette-study/camel-rubine/membership/index.html",
+      "palette-study/fairway/carnival/index.html",
       "palette-study/fairway/membership/index.html",
+      "palette-study/green-velvet/carnival/index.html",
       "palette-study/green-velvet/membership/index.html",
+      "palette-study/olive-earth/carnival/index.html",
       "palette-study/olive-earth/membership/index.html",
+      "palette-study/pale-jade/carnival/index.html",
       "palette-study/pale-jade/membership/index.html",
+      "palette-study/pine-old-lace/carnival/index.html",
       "palette-study/pine-old-lace/membership/index.html"
     ]
   },
@@ -698,19 +705,12 @@
   {
     "source": "A space to pause.",
     "pages": [
-      "carnival/index.html",
       "membership/index.html",
-      "palette-study/camel-rubine/carnival/index.html",
       "palette-study/camel-rubine/membership/index.html",
-      "palette-study/fairway/carnival/index.html",
       "palette-study/fairway/membership/index.html",
-      "palette-study/green-velvet/carnival/index.html",
       "palette-study/green-velvet/membership/index.html",
-      "palette-study/olive-earth/carnival/index.html",
       "palette-study/olive-earth/membership/index.html",
-      "palette-study/pale-jade/carnival/index.html",
       "palette-study/pale-jade/membership/index.html",
-      "palette-study/pine-old-lace/carnival/index.html",
       "palette-study/pine-old-lace/membership/index.html"
     ]
   },

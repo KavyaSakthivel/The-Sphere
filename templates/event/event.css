@@ -187,3 +187,19 @@
 @media(prefers-reduced-motion:reduce){.event-bar,.cv-questions summary span{transition:none}}
 body.is-past [data-book],body.is-past .event-bar{display:none!important}
 .cv-moments figure{background:none!important}
+
+/* Updated carnival information (2026 PDF): rhythm line, three-step arc, agenda subtitle, celebration cards, partner invitation. */
+:root body.event-page .carnival .cv-rhythm{font-size:clamp(18px,1.5vw,22px)!important;font-style:italic;color:var(--s-clay)!important;margin:0 0 22px;line-height:1.5}
+.cv-arc{list-style:none;margin:34px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.cv-arc li{background:var(--s-ink);color:var(--s-ivory);padding:clamp(18px,2vw,26px);min-height:150px;display:flex;flex-direction:column;justify-content:space-between;gap:18px}
+:root body.event-page .carnival .cv-arc h3{margin:0;font-size:clamp(20px,1.8vw,26px)!important;line-height:1.2;color:var(--s-ivory)!important;font-weight:400}
+:root body.event-page .carnival .cv-arc p{margin:0;font-size:12px!important;letter-spacing:.18em;color:var(--s-sage)!important}
+:root body.event-page .carnival .cv-tagline{margin-top:22px;font-style:italic;color:var(--s-clay)!important;font-size:clamp(20px,1.7vw,24px)!important;line-height:1.35}
+:root body.event-page .carnival .cv-sub{margin:-12px 0 26px;font-style:italic;color:var(--s-clay)!important}
+.cv-offer-three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cv-join{padding:var(--cv-pad);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--cv-gap);align-items:start}
+.cv-join h2{margin:14px 0 0}
+.cv-join-copy p{margin:0 0 16px}
+@media(max-width:900px){.cv-arc{grid-template-columns:1fr}.cv-arc li{min-height:0}.cv-join{grid-template-columns:1fr}}
+@media(max-width:700px){.cv-offer-three{grid-template-columns:1fr}}
+.cv-who p:not(.eyebrow):not(.cv-tagline){margin:0 0 14px}

@@ -66,7 +66,7 @@ checkout." The link is stored in `data/event.json` (`payment_url` / `razorpay_bu
    `#834C4D` (Deep Terracotta), so checkout matches the site.
 3. **Payment Button → Create → Quick Pay / custom.** Set:
    - Button label: `Book your place`, theme **Brand Color**.
-   - Amount field: **Item with Quantity**, name `Entry ticket`, price ₹2,799, stock **limited** to
+   - Amount field: **Item with Quantity**, name `Entry ticket`, price ₹2,899, stock **limited** to
      the venue capacity. Stock is what stops overselling.
    - Customer details: name, email, phone (label it *WhatsApp*). Add a field for guest names if
      couples book two tickets.
@@ -81,7 +81,7 @@ as a spreadsheet.
 
 **"+ applicable fee"**: Razorpay only adds the gateway fee on top of the ticket if the account has
 the customer-pays-fee (convenience fee) option enabled — ask Razorpay support. Without it, the fee
-comes out of the ₹2,799, and `price_note` should be emptied so the page does not promise a fee
+comes out of the ₹2,899, and `price_note` should be emptied so the page does not promise a fee
 that never appears.
 
 ## Content rule
@@ -91,7 +91,7 @@ price, a confirmation message — should come from the club before it goes on th
 
 ## Still to confirm with the club
 
-- **Couples:** one ticket each (₹2,799 × 2), or a couple price? If different, add a second amount
+- **Couples:** one ticket each (₹2,899 × 2), or a couple price? If different, add a second amount
   field in Razorpay and put the wording in `ticket_note`.
 - **Refunds and transfers:** put the policy in `refund_policy`; it then appears as a question in the
   FAQ. It is deliberately not shown until it exists.
