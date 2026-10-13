@@ -11,8 +11,8 @@
   "price_inr": 2899,
   "price_note": "",
   "ticket_note": "",
-  "razorpay_button_id": "pl_TnOHFQ33ZI08wY",
-  "payment_url": "",
+  "razorpay_button_id": "",
+  "payment_url": "https://pages.razorpay.com/pl_Tlh7aAMTEeEA0P/view",
   "refund_policy": "",
   "show_on_home": true,
   "promotion_until": "2027-01-01T00:00:00+05:30"

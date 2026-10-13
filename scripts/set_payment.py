@@ -22,9 +22,11 @@ def read(value):
  value = value.strip()
  if value == '--off':
   return '', ''
- button = re.search(r'\b(pl_[A-Za-z0-9]{6,})\b', value)
- if button:
-  return '', button.group(1)
+ # A link comes first: a Razorpay Payment Page URL contains a pl_ id of its own, which is not a button id.
+ if not re.match(r"^['\"<>\s]*https?://", value):
+  button = re.search(r'\b(pl_[A-Za-z0-9]{6,})\b', value)
+  if button:
+   return '', button.group(1)
  url = value.strip('\'"<> ')
  parsed = urlparse(url)
  if parsed.scheme != 'https' or not parsed.netloc or ' ' in url:
