@@ -101,15 +101,6 @@ CARNIVAL = ('Where wellness<br>meets celebration.',
  'The Sphere Wellness Carnival brings together ancient rituals, mindful practices, expert conversations, nourishment and music \u2013 all in one immersive evening. A journey that moves from connection and reflection to energy and celebration.')
 ARC = [('Come to pause.', 'STILLNESS'), ('Stay to connect.', 'COMMUNITY'), ('Leave with a little more lightness.', 'RENEWAL')]
 CHIPS = ['CACAO', 'BREATHWORK', 'SOUND HEALING', 'FIRE CEREMONY', 'CELEBRATION', 'MUSIC', 'NUTRITION']
-# "04 \u2013 The Experience": the first line carries the time; the others carry the PDF's own labels.
-AGENDA = [
- ('03:00 PM', 'Arrival &amp; Welcome', 'Step in, settle down and connect with the Sphere community.'),
- ('PRACTICE', 'Breathwork (Yoga &amp; Pranayama)', 'Breathe deeper. Release tension. Create space.'),
- ('RITUAL', 'Cacao Ceremony', 'A mindful, heart-centred experience to slow down and connect.'),
- ('HEALING', 'Sound Healing', 'A calming journey through sound, vibration and stillness.'),
- ('NOURISHMENT', 'Nutrition &amp; Wellness Talk', 'Simple, meaningful insights on nourishing yourself from within.'),
- ('RELEASE', 'Fire Performance &amp; Ecstatic Dance', 'A symbolic moment to release, renew and let go.'),
-]
 # "05 \u2013 The Celebration". The PDF's Dinner line is cut off mid-sentence ("...and time to"), so Dinner carries the club's earlier line from preview.html until the full sentence arrives.
 CELEBRATION = [
  ('bowl', 'Dinner', 'Nourishing food, conversations and community.'),
@@ -135,14 +126,16 @@ TICKET_HIGHLIGHTS = 'Highlights: wellness experiences, curated stalls, nourishin
 HOSTED_BY = 'Hosted by The Sphere, founded by Sumi Rengaraj.'
 CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_SHOWN = 'thespherewomen@gmail.com', '+919843133380', '+91 98431 33380'
 OWNER = 'THE SPHERE WELLNESS FOUNDATION'
+# One timeline: the payment page's times, with the updated PDF's "Experience" lines beneath the matching slot.
 SCHEDULE = [
- ('3:00 PM', 'Arrival &amp; registration'),
- ('4:30 PM', 'Inauguration'),
- ('5:00 &ndash; 6:00 PM', 'Cacao &amp; Breathwork'),
- ('6:00 &ndash; 7:00 PM', 'Sound Healing'),
- ('7:00 &ndash; 7:15 PM', 'Nutrition Speech'),
- ('7:15 &ndash; 8:30 PM', 'Dinner'),
- ('8:30 &ndash; 10:00 PM', 'Fire Ceremony &amp; DJ Sober Party'),
+ ('3:00 PM', 'Arrival &amp; registration', [('', 'Step in, settle down and connect with the Sphere community.')]),
+ ('4:30 PM', 'Inauguration', []),
+ ('5:00 &ndash; 6:00 PM', 'Cacao &amp; Breathwork', [('Cacao Ceremony', 'A mindful, heart-centred experience to slow down and connect.'),
+                                                    ('Breathwork (Yoga &amp; Pranayama)', 'Breathe deeper. Release tension. Create space.')]),
+ ('6:00 &ndash; 7:00 PM', 'Sound Healing', [('', 'A calming journey through sound, vibration and stillness.')]),
+ ('7:00 &ndash; 7:15 PM', 'Nutrition Speech', [('', 'Simple, meaningful insights on nourishing yourself from within.')]),
+ ('7:15 &ndash; 8:30 PM', 'Dinner', []),
+ ('8:30 &ndash; 10:00 PM', 'Fire Ceremony &amp; DJ Sober Party', [('', 'A symbolic moment to release, renew and let go.')]),
 ]
 # Terms & Conditions: the club's own wording. Section 1 states the event details from data/event.json so the
 # page can never disagree with the rest of the site.
@@ -160,7 +153,7 @@ TERMS = [
 ]
 TERMS_CONSENT = f'You agree to share information entered on this page with {OWNER} (owner of this page) and Razorpay, adhering to applicable laws.'
 # The preview's own header links, reused as a jump row so a reader can go straight to what they need.
-SECTIONS = [('experience', 'Experience'), ('schedule', 'Schedule'), ('celebration', 'Celebration'), ('tickets', 'Tickets'), ('faq', 'FAQs')]
+SECTIONS = [('experience', 'Experience'), ('celebration', 'Celebration'), ('tickets', 'Tickets'), ('faq', 'FAQs')]
 
 
 def faqs(ev):
@@ -215,7 +208,7 @@ def jump_links(): return ''.join(f'<a href="#{i}">{t}</a>' for i, t in SECTIONS)
 
 
 def mobile_links():
- icons = ['leaf', 'clock', 'bowl', 'calendar', 'heart']
+ icons = ['leaf', 'clock', 'calendar', 'heart']
  return ''.join(f'<a href="#{section}" tabindex="-1">{icon(symbol)}<span>{label}</span></a>'
   for (section, label), symbol in zip(SECTIONS, icons))
 
@@ -232,9 +225,9 @@ def page(ev):
  ticket_note = f'<p class="cv-ticket-note">{escape(ev["ticket_note"])}</p>' if ev.get('ticket_note') else ''
  date, time, place = full_date(ev['start_at']), hours(ev), escape(where(ev))
  audience = escape(ev['audience'])
- agenda = ''.join(f'<li><p class="cv-time">{w}</p><div><h3>{t}</h3><p>{d}</p></div></li>' for w, t, d in AGENDA)
  celebrate = ''.join(f'<li><span class="cv-icon">{icon(i)}</span><h3>{t}</h3>{f"<p>{d}</p>" if d else ""}</li>' for i, t, d in CELEBRATION)
- timed = ''.join(f'<li><p class="cv-time">{w}</p><div><h3>{t}</h3></div></li>' for w, t in SCHEDULE)
+ def sub(items): return ''.join(f'<p>{f"<strong>{n}:</strong> " if n else ""}{d}</p>' for n, d in items)
+ timed = ''.join(f'<li><p class="cv-time">{w}</p><div><h3>{t}</h3>{sub(items)}</div></li>' for w, t, items in SCHEDULE)
  arc = ''.join(f'<li><h3>{t}</h3><p>{k}</p></li>' for t, k in ARC)
  chips = ''.join(f'<li>{c}</li>' for c in CHIPS)
  moments = ''.join(f'<figure><img src="/assets/{f}-1200.webp" srcset="/assets/{f}-640.webp 640w, /assets/{f}-1200.webp 1200w" sizes="(max-width:700px) 86vw, 28vw" alt="{alt}" width="1200" height="1500" loading="lazy" decoding="async"><figcaption><span>{k}</span>{h}</figcaption></figure>'
@@ -292,18 +285,6 @@ def page(ev):
   <ul class="cv-facts">
    <li>{icon('calendar')}{date}</li>
    <li>{icon('clock')}Sunday &nbsp;&middot;&nbsp; {time}</li>
-   <li>{icon('pin')}{place}</li>
-  </ul>
- </div>
- <ol class="cv-timeline">{agenda}</ol>
-</section>
-
-<section id="schedule" class="cv-schedule" aria-labelledby="schedule-title">
- <div class="cv-schedule-side">
-  <p class="eyebrow">THE EVENING</p><h2 id="schedule-title">The evening.</h2>
-  <ul class="cv-facts">
-   <li>{icon('calendar')}Sunday, {date}</li>
-   <li>{icon('clock')}{time}</li>
    <li>{icon('pin')}{place}</li>
   </ul>
  </div>

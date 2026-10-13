@@ -210,3 +210,5 @@ body.is-past [data-book],body.is-past .event-bar{display:none!important}
 .cv-contact{margin:10px 0 0;font-size:15px!important}
 .cv-contact a{text-decoration:underline;text-underline-offset:3px}
 .cv-tickets-copy p:not(.eyebrow):not(.cv-welcome){margin:0 0 14px}
+.cv-timeline p+p{margin-top:6px}
+.cv-timeline strong{font-weight:500;color:var(--s-ink)}
