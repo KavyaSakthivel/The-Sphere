@@ -50,7 +50,8 @@ for page, folder in [('home', 'montage'), ('carnival', 'montage-carnival')]:
         assert (ROOT / f'dist/assets/{folder}/{variant}-poster.jpg').exists()
 for filename, start, end in intervals['home']:
     for other, other_start, other_end in intervals['carnival']:
-        assert filename != other or end <= other_start or other_end <= start, 'The landing pages must use distinct source intervals'
+        # C0063 is the one shared shot: both films open on it at the client's request.
+        assert filename == 'C0063.MP4' or filename != other or end <= other_start or other_end <= start, 'The landing pages must use distinct source intervals'
 assert not {'C9997.MP4', 'C4420.MP4'} & (shots['home'] | shots['carnival']), 'Rejected shaky clips returned'
 assert 'C4372.MP4' not in (shots['home'] | shots['carnival']), 'Rejected rear-facing bending shot returned'
 assert {'C4417.MP4','C4345.MP4'} <= (shots['home'] | shots['carnival'])
