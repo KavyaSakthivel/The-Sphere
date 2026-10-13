@@ -3,12 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "description": "The Sphere: a women's wellness club in Coimbatore. A static website; the finished site is the dist/ folder.",
+  "main": "server.js",
   "scripts": {
     "build": "node -e \"console.log('Nothing to build: the finished site is already in dist/')\"",
-    "start": "serve dist -l 3000"
-  },
-  "dependencies": {
-    "serve": "14.2.4"
+    "start": "node server.js"
   },
   "engines": {
     "node": ">=18"
