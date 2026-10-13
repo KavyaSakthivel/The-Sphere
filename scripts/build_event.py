@@ -44,6 +44,8 @@ def full_date(d): return d.strftime('%-d %B %Y')
 def hours(ev): return f"{time_of(ev['start_at'])} – {time_of(ev['end_at'])}"
 def where(ev): return f"{ev['venue']}, {ev['city']}"
 def book_href(ev): return ev['payment_url'] if ev['mode'] == 'link' else '#tickets'
+# A hosted payment link opens in a new tab, so the guest keeps The Sphere's page open behind it.
+def new_tab(ev): return ' target="_blank" rel="noopener noreferrer"' if ev['mode'] == 'link' else ''
 def arrow(): return '<span aria-hidden="true">&#8599;</span>'
 
 
@@ -170,7 +172,7 @@ def ticket_action(ev):
   return (f'<form class="event-rzp"><script src="https://checkout.razorpay.com/v1/payment-button.js" '
    f'data-payment_button_id="{a(ev["razorpay_button_id"])}" async></script></form>')
  if ev['mode'] == 'link':
-  return f'<a class="cv-button" href="{a(ev["payment_url"])}">Book Your Experience {arrow()}</a>'
+  return f'<a class="cv-button" href="{a(ev["payment_url"])}"{new_tab(ev)}>Book Your Experience {arrow()}</a>'
  # Payment not connected yet: the client's own placeholder line, and no button that goes nowhere.
  return '<p class="cv-ticket-small">Ticket booking will open soon.</p>'
 
@@ -234,7 +236,7 @@ def page(ev):
                         ('sphere-bowls', 'Singing bowls prepared for sound healing', '02 / PAUSE', 'Make room for stillness.'),
                         (CONNECT_PHOTO, 'Women connecting at a Sphere gathering', '03 / CONNECT', 'Find your people.')])
  glance_cta = (f'<a class="cv-glance-cta" href="#tickets">View tickets <span aria-hidden="true">↓</span></a>' if ev['mode'] == 'soon'
-  else f'<a class="cv-glance-cta" href="{a(book)}" data-book>Reserve your spot {arrow()}</a>')
+  else f'<a class="cv-glance-cta" href="{a(book)}"{new_tab(ev)} data-book>Reserve your spot {arrow()}</a>')
  return f"""<main id="main" class="event carnival" data-event-end="{a(ev['end'])}">
 <section class="event-hero event-cinematic" aria-labelledby="event-title">
  <figure class="event-hero-visual">{hero_visual(ev)}</figure>
@@ -242,7 +244,7 @@ def page(ev):
   <p class="eyebrow">{escape(ev['name']).upper()}</p>
   <h1 id="event-title"><span>Pause.</span> <span>Connect.</span><br><span>Celebrate.</span></h1>
   <p class="event-tagline">{date} &nbsp;·&nbsp; Coimbatore<span class="cv-sep"> &nbsp;·&nbsp; </span><span class="cv-hero-time">{time}</span></p>
-  <p data-book><a class="cv-button cv-button-light" href="{a(book)}">Reserve your spot {arrow()}</a></p>
+  <p data-book><a class="cv-button cv-button-light" href="{a(book)}"{new_tab(ev)}>Reserve your spot {arrow()}</a></p>
  </div>
  <a class="event-scroll-cue" href="#event-details" aria-label="Explore the carnival">SCROLL TO DISCOVER <span aria-hidden="true">↓</span></a>
 </section>
@@ -340,12 +342,12 @@ def page(ev):
  <h2>Your next chapter can begin<br>with a pause.</h2>
  <p>Come slow down. Come connect. Come celebrate.</p>
  <p class="cv-close-meta">{date} &nbsp;&bull;&nbsp; {place} &nbsp;&bull;&nbsp; {time}</p>
- <p data-book><a class="cv-button" href="{a(book)}">Reserve Your Spot {arrow()}</a></p>
+ <p data-book><a class="cv-button" href="{a(book)}"{new_tab(ev)}>Reserve Your Spot {arrow()}</a></p>
 </section>
 </main>
 <div class="event-bar" data-event-bar aria-hidden="true">
  <p class="cv-bar-price"><strong>{price}</strong>{note_span}</p>
- <a class="cv-button" href="{a(book) if ev['mode'] != 'soon' else '#tickets'}" tabindex="-1">{'View tickets' if ev['mode'] == 'soon' else 'Book Your Experience'} <span aria-hidden="true">{'↓' if ev['mode'] == 'soon' else '&#8599;'}</span></a>
+ <a class="cv-button" href="{a(book) if ev['mode'] != 'soon' else '#tickets'}"{new_tab(ev)} tabindex="-1">{'View tickets' if ev['mode'] == 'soon' else 'Book Your Experience'} <span aria-hidden="true">{'↓' if ev['mode'] == 'soon' else '&#8599;'}</span></a>
 </div>"""
 
 
