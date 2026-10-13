@@ -194,6 +194,10 @@ def page(ev):
  answers a guest looks for first (when, where, who, what it includes, what it costs) in plain view."""
  book = book_href(ev)
  price = rupees(ev['price_inr'])
+ # The fee note is optional: it stays out of the page entirely when price_note is empty.
+ note = escape(ev.get('price_note', ''))
+ note_span = f'<span>{note}</span>' if note else ''
+ note_line = f'<p class="cv-price-note">{note}</p>' if note else ''
  ticket_note = f'<p class="cv-ticket-note">{escape(ev["ticket_note"])}</p>' if ev.get('ticket_note') else ''
  date, time, place = full_date(ev['start_at']), hours(ev), escape(where(ev))
  audience = escape(ev['audience'])
@@ -224,7 +228,7 @@ def page(ev):
   <div>{icon('calendar')}<dt>WHEN</dt><dd><strong>{date}</strong><span>Sunday &nbsp;&middot;&nbsp; {time}</span></dd></div>
   <div>{icon('pin')}<dt>WHERE</dt><dd><strong>{place}</strong></dd></div>
   <div>{icon('people')}<dt>WHO</dt><dd><strong>{audience}</strong></dd></div>
-  <div class="cv-glance-price"><dt>ENTRY TICKET</dt><dd><strong>{price}</strong><span>{escape(ev['price_note'])}</span></dd></div>
+  <div class="cv-glance-price"><dt>ENTRY TICKET</dt><dd><strong>{price}</strong>{note_span}</dd></div>
  </dl>
  {glance_cta}
 </section>
@@ -288,7 +292,7 @@ def page(ev):
   <div class="cv-ticket-top">
    <p class="eyebrow">ENTRY TICKET</p>
    <p class="cv-price">{price}</p>
-   <p class="cv-price-note">{escape(ev['price_note'])}</p>{ticket_note}
+   {note_line}{ticket_note}
   </div>
   <ul class="cv-facts">
    <li>{icon('calendar')}{date}</li>
@@ -313,7 +317,7 @@ def page(ev):
 </section>
 </main>
 <div class="event-bar" data-event-bar aria-hidden="true">
- <p class="cv-bar-price"><strong>{price}</strong><span>{escape(ev['price_note'])}</span></p>
+ <p class="cv-bar-price"><strong>{price}</strong>{note_span}</p>
  <a class="cv-button" href="{a(book) if ev['mode'] != 'soon' else '#tickets'}" tabindex="-1">{'View tickets' if ev['mode'] == 'soon' else 'Book Your Experience'} <span aria-hidden="true">{'↓' if ev['mode'] == 'soon' else '&#8599;'}</span></a>
 </div>"""
 

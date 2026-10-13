@@ -79,10 +79,10 @@ checkout." The link is stored in `data/event.json` (`payment_url` / `razorpay_bu
 The **attendee list** for the door is the button's payments in the Razorpay dashboard, exportable
 as a spreadsheet.
 
-**"+ applicable fee"**: Razorpay only adds the gateway fee on top of the ticket if the account has
-the customer-pays-fee (convenience fee) option enabled — ask Razorpay support. Without it, the fee
-comes out of the ₹2,899, and `price_note` should be emptied so the page does not promise a fee
-that never appears.
+**Gateway fee:** the page no longer says "+ applicable fee" (removed 13 October 2026 at the club's request), so
+the ticket shows the price alone. Whether Razorpay's fee comes out of the ticket price or is added for the
+customer is decided by the account's convenience-fee setting; ask Razorpay support. `price_note` in
+`data/event.json` can carry a short line again if the club wants one.
 
 ## Content rule
 
