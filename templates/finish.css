@@ -453,3 +453,40 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 .terms-prose p{margin:0}
 .terms-prose a{text-decoration:underline;text-underline-offset:3px}
 :root body .terms-consent{margin:38px 0 0;padding-top:22px;border-top:1px solid var(--s-rule);font-size:14px!important;color:var(--s-text)}
+
+/* Photo-light pass (October 2026). The client found the site too crowded with pictures: photographs are now
+   kept to a hero plus one or two quiet frames per page, and the sections that carried a photo for every
+   item (home elements, Experiences list, the Carnival moments row, Our story closing) are typographic. */
+.elements-grid{gap:0;border-top:1px solid #24302a33}
+.element-card-plain{background:transparent;border:0;border-left:1px solid #24302a1f;overflow:visible}
+.element-card-plain:first-child{border-left:0}
+.element-card-plain .element-copy{padding:clamp(30px,3.4vw,52px) clamp(20px,2.4vw,36px) clamp(8px,1vw,16px)}
+.element-card-plain .element-number{font-size:13px;margin-bottom:16px}
+.element-card-plain .element-copy p:not(.element-number){margin-bottom:26px}
+@media(max-width:1000px){
+ .element-card-plain{border-left:0;border-top:1px solid #24302a1f}
+ .element-card-plain:nth-child(-n+2){border-top:0}
+}
+@media(max-width:700px){
+ .element-card-plain:nth-child(-n+2){border-top:1px solid #24302a1f}
+ .element-card-plain:first-child{border-top:0}
+ .element-card-plain .element-copy{padding:26px 0 6px}
+ .element-card-plain .element-copy p:not(.element-number){margin-bottom:18px}
+}
+:root body .circle-story-plain{display:block!important;text-align:center}
+:root body .circle-story-plain .circle-copy{max-width:760px;margin:0 auto}
+:root body .circle-story-plain .circle-copy h2{margin-left:auto;margin-right:auto}
+:root body .circle-story-plain .circle-values{margin-top:28px}
+.experience-atlas.atlas-plain{display:block;max-width:none;margin:clamp(28px,3vw,44px) 0 0;border-top:1px solid #24302a33}
+.atlas-plain .atlas-card-plain{display:block!important;grid-column:auto!important;padding:clamp(28px,3vw,44px) 0!important;border-bottom:1px solid #24302a1f}
+.atlas-plain .atlas-copy{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);column-gap:clamp(32px,7vw,96px);align-items:start;padding:0}
+.atlas-plain .atlas-copy>.eyebrow{grid-column:1;margin:0 0 12px!important}
+.atlas-plain .atlas-copy>h3{grid-column:1;margin:0!important}
+.atlas-plain .atlas-copy>p:not(.eyebrow){grid-column:2;grid-row:1/span 2;margin:0;max-width:520px;padding-top:4px}
+@media(max-width:700px){
+ .atlas-plain .atlas-copy{grid-template-columns:1fr}
+ .atlas-plain .atlas-copy>p:not(.eyebrow){grid-column:1;grid-row:auto;margin-top:14px}
+}
+:root body.story-page .st-necessity-plain{grid-template-columns:minmax(0,1fr)!important;justify-items:center;text-align:center}
+:root body.story-page .st-necessity-plain .st-copy{max-width:720px}
+:root body .soft-band-plain{min-height:clamp(300px,40vh,420px)}

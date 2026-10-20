@@ -221,3 +221,6 @@ Change that one line when a custom domain is connected, rebuild and push.
 - **Forms.** They post to FormSubmit and arrive at thespherewomen@gmail.com, but only after the
   club clicks FormSubmit's one-time activation email; until then visitors see "That did not send".
   The address is visible in the page source until the activation alias replaces it (notes/FORMS.md).
+
+## Photo-light pass — 20 October 2026
+The client (Naveen) found the site too crowded with pictures but wanted it to keep pictures, clean. Stills are now one hero plus at most one quiet frame per page (the hero films are unchanged). Home: the four element cards, the "Women of the Sphere" photo and the other repeats are typographic; Experiences: a numbered text list with one closing photo; Our story: one photo, the closing band is solid; Carnival: the three-photo "moments" row and its caption are gone, the interlude photo stays. Overrides sit at the end of `templates/finish.css`; the markup changes are in `scripts/premium.py`, `templates/premium-main.html` and `scripts/build_event.py`. Run `python3 scripts/build_site.py` to regenerate.

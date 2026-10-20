@@ -19,9 +19,6 @@ TEMPLATES = ROOT/'templates/event'
 MONTAGE = TEMPLATES/'montage'
 
 
-# The client chose DSC09903 for "03 / Connect" (data/media-selection.json, sphere-carnival-connect). Until that
-# photograph is exported, the earlier conversation photograph stands in.
-CONNECT_PHOTO = 'sphere-carnival-connect' if (Path(__file__).resolve().parents[1]/'dist/assets/sphere-carnival-connect-1200.webp').exists() else 'sphere-conversation'
 
 def load():
  if not SOURCE.exists():
@@ -231,10 +228,6 @@ def page(ev):
  timed = ''.join(f'<li><p class="cv-time">{w}</p><div><h3>{t}</h3>{sub(items)}</div></li>' for w, t, items in SCHEDULE)
  arc = ''.join(f'<li><h3>{t}</h3><p>{k}</p></li>' for t, k in ARC)
  chips = ''.join(f'<li>{c}</li>' for c in CHIPS)
- moments = ''.join(f'<figure><img src="/assets/{f}-1200.webp" srcset="/assets/{f}-640.webp 640w, /assets/{f}-1200.webp 1200w" sizes="(max-width:700px) 86vw, 28vw" alt="{alt}" width="1200" height="1500" loading="lazy" decoding="async"><figcaption><span>{k}</span>{h}</figcaption></figure>'
-  for f, alt, k, h in [('sphere-move-smile', 'A woman smiling as she stretches her arms overhead in a Sphere movement class', '01 / MOVE', 'Return to your body.'),
-                        ('sphere-bowls', 'Singing bowls prepared for sound healing', '02 / PAUSE', 'Make room for stillness.'),
-                        (CONNECT_PHOTO, 'Women connecting at a Sphere gathering', '03 / CONNECT', 'Find your people.')])
  glance_cta = (f'<a class="cv-glance-cta" href="#tickets">View tickets <span aria-hidden="true">↓</span></a>' if ev['mode'] == 'soon'
   else f'<a class="cv-glance-cta" href="{a(book)}"{new_tab(ev)} data-book>Reserve your spot {arrow()}</a>')
  return f"""<main id="main" class="event carnival" data-event-end="{a(ev['end'])}">
@@ -298,8 +291,6 @@ def page(ev):
  <div class="cv-heading"><div><p class="eyebrow">THE CELEBRATION</p><h2 id="celebration-title">And then,<br>we celebrate.</h2></div>
  <p>An alcohol-free celebration bringing everyone together through music and good energy.</p></div>
  <ul class="cv-offer cv-offer-three">{celebrate}</ul>
- <div class="cv-moments">{moments}</div>
- <p class="cv-photo-note">Moments from The Sphere’s past gatherings.</p>
 </section>
 
 <section class="cv-join" aria-labelledby="join-title">

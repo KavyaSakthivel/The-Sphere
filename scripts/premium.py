@@ -13,21 +13,8 @@ ROOT = Path(__file__).resolve().parents[1]
 # different moments from the club's own sessions.
 # The home page shows the PDF's four elements (Move, Pause, Connect, Discover); the Experiences page
 # shows the five curated experiences, so the two sections no longer repeat each other.
-ELEMENT_PHOTOS = [
- ('sphere-move-reach-1200.webp','Women reaching their arms overhead in a standing stretch at a Sphere movement class'),
- ('sphere-rest-bowls-1920.webp','Women resting beside singing bowls during sound healing'),
- ('sphere-laughter-1200.webp','Women sharing a laugh at a Sphere gathering'),
- ('sphere-hands-bowls-1200.webp','A woman playing singing bowls with mallets, laid out on a woven mat'),
-]
 # Each element points at the experience on the Experiences page that is closest to it.
 ELEMENT_LINKS = ['/experiences/#practice-1', '/experiences/#practice-2', '/experiences/#practice-5', '/experiences/#practice-4']
-ATLAS_PHOTOS = [
- ('sphere-meditation-1200.webp','Women seated on their mats at a Sphere gathering'),
- ('sphere-bowls-cushion-1200.webp','Singing bowls and a cushion laid out for sound healing'),
- ('sphere-talk-reflect-1200.webp','Women talking in the studio, with sound instruments laid out on the floor'),
- ('sphere-explore-1200.webp','Women seated on the studio floor, listening during a Sphere session'),
- ('sphere-connection-1200.webp','Women seated in pairs connecting at a Sphere gathering'),
-]
 
 
 def photo(filename, alt, eager=False):
@@ -42,11 +29,10 @@ def photo(filename, alt, eager=False):
 def experience_atlas(articles):
     cards = []
     for i, article in enumerate(re.findall(r'<article>.*?</article>', articles, re.S)):
-        filename, alt = ATLAS_PHOTOS[i]
         title = re.search(r'<h3>(.*?)</h3>', article, re.S)[1]
         body = re.search(r'<p>.*?</p>', article, re.S)[0]
-        cards.append(f'<article class="atlas-card" id="practice-{i+1}">{photo(filename, alt)}<div class="atlas-copy" data-reveal><p class="eyebrow">0{i+1} / THE SPHERE EXPERIENCE</p><h3>{title}</h3>{body}</div></article>')
-    return '<div class="experience-atlas">'+''.join(cards)+'</div>'
+        cards.append(f'<article class="atlas-card atlas-card-plain" id="practice-{i+1}"><div class="atlas-copy" data-reveal><p class="eyebrow">0{i+1} / THE SPHERE EXPERIENCE</p><h3>{title}</h3>{body}</div></article>')
+    return '<div class="experience-atlas atlas-plain">'+''.join(cards)+'</div>'
 
 
 def experience_elements():
@@ -65,8 +51,7 @@ def element_cards():
     cards = []
     for i, (name, copy) in enumerate(elements):
         name = name.title()
-        filename, alt = ELEMENT_PHOTOS[i]
-        cards.append(f'<article class="element-card" data-reveal>{photo(filename, alt)}<div class="element-copy"><p class="element-number">0{i+1}</p><h3>{name}</h3><p>{escape(copy)}</p><a class="text-link" href="{ELEMENT_LINKS[i]}">Explore this experience <span aria-hidden="true">↗</span></a></div></article>')
+        cards.append(f'<article class="element-card element-card-plain" data-reveal><div class="element-copy"><p class="element-number">0{i+1}</p><h3>{name}</h3><p>{escape(copy)}</p><a class="text-link" href="{ELEMENT_LINKS[i]}">Explore this experience <span aria-hidden="true">↗</span></a></div></article>')
     return '<div class="elements-grid">'+''.join(cards)+'</div>'
 
 
@@ -153,7 +138,7 @@ def build_subpages(home, full_main):
     experience = re.sub(r'<h2>Curated\.<br><span class="accent">Not crowded\.</span></h2>', '<h2>Every gathering<br>has a purpose.</h2>', experience, count=1)
     experience = re.sub(r'<p data-reveal>We believe meaningful experiences happen.*?</p>', '<p data-reveal>Our experiences are designed to create moments that stay with you.</p>', experience, count=1, flags=re.S)
     more = ('<section class="more-wellness-story" aria-labelledby="more-title">'
-     + photo('sphere-buddha-garden-1200.webp', 'A Buddha figure among plants at The Sphere')
+     + photo('sphere-connection-1200.webp', 'Women seated in pairs connecting at a Sphere gathering')
      + '<div class="st-copy"><p class="eyebrow">MORE THAN WELLNESS</p><h2 id="more-title">A community built<br>around experiences.</h2>'
      '<p class="st-lead">At The Sphere, you might begin your morning with yoga, discover the grounding power of Kalaripayattu, experience the stillness of sound healing, or explore a completely new form of movement.</p>'
      '<p>You might sit across from a woman you’ve never met and leave with a conversation you’ll never forget.</p>'
@@ -216,10 +201,10 @@ def build_philosophy(home, sections, heads):
         f'<section class="st-belief" aria-labelledby="belief-title">{photo("sphere-meditation-circle-1200.webp", "Women seated together in a quiet meditation circle at The Sphere")}'
         f'<div class="st-copy"><p class="eyebrow">{escape(heads[1])}</p><h2 id="belief-title">{escape(belief[0])}</h2>'
         f'{p(belief[1], "st-lead")}<ul class="st-mantra">{mantra}</ul>{p(belief[7])}</div></section>'
-        f'<section class="st-necessity" aria-labelledby="necessity-title"><div class="st-copy"><p class="eyebrow">{escape(heads[6])}</p>'
+        f'<section class="st-necessity st-necessity-plain" aria-labelledby="necessity-title"><div class="st-copy"><p class="eyebrow">{escape(heads[6])}</p>'
         f'<h2 id="necessity-title">{escape(necessity[0])}</h2>{p(necessity[1], "st-lead")}'
         f'<p>{escape(necessity[2])} {escape(necessity[3])} {escape(necessity[4])}</p>{p(necessity[5], "st-emphasis")}</div>'
-        f'{photo("sphere-showing-up-1200.webp", "Two women sitting in quiet meditation, their eyes closed, at The Sphere")}</section>'
+        '</section>'
     )
     html = f'''<!doctype html><html lang="en-IN"><head>{head}
     <link rel="canonical" href="{url('/philosophy/')}">
@@ -228,7 +213,7 @@ def build_philosophy(home, sections, heads):
     <meta property="og:url" content="{url('/philosophy/')}">
     <meta property="og:description" content="A space for the woman behind every role she carries.">
     <script type="application/ld+json">{json.dumps({'@context':'https://schema.org', '@graph':[org(), {'@type':'WebPage','url':url('/philosophy/'),'name':'Our story | The Sphere','about':{'@id':url('/#organization')}}]}, ensure_ascii=False)}</script>
-    </head><body class="story-page">{shell}<main id="main"><section class="soft-hero" aria-labelledby="story-title">{photo('sphere-soft-garden-1920.webp','Leaves and a Buddha figure in soft focus at The Sphere',True)}<div class="soft-hero-copy"><p class="eyebrow">OUR STORY</p><h1 id="story-title">A space to<br>simply be.</h1><p>The thoughts behind the circle.</p></div></section>{story}<section class="soft-band" aria-labelledby="close-title">{photo('sphere-soft-rest-1920.webp','Women resting together at The Sphere, in soft focus')}<div class="soft-hero-copy"><p class="eyebrow">YOUR PLACE IN THE CIRCLE</p><h2 id="close-title">Come as you are.</h2><button class="soft-hero-cta" type="button" data-invitation aria-haspopup="dialog">Request an invitation <span aria-hidden="true">→</span></button></div></section></main>{footer}{dialog}</body></html>'''
+    </head><body class="story-page">{shell}<main id="main"><section class="soft-hero" aria-labelledby="story-title">{photo('sphere-soft-garden-1920.webp','Leaves and a Buddha figure in soft focus at The Sphere',True)}<div class="soft-hero-copy"><p class="eyebrow">OUR STORY</p><h1 id="story-title">A space to<br>simply be.</h1><p>The thoughts behind the circle.</p></div></section>{story}<section class="soft-band soft-band-plain" aria-labelledby="close-title"><div class="soft-hero-copy"><p class="eyebrow">YOUR PLACE IN THE CIRCLE</p><h2 id="close-title">Come as you are.</h2><button class="soft-hero-cta" type="button" data-invitation aria-haspopup="dialog">Request an invitation <span aria-hidden="true">→</span></button></div></section></main>{footer}{dialog}</body></html>'''
     html = re.sub(r'(href|src)="(assets/|style.css|brand.css|premium.css|site.js|motion.js)', r'\1="/\2', html)
     html = html.replace('href="#', 'href="/#').replace('href="/#main"', 'href="#main"').replace('href="/#chapter-', 'href="#chapter-')
     path = ROOT / 'dist/philosophy'; path.mkdir(exist_ok=True)
