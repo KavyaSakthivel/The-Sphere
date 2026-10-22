@@ -29,6 +29,10 @@ def main():
                 subprocess.run(['ffmpeg','-v','error','-y','-ss',str(item['time']),'-i',str(source),'-frames:v','1',str(jpeg)],check=True)
             with Image.open(jpeg) as raw:
                 image=ImageOps.exif_transpose(raw).convert('RGB')
+            if item.get('crop'):
+                # Optional crop as fractions of the frame: [left, top, right, bottom].
+                l,t,r,b=item['crop']
+                image=image.crop((round(image.width*l),round(image.height*t),round(image.width*r),round(image.height*b)))
             image=ImageEnhance.Brightness(image).enhance(item['exposure'])
             image=ImageEnhance.Contrast(image).enhance(1.025)
             if item.get('soft'):

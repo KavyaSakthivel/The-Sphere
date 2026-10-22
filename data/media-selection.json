@@ -84,6 +84,13 @@
       "name": "sphere-showing-up",
       "exposure": 1.12,
       "provenance": "From the client's shared Drive folder PHOTOS (file 1a7xYN4AGNLAJDZ_knJHsW7SkVDFDL64n); Our story, 'Is wellness a luxury or a necessity?'."
+    },
+    {
+      "source": "DSC09841.ARW",
+      "name": "sphere-bowls-still",
+      "exposure": 1.12,
+      "crop": [0.12, 0.37, 0.9, 0.97],
+      "provenance": "Chosen for the Membership page's 'Intentionally intimate' photograph on 22 October 2026, replacing sphere-facilitator-rest, which the client found too busy. From the client's shared Drive folder PHOTOS (file 1kYQTRC5_AjFMQF8pzo3W9FVF0kBLQd2a). Cropped below the mirror so no one appears in frame."
     }
   ],
   "stills": [

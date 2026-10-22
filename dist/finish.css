@@ -354,6 +354,7 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 :root body main img[src*="/sphere-kalari-partners-"],:root body main img[src^="assets/sphere-kalari-partners-"]{object-position:50% 30%!important}
 :root body main img[src*="/sphere-bowl-practice-"],:root body main img[src^="assets/sphere-bowl-practice-"]{object-position:50% 70%!important}
 :root body main img[src*="/sphere-facilitator-rest-"],:root body main img[src^="assets/sphere-facilitator-rest-"]{object-position:50% 62%!important}
+:root body main img[src*="/sphere-bowls-still-"],:root body main img[src^="assets/sphere-bowls-still-"]{object-position:50% 50%!important}
 :root body main img[src*="/sphere-arms-raised-"],:root body main img[src^="assets/sphere-arms-raised-"]{object-position:50% 28%!important}
 :root body main img[src*="/sphere-circle-session-"],:root body main img[src^="assets/sphere-circle-session-"]{object-position:50% 85%!important}
 :root body main img[src*="/sphere-buddha-garden-"],:root body main img[src^="assets/sphere-buddha-garden-"]{object-position:50% 35%!important}
@@ -490,3 +491,6 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 :root body.story-page .st-necessity-plain{grid-template-columns:minmax(0,1fr)!important;justify-items:center;text-align:center}
 :root body.story-page .st-necessity-plain .st-copy{max-width:720px}
 :root body .soft-band-plain{min-height:clamp(300px,40vh,420px)}
+/* Membership's photograph is a wide still life of the singing bowls: keep its slot landscape
+   rather than stretching it to the height of the words, so it never zooms into a blurred detail. */
+@media(min-width:901px){:root body.club-subpage .home-invitation>.intimate-photo{aspect-ratio:4/3!important;height:auto!important;min-height:0!important;max-height:none!important;align-self:center!important}}
