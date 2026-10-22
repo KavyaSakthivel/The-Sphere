@@ -492,6 +492,12 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 :root body.story-page .st-necessity-plain .st-copy{max-width:720px}
 :root body .soft-band-plain{min-height:clamp(300px,40vh,420px)}
 /* Membership's photograph is a wide still life of the singing bowls: its slot keeps the photo's own
-   shape (nothing cropped or zoomed) and sits beside the heading rather than stretching to the words. */
+   shape (nothing cropped or zoomed). On desktop the heading sits above it in the left column and the
+   notes fill the right, so both columns end level and no empty space is left beside the photo. */
 :root body.club-subpage .home-invitation>.intimate-photo{aspect-ratio:1920/813!important;height:auto!important;min-height:0!important;max-height:none!important}
-@media(min-width:901px){:root body.club-subpage .home-invitation>.intimate-photo{grid-row:1!important;align-self:center!important}}
+@media(min-width:901px){
+ :root body.club-subpage .home-invitation{grid-template-rows:auto auto!important;align-items:start!important}
+ :root body.club-subpage .home-invitation>.invitation-heading{grid-column:1!important;grid-row:1!important;align-self:end!important;padding-top:0!important}
+ :root body.club-subpage .home-invitation>.intimate-photo{grid-column:1!important;grid-row:2!important;align-self:start!important;margin-top:48px!important}
+ :root body.club-subpage .home-invitation>.membership-notes{grid-column:2!important;grid-row:1 / span 2!important;align-self:center!important;margin-top:0!important}
+}
