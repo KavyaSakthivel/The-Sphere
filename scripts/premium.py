@@ -155,6 +155,15 @@ def build_subpages(home, full_main):
     membership = membership.replace('sphere-intimate-', 'sphere-bowls-still-').replace('A small circle of women meditating together around singing bowls at The Sphere', 'Singing bowls and a cushion laid out before a session at The Sphere')
     # The bowls still life is a wide frame (1920x813); give the img its true size so the slot matches it.
     membership = re.sub(r'(<img src="/?assets/sphere-bowls-still-[^>]*?) width="1920" height="\d+"', r'\1 width="1920" height="813"', membership)
+    # Membership lays the section out as an editorial stack: title | intro, then the wide bowls photo
+    # across the full width, then quote | notes. Same words, regrouped so the columns line up.
+    membership = membership.replace('class="home-invitation section-pad"', 'class="home-invitation membership-circle section-pad"', 1)
+    membership = re.sub(r'(<div class="invitation-heading"[^>]*>)(<p class="eyebrow">.*?</h2>)(.*?)</div>',
+        r'\1<div class="circle-title">\2</div><div class="circle-intro">\3</div></div>', membership, count=1, flags=re.S)
+    figure = re.search(r'\s*<figure class="editorial-photo intimate-photo".*?</figure>', membership, re.S)[0]
+    membership = membership.replace(figure, '', 1)
+    figure = figure.replace('sizes="(max-width: 700px) 86vw, 52vw"', 'sizes="(max-width: 900px) 92vw, min(1240px, 88vw)"')
+    membership = re.sub(r'(<div class="invitation-heading".*?</div></div>)', lambda m: m.group(1) + figure, membership, count=1, flags=re.S)
     letter = re.search(r'<section class="home-letter\b[^\"]*".*?</section>', full_main, re.S)[0]
     for slug, title, description, body in [
         ('experiences', 'The experiences', 'Movement, sound healing, mindfulness and meaningful connection. Explore the thoughtfully curated experiences at The Sphere, Coimbatore.', experience),
