@@ -153,6 +153,8 @@ def build_subpages(home, full_main):
         + '</ol><button class="soft-hero-cta join-cta" type="button" data-invitation aria-haspopup="dialog">Request an invitation <span aria-hidden="true">→</span></button></section>')
     membership = membership + joining
     membership = membership.replace('sphere-intimate-', 'sphere-bowls-still-').replace('A small circle of women meditating together around singing bowls at The Sphere', 'Singing bowls and a cushion laid out before a session at The Sphere')
+    # The bowls still life is a wide frame (1920x813); give the img its true size so the slot matches it.
+    membership = re.sub(r'(<img src="/?assets/sphere-bowls-still-[^>]*?) width="1920" height="\d+"', r'\1 width="1920" height="813"', membership)
     letter = re.search(r'<section class="home-letter\b[^\"]*".*?</section>', full_main, re.S)[0]
     for slug, title, description, body in [
         ('experiences', 'The experiences', 'Movement, sound healing, mindfulness and meaningful connection. Explore the thoughtfully curated experiences at The Sphere, Coimbatore.', experience),

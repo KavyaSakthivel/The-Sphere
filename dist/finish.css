@@ -491,6 +491,7 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 :root body.story-page .st-necessity-plain{grid-template-columns:minmax(0,1fr)!important;justify-items:center;text-align:center}
 :root body.story-page .st-necessity-plain .st-copy{max-width:720px}
 :root body .soft-band-plain{min-height:clamp(300px,40vh,420px)}
-/* Membership's photograph is a wide still life of the singing bowls: keep its slot landscape
-   rather than stretching it to the height of the words, so it never zooms into a blurred detail. */
-@media(min-width:901px){:root body.club-subpage .home-invitation>.intimate-photo{aspect-ratio:4/3!important;height:auto!important;min-height:0!important;max-height:none!important;align-self:center!important}}
+/* Membership's photograph is a wide still life of the singing bowls: its slot keeps the photo's own
+   shape (nothing cropped or zoomed) and sits beside the heading rather than stretching to the words. */
+:root body.club-subpage .home-invitation>.intimate-photo{aspect-ratio:1920/813!important;height:auto!important;min-height:0!important;max-height:none!important}
+@media(min-width:901px){:root body.club-subpage .home-invitation>.intimate-photo{grid-row:1!important;align-self:center!important}}
