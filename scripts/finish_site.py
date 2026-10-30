@@ -1,6 +1,7 @@
 """Shared editorial finishing pass, excluding the historical palette studies."""
 from pathlib import Path
 import re,json,base64,math
+from meta_pixel import add_to_page as add_pixel, patch_headers
 ROOT=Path(__file__).resolve().parents[1]
 COVERS=['sphere-sound-session','sphere-meditation','sphere-connection','sphere-rest','sphere-smile']
 STAR='<svg class="journal-star" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false"><path d="M12 2.6l2.8 5.7 6.3.9-4.55 4.45 1.07 6.27L12 16.97l-5.62 2.95 1.07-6.27L2.9 9.2l6.3-.9z"/></svg>'
@@ -111,5 +112,7 @@ def build():
   s=re.sub(r'<figure\b[^>]*>.*?</figure>',preview,s,flags=re.S)
   s=s.replace('</head>','<link rel="stylesheet" href="/finish.css"></head>')
   s="\n".join(line.rstrip() for line in s.splitlines())+"\n"
+  s=add_pixel(s)
   page.write_text(s)
+ patch_headers(ROOT/'dist/_headers')
  (ROOT/'dist/finish.css').write_text((ROOT/'templates/finish.css').read_text())

@@ -60,6 +60,8 @@ def build():
             html = (ROOT/f'dist/{route}/index.html').read_text()
             html = re.sub(r'<link rel="canonical"[^>]*>', '', html)
             html = re.sub(r'<meta name="robots"[^>]*>', '', html)
+            # Internal, noindex studies: no advertising pixel.
+            html = re.sub(r'<!-- Meta Pixel Code -->.*?<!-- End Meta Pixel Code -->\n', '', html, flags=re.S)
             html = re.sub(r'<title>.*?</title>', f'<title>{escape(p["name"])} — {route.title()} preview | The Sphere</title>', html)
             html = html.replace('</head>',f'<meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="/palette-study/{slug}/theme.css"></head>')
             for target in ('membership','carnival'):
