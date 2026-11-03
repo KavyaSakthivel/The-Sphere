@@ -1,11 +1,12 @@
-// A tiny static file server for dist/, using only Node's built-in modules (no dependencies to patch).
-// Used by `npm start`. Hosts that simply publish the dist/ folder do not need it.
+// The Sphere's web server: the finished site from dist/, plus the carnival booking API under /api/
+// (backend/). Used by `npm start`. The static part uses only Node's built-in modules.
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
 const root = path.join(__dirname, 'dist');
 const port = process.env.PORT || 3000;
+const backend = require('./backend').startBackend();
 const types = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
   '.json': 'application/json; charset=utf-8', '.xml': 'application/xml; charset=utf-8', '.txt': 'text/plain; charset=utf-8',
@@ -19,6 +20,9 @@ function send(res, status, body, headers = {}) {
 }
 
 const server = http.createServer((req, res) => {
+  if (req.url === '/api' || req.url.startsWith('/api/')) {
+    return backend.handle(req, res, new URL(req.url, 'http://localhost').pathname);
+  }
   if (req.method !== 'GET' && req.method !== 'HEAD') return send(res, 405, 'Method not allowed', { Allow: 'GET, HEAD' });
   let pathname;
   try { pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname); } catch { return send(res, 400, 'Bad request'); }
@@ -63,4 +67,6 @@ function serve(req, res, file, stat) {
   fs.createReadStream(file, { start, end }).pipe(res);
 }
 
-server.listen(port, () => console.log(`The Sphere is running at http://localhost:${port}`));
+// Always listen (hosting runners may load this file indirectly); tests set SPHERE_NO_LISTEN.
+if (!process.env.SPHERE_NO_LISTEN) server.listen(port, () => console.log(`The Sphere is running at http://localhost:${port}`));
+module.exports = { server, backend };

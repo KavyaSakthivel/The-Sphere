@@ -31,7 +31,22 @@ def load():
  if ev.get('razorpay_button_id'): ev['mode'] = 'button'
  elif ev.get('payment_url'): ev['mode'] = 'link'
  else: ev['mode'] = 'soon'
+ ev['booking'] = booking_mode(ev)
  return ev
+
+
+def booking_mode(ev):
+ """Whether the page books through our own API (backend/), which creates one Razorpay link per booking so
+ website sales can be reported to Meta. 'preview' shows it only at /<slug>/?booking=preview, for testing.
+ It needs the shared payment_url as well: every button keeps that link, so without JavaScript, or if the
+ API is down, guests still reach Razorpay."""
+ mode = ev.get('booking_api', 'off')
+ if mode not in ('preview', 'on') or ev['mode'] != 'link':
+  return 'off'
+ if mode == 'on' and ev.get('booking_dialog', {}).get('draft', True):
+  print('booking_api is "on" but booking_dialog is still marked draft: the client has not approved its wording, so it stays in preview.')
+  return 'preview'
+ return mode
 
 
 def a(v): return escape(str(v), quote=True)
@@ -342,6 +357,41 @@ def page(ev):
 </div>"""
 
 
+# ---------------------------------------------------------------- booking through our own API
+
+def booking_dialog(ev):
+ """Ticket count and the optional Meta consent, then on to that booking's own Razorpay link.
+ All of its wording lives in data/event.json (booking_dialog), for the client to approve."""
+ c = ev['booking_dialog']
+ price = rupees(ev['price_inr'])
+ return f'''<dialog id="booking-dialog" class="booking-dialog" aria-labelledby="booking-title" data-booking-dialog
+ data-mode="{ev['booking']}" data-price="{a(ev['price_inr'])}" data-max="{a(ev.get('max_tickets_per_booking', 10))}" data-fallback="{a(ev['payment_url'])}">
+<form class="booking-form" novalidate>
+ <button type="button" class="dialog-close" data-booking-close aria-label="{a(c['close'])}">×</button>
+ <h2 id="booking-title">{escape(c['title'])}</h2>
+ <p class="booking-item">{escape(c['item'])} <span>{price}</span></p>
+ <div class="booking-qty" role="group" aria-labelledby="booking-qty-label">
+  <span id="booking-qty-label">{escape(c['quantity_label'])}</span>
+  <button type="button" data-qty="-1" aria-label="{a(c['fewer'])}">−</button>
+  <output data-qty-value aria-live="polite">1</output>
+  <button type="button" data-qty="1" aria-label="{a(c['more'])}">+</button>
+ </div>
+ <p class="booking-total"><span>{escape(c['total_label'])}</span> <strong data-booking-total>{price}</strong></p>
+ <label class="booking-consent"><input type="checkbox" data-booking-consent> <span>{escape(c['consent_label'])}</span></label>
+ <button type="submit" class="cv-button" data-booking-submit>{escape(c['continue'])} <span aria-hidden="true">→</span></button>
+ <p class="booking-note">{escape(c['note'])}</p>
+ <p class="booking-error" data-booking-error role="alert" hidden>{escape(c['error'])} <a href="{a(ev['payment_url'])}" data-booking-fallback>{escape(c['fallback'])}</a></p>
+</form>
+</dialog>'''
+
+
+def with_booking(ev, body):
+ if ev['booking'] == 'off':
+  return body
+ link = f'href="{a(ev["payment_url"])}"'
+ return body.replace(link, link+' data-booking')+booking_dialog(ev)
+
+
 # ---------------------------------------------------------------- assembly
 
 def seo(ev, path, title):
@@ -435,7 +485,7 @@ def build(home):
   for name in ('hero.mp4', 'hero.webm', 'hero-poster.jpg'):
    shutil.copyfile(MONTAGE/name, folder/name)
  title = f"{ev['name']} | {full_date(ev['start_at'])}, {ev['city']}"
- (folder/'index.html').write_text(assemble(home, ev, ev['path'], title, page(ev)))
+ (folder/'index.html').write_text(assemble(home, ev, ev['path'], title, with_booking(ev, page(ev))))
  terms = ROOT/'dist/terms'; terms.mkdir(exist_ok=True)
  (terms/'index.html').write_text(terms_page(home, ev))
  sitemap = ROOT/'dist/sitemap.xml'
@@ -445,7 +495,7 @@ def build(home):
  terms_loc = '  <url><loc>'+escape(url('/terms/'))+'</loc></url>\n'
  if terms_loc not in sitemap.read_text():
   sitemap.write_text(sitemap.read_text().replace('</urlset>', terms_loc+'</urlset>'))
- print(f"Built {ev['path']} ({ev['mode']} booking mode, {'montage' if has_montage() or (ROOT/'dist/assets/montage-carnival/wide.mp4').exists() else 'photo'} hero).")
+ print(f"Built {ev['path']} ({ev['mode']} booking mode, booking API {ev['booking']}, {'montage' if has_montage() or (ROOT/'dist/assets/montage-carnival/wide.mp4').exists() else 'photo'} hero).")
 
 
 def retire(folder):

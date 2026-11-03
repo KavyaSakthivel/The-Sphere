@@ -212,3 +212,26 @@ body.is-past [data-book],body.is-past .event-bar{display:none!important}
 .cv-tickets-copy p:not(.eyebrow):not(.cv-welcome){margin:0 0 14px}
 .cv-timeline p+p{margin-top:6px}
 .cv-timeline strong{font-weight:500;color:var(--s-ink)}
+
+/* Booking dialog: ticket count, optional Meta consent, then that booking's own Razorpay link. */
+.booking-dialog{width:min(440px,calc(100vw - 32px));max-height:calc(100dvh - 32px);padding:0;border:0;background:var(--s-ivory);color:var(--s-ink);box-shadow:0 24px 100px #0003;overflow:auto}
+.booking-dialog::backdrop{background:#24302acc}
+.booking-form{position:relative;display:grid;gap:20px;padding:40px 28px 28px}
+.booking-dialog .dialog-close{position:absolute;top:8px;right:8px;width:44px;height:44px;border:0;background:none;color:var(--s-ink);font-size:28px;line-height:1;cursor:pointer}
+:root body.event-page .booking-dialog h2{margin:0;font-size:clamp(28px,3vw,34px)!important;line-height:1.15!important;font-weight:400;color:var(--s-ink)}
+.booking-item,.booking-total{display:flex;justify-content:space-between;gap:16px;margin:0}
+.booking-item span{color:var(--s-text)}
+.booking-total{padding-top:16px;border-top:1px solid #24302a26;font-size:18px}
+.booking-qty{display:flex;align-items:center;gap:12px}
+.booking-qty>span{flex:1}
+.booking-qty button{width:44px;height:44px;border:1px solid var(--s-ink);background:none;color:var(--s-ink);font-size:20px;cursor:pointer}
+.booking-qty button:disabled{opacity:.35;cursor:default}
+.booking-qty output{min-width:2ch;text-align:center;font-size:20px}
+.booking-consent{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;font-size:14px;line-height:1.5;color:var(--s-text)}
+.booking-consent input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--s-ink)}
+.booking-dialog .cv-button{justify-content:space-between;width:100%;border:0;cursor:pointer;font:inherit;font-size:14px}
+.booking-dialog .cv-button:disabled{opacity:.6;cursor:progress}
+.booking-note{margin:-8px 0 0;font-size:13px;color:var(--s-text)}
+.booking-error{margin:0;padding:12px 14px;background:var(--s-stone);font-size:14px}
+.booking-error a{text-decoration:underline}
+.booking-error a[hidden]{display:none}

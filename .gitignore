@@ -6,3 +6,8 @@ media/
 __pycache__/
 *.pyc
 node_modules/
+# Secrets and local booking data never go to GitHub.
+.env
+.env.*
+!.env.example
+.data/

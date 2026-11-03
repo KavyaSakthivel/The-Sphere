@@ -36,6 +36,7 @@ The page picks its mode from `data/event.json`:
 | nothing set (now) | The ticket card shows the preview's own line, "Payment and ticketing link will be available at checkout." No button |
 | `razorpay_button_id` | **Recommended.** Razorpay's checkout opens on top of the Sphere page |
 | `payment_url` | Every Book button goes to a hosted Razorpay Payment Page |
+| `payment_url` + `booking_api: "preview"` / `"on"` | Book buttons open a ticket-count dialog; our server creates that booking's own Razorpay link so the sale can be reported to Meta. `preview` runs only at `/carnival/?booking=preview`. See `notes/BOOKINGS.md` |
 | after 10 PM on the 20th | Automatic: every booking button and the booking bar disappear |
 
 ## When the client sends the payment link

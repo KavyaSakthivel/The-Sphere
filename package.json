@@ -2,13 +2,19 @@
   "name": "the-sphere",
   "version": "1.0.0",
   "private": true,
-  "description": "The Sphere: a women's wellness club in Coimbatore. A static website; the finished site is the dist/ folder.",
+  "description": "The Sphere: a women's wellness club in Coimbatore. The finished site is the dist/ folder; server.js serves it and the carnival booking API (backend/).",
   "main": "server.js",
   "scripts": {
     "build": "node -e \"console.log('Nothing to build: the finished site is already in dist/')\"",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node --env-file-if-exists=.env server.js",
+    "test": "node --test backend/test/*.test.js",
+    "bookings": "node --env-file-if-exists=.env backend/cli.js"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=18.18"
+  },
+  "dependencies": {
+    "mysql2": "^3.24.6"
   }
 }
