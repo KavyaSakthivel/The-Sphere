@@ -8,14 +8,17 @@ const { createMeta } = require('./meta');
 const { createApi, defaultLog: log } = require('./app');
 
 const SWEEP_EVERY_MS = 5 * 60 * 1000;
+// Hostinger stops an idle app and starts it again on the next request, so the first booking or webhook
+// after a quiet spell can arrive while the database is still connecting. Wait for it rather than refuse.
+const STARTUP_WAIT_MS = 15e3;
 
-function startBackend(env = process.env) {
+function startBackend(env = process.env, { startupWaitMs = STARTUP_WAIT_MS, storeInit } = {}) {
   let api = null;
   const config = loadConfig(env);
   const store = createStore(config);
 
   const ready = (async () => {
-    await store.init();
+    await (storeInit ? storeInit(store) : store.init());
     api = createApi({ config, store, razorpay: createRazorpay(config.razorpay), meta: createMeta(config.meta) });
     log('info', 'backend_ready', {
       store: store.kind, bookings: api.bookingsOpen ? 'open' : 'closed', razorpay: config.razorpay.mode,
@@ -29,6 +32,11 @@ function startBackend(env = process.env) {
   return {
     ready,
     async handle(req, res, pathname) {
+      if (!api) {
+        let timer;
+        await Promise.race([ready, new Promise(r => { timer = setTimeout(r, startupWaitMs); timer.unref(); })]);
+        clearTimeout(timer);
+      }
       if (api) return api.handle(req, res, pathname);
       res.writeHead(503, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'Retry-After': '30' });
       res.end('{"error":"bookings_unavailable"}');

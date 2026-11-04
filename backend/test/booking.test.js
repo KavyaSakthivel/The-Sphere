@@ -394,3 +394,20 @@ test('server.js serves the site and mounts the API', async () => {
     assert.equal((await fetch(base + '/style.css', { method: 'POST' })).status, 405);
   } finally { await new Promise(r => server.close(r)); }
 });
+
+test('requests that arrive while the app is still starting wait for it, within a limit', async () => {
+  const { startBackend } = require('../index');
+  const env = { DATA_DIR: require('fs').mkdtempSync(require('path').join(require('os').tmpdir(), 'sphere-')) };
+  const serve = backend => http.createServer((req, res) => backend.handle(req, res, new URL(req.url, 'http://x').pathname));
+  const get = async server => {
+    await new Promise(r => server.listen(0, '127.0.0.1', r));
+    try { return (await fetch(`http://127.0.0.1:${server.address().port}/api/health`)).status; }
+    finally { await new Promise(r => server.close(r)); }
+  };
+  // A database that takes a moment to connect (Hostinger waking an idle app): answered once it is ready.
+  const slow = startBackend(env, { storeInit: store => new Promise(r => setTimeout(r, 300)).then(() => store.init()) });
+  assert.equal(await get(serve(slow)), 200);
+  // One that never connects: refused after the wait, and the page falls back to the shared link.
+  const stuck = startBackend(env, { startupWaitMs: 50, storeInit: () => new Promise(() => {}) });
+  assert.equal(await get(serve(stuck)), 503);
+});
