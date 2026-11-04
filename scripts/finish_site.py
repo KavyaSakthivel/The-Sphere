@@ -111,6 +111,10 @@ def build():
    return block
   s=re.sub(r'<figure\b[^>]*>.*?</figure>',preview,s,flags=re.S)
   s=s.replace('</head>','<link rel="stylesheet" href="/finish.css"></head>')
+  # Google Search Console looks for its ownership tag on the home page only.
+  verify=json.loads((ROOT/'data/site.json').read_text()).get('google_site_verification','').strip()
+  if where=='.' and verify and 'google-site-verification' not in s:
+   s=s.replace('</head>',f'<meta name="google-site-verification" content="{verify}"></head>',1)
   s="\n".join(line.rstrip() for line in s.splitlines())+"\n"
   s=add_pixel(s)
   page.write_text(s)
