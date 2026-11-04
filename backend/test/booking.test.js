@@ -238,14 +238,18 @@ for (const quantity of [1, 2, 3]) {
   });
 }
 
-test('without consent Meta gets the sale but no personal identifiers', async () => {
+test('without consent the booking is paid but nothing is sent to Meta, even on retry', async () => {
   const t = setup(); await t.listen();
   try {
     const r = await book(t, { quantity: 1, consent: false }, { cookie: `_fbp=${FBP}` });
     await webhook(t, paidEvent(t.links[0], await t.store.getBooking(r.body.bookingId)));
     await settle();
-    assert.deepEqual(t.metaCalls[0].body.data[0].user_data, { client_user_agent: 'Mozilla/5.0 Test' });
-    assert.equal(t.metaCalls[0].body.data[0].custom_data.value, 2899);
+    await t.api.sweep({ ignoreBackoff: true });
+    const b = await t.store.getBooking(r.body.bookingId);
+    assert.equal(b.status, 'paid');
+    assert.equal(b.metaStatus, 'skipped');
+    assert.equal(b.fbp, null);
+    assert.equal(t.metaCalls.length, 0);
   } finally { await t.close(); }
 });
 

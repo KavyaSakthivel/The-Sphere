@@ -223,6 +223,12 @@ function createApi({ config, store, razorpay, meta, now = () => Date.now(), log 
     const t = now();
     const booking = await store.claimMeta(id, t, SENDING_STALE_MS);
     if (!booking) return 'not_claimed';
+    // Without consent we hold nothing Meta can match on, and it refuses such events, so none is sent.
+    if (!booking.consent) {
+      await store.finishMeta(id, { status: 'skipped', error: 'not sent: the guest did not agree to sharing with Meta' });
+      log('info', 'meta_purchase_skipped', { booking: id, reason: 'no_consent' });
+      return 'skipped';
+    }
     if (booking.paymentTime && booking.paymentTime * 1000 < t - META_WINDOW_MS) {
       await store.finishMeta(id, { status: 'expired', error: 'older than Meta accepts (7 days)' });
       log('error', 'meta_expired', { booking: id });

@@ -25,8 +25,8 @@ const hashPhone = phone => { const p = normalisePhone(phone); return p ? sha256(
 const eventIdFor = booking => `purchase.${booking.id}`;
 
 function purchaseEvent(booking, event) {
-  // Personal identifiers only with the guest's consent. Without it Meta still learns that a website sale
-  // happened (value and quantity) but cannot tie it to a person.
+  // Personal identifiers only with the guest's consent. Bookings without it are never sent (see deliver in
+  // app.js: Meta refuses an event it cannot match); the check here is a second guard.
   const userData = { client_user_agent: booking.userAgent || 'unknown' };
   if (booking.consent) {
     if (booking.emHash) userData.em = [booking.emHash];

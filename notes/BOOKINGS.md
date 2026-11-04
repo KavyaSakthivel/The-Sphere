@@ -48,8 +48,9 @@ Those sales are simply not reported to Meta.
 | Unique event ID, duplicate prevention | `event_id = purchase.<booking id>`, webhook event log, atomic claim in the database |
 | Test 1, 2 and 3 tickets in Test Events | `npm test` covers all three; the live test is below |
 
-Without consent, Meta still receives the sale (value, quantity, booking ID, browser user agent) but no
-email, phone, IP address or Meta cookies.
+Without consent, nothing about the booking is sent to Meta. We would hold nothing Meta can match on,
+and it refuses such an event ("no customer information parameters"; seen in live testing). The sale is
+still paid and recorded here (`meta_status = skipped`), and `npm run bookings -- stats` counts it.
 
 ## Hostinger setup (once)
 
@@ -91,7 +92,7 @@ In **test mode** first, then again in live mode (keys and webhooks are separate 
    `/carnival/?booking=preview`. Everyone else keeps the shared link.
 2. Open `https://spherewellness.in/carnival/?booking=preview`, choose 1 ticket, tick the consent box,
    continue, and pay with Razorpay's test UPI ID or test card (Razorpay docs → test card details).
-3. Repeat for 2 and 3 tickets, and once without consent.
+3. Repeat for 2 and 3 tickets, and once without consent (that one must not reach Meta).
 4. Check each in Meta **Events Manager → Test Events**: `Purchase`, value 2,899 / 5,798 / 8,697 INR,
    matching order ID, and (with consent) email, phone, fbp/fbc shown as received.
 5. In Razorpay → Webhooks, resend one `payment_link.paid` delivery: the log shows
