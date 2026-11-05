@@ -14,3 +14,7 @@
 @font-face{font-family:'Manrope';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/Manrope-Regular.ttf') format('truetype')}
 @font-face{font-family:'Manrope';font-style:normal;font-weight:500;font-display:swap;src:url('fonts/Manrope-Medium.ttf') format('truetype')}
 @font-face{font-family:'Manrope';font-style:normal;font-weight:600;font-display:swap;src:url('fonts/Manrope-SemiBold.ttf') format('truetype')}
+
+/* Cormorant Garamond sets the headings; Sacramento, a monoline script close to the guideline's Florelie, signs off. Both SIL OFL, Latin subset. */
+@font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:300 600;font-display:swap;src:url('fonts/CormorantGaramond-latin-wght.woff2') format('woff2')}
+@font-face{font-family:'Sacramento';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/Sacramento-latin.woff2') format('woff2')}

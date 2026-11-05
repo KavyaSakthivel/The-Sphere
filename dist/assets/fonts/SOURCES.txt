@@ -18,3 +18,11 @@ DancingScript-Regular / Medium / SemiBold: static instances served by the Google
 License: https://raw.githubusercontent.com/google/fonts/main/ofl/dancingscript/OFL.txt (DancingScript-OFL.txt)
 
 Allura and Pinyon Script are no longer used; their files were removed on 3 October 2026.
+
+Cormorant Garamond (heading face, 5 November 2026): https://fonts.google.com/specimen/Cormorant+Garamond
+CormorantGaramond-latin-wght.woff2: variable 300-600, Latin subset, served by the Google Fonts CSS API (fonts.gstatic.com/s/cormorantgaramond/v21/)
+License: https://raw.githubusercontent.com/google/fonts/main/ofl/cormorantgaramond/OFL.txt (CormorantGaramond-OFL.txt)
+
+Sacramento (script accent, replaces Dancing Script, 5 November 2026): https://fonts.google.com/specimen/Sacramento
+Sacramento-latin.woff2: Latin subset, served by the Google Fonts CSS API (fonts.gstatic.com/s/sacramento/v17/)
+License: https://raw.githubusercontent.com/google/fonts/main/ofl/sacramento/OFL.txt (Sacramento-OFL.txt)

@@ -1,6 +1,6 @@
 /* A single editorial system, shared by every page. */
 /* Sage & Stone: brand ivory, sage and terracotta, with a deep sage anchor for type and dark surfaces. */
-:root{--sans:"Avenir Next",Avenir,"Nunito Sans",Arial,sans-serif;--serif:var(--sans);--navigation-height:64px;--s-ivory:#fff8ec;--s-stone:#f1eadf;--s-ink:#24302a;--s-text:#5c6559;--s-sage:#9ab7a8;--s-clay:#834c4d;--s-rule:#24302a24;--ink:var(--s-ink);--muted:var(--s-text);--rule:var(--s-rule);--quiet:var(--s-stone)}
+:root{--sans:"Avenir Next",Avenir,"Nunito Sans",Arial,sans-serif;--serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;--script:'Sacramento',cursive;--navigation-height:64px;--s-ivory:#fff8ec;--s-stone:#f1eadf;--s-ink:#24302a;--s-text:#5c6559;--s-sage:#9ab7a8;--s-clay:#834c4d;--s-rule:#24302a24;--ink:var(--s-ink);--muted:var(--s-text);--rule:var(--s-rule);--quiet:var(--s-stone)}
 body{font-family:var(--sans);font-size:18px}
 body .header{height:64px!important;min-height:64px!important;padding:8px 5%!important;background:var(--s-ivory)!important;color:var(--s-ink)!important;gap:20px!important;box-shadow:0 1px 0 var(--s-rule)!important}
 body .header .wordmark{width:120px!important;min-width:120px!important}
@@ -267,7 +267,7 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 :root body .story-founder .founder-role{color:var(--s-sage)!important;font-size:15px!important;letter-spacing:.14em;text-transform:uppercase;margin:0}
 :root body .story-founder .founder-text{max-width:640px;border-top:1px solid #fff8ec26;padding-top:32px}
 :root body .story-founder:not(.has-photo) .founder-text{border-top:0;padding-top:0;border-left:1px solid #fff8ec26;padding-left:7%}
-:root body .story-founder .founder-quote{margin:0 0 28px;font-family:Georgia,"Times New Roman",serif;font-style:italic;font-size:clamp(24px,2.4vw,32px);line-height:1.35;color:var(--s-ivory)}
+:root body .story-founder .founder-quote{margin:0 0 28px;font-family:var(--serif);font-style:italic;font-size:clamp(24px,2.4vw,32px);line-height:1.35;color:var(--s-ivory)}
 :root body .story-founder .founder-text p{color:#fff8ecd1!important;margin:0 0 20px}
 :root body .story-founder .founder-text p:first-of-type{color:var(--s-ivory)!important;font-size:clamp(19px,1.5vw,21px)!important;line-height:1.65!important}
 @media(max-width:700px){
@@ -290,7 +290,7 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 :root body.story-page .st-roles li+li{border-left:1px solid #834c4d59}
 :root body.story-page .st-why-close{max-width:620px;margin:40px auto 0}
 :root body.story-page .st-why-close p{margin:0 0 10px}
-:root body.story-page .st-emphasis{font-family:Georgia,"Times New Roman",serif;font-style:italic;font-size:clamp(21px,1.8vw,26px)!important;line-height:1.45!important;color:var(--s-clay)!important;margin-top:24px!important}
+:root body.story-page .st-emphasis{font-family:var(--serif);font-style:italic;font-size:clamp(21px,1.8vw,26px)!important;line-height:1.45!important;color:var(--s-clay)!important;margin-top:24px!important}
 :root body.story-page :is(.st-belief,.st-necessity){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,7vw,104px);align-items:center;padding:clamp(80px,9vw,128px) 7%}
 :root body.story-page .st-belief{background:var(--s-stone)}
 :root body.story-page .st-necessity{background:var(--s-ivory)}
@@ -312,7 +312,7 @@ body .circle-photo figcaption{position:static!important;background:none!importan
  :root body.story-page .st-why h2{margin-left:0!important}
 }
 /* The club's exclusivity line, set apart on Membership. */
-:root body.premium-home main .membership-notes p.membership-right-ones{font-family:Georgia,"Times New Roman",serif;font-style:italic;font-size:clamp(22px,2vw,28px)!important;line-height:1.45!important;color:var(--s-ivory)!important;margin:32px 0 40px!important;padding-left:24px;border-left:1px solid var(--s-sage)}
+:root body.premium-home main .membership-notes p.membership-right-ones{font-family:var(--serif);font-style:italic;font-size:clamp(22px,2vw,28px)!important;line-height:1.45!important;color:var(--s-ivory)!important;margin:32px 0 40px!important;padding-left:24px;border-left:1px solid var(--s-sage)}
 /* Experiences: the "More than wellness" passage, photograph beside words. */
 :root body .more-wellness-story{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(40px,7vw,104px);align-items:center;padding:clamp(80px,9vw,128px) 7%;background:var(--s-ivory)}
 :root body .more-wellness-story .editorial-photo{margin:0;aspect-ratio:4/5;overflow:hidden;height:auto!important;max-height:none!important}
@@ -320,7 +320,7 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 :root body .more-wellness-story .st-copy{max-width:560px}
 :root body .more-wellness-story h2{margin:16px 0 24px!important}
 :root body.premium-home main .more-wellness-story p.st-lead{font-size:clamp(19px,1.5vw,22px)!important;line-height:1.55!important;color:var(--s-ink)!important}
-:root body.premium-home main .more-wellness-story p.st-emphasis{font-family:Georgia,"Times New Roman",serif;font-style:italic;font-size:clamp(21px,1.8vw,26px)!important;line-height:1.45!important;color:var(--s-clay)!important;margin-top:24px}
+:root body.premium-home main .more-wellness-story p.st-emphasis{font-family:var(--serif);font-style:italic;font-size:clamp(21px,1.8vw,26px)!important;line-height:1.45!important;color:var(--s-clay)!important;margin-top:24px}
 @media(max-width:700px){:root body .more-wellness-story{grid-template-columns:1fr}}
 /* Photo-and-words sections stack below 900px: the photograph goes full width in a calm
    landscape crop instead of shrinking beside a column of text. */
@@ -520,7 +520,6 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 :root body .soft-hero>.editorial-photo img[src*="sphere-hands-bowls"]{object-position:60% 62%!important}
 :root body .soft-hero>.editorial-photo img[src*="sphere-meditation-circle"]{object-position:50% 62%!important}
 :root body .soft-hero>.editorial-photo img[src*="sphere-buddha-garden"]{object-position:50% 30%!important}
-:root body main .soft-hero .eyebrow.eyebrow{letter-spacing:.24em}
 @media (max-width:700px){:root body .soft-hero:not(.soft-hero-centred):after{background:linear-gradient(0deg,#1c2621d9 0%,#1c262180 45%,#1c262126 100%)}:root body .soft-hero-centred:after{background:radial-gradient(ellipse 95% 45% at 50% 50%,#1c2621bf 0%,#1c262180 60%,#1c262140 100%)}}
 /* Founder portrait (Our story): a gallery-style frame. The photo sits inside a fine ivory hairline set
    18px out from its edge, with a soft shadow, so it reads as a hung portrait on the deep sage, not a snapshot. */
@@ -529,3 +528,13 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 :root body .story-founder .founder-photo:before{content:'';position:absolute;inset:-18px;border:1px solid #fff8ec59;pointer-events:none}
 :root body .story-founder .founder-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:52% 40%;filter:saturate(.9) contrast(1.02)}
 @media (max-width:700px){:root body .story-founder .founder-photo{max-width:420px;width:calc(100% - 36px);margin:18px auto 28px}}
+/* Type pairing (5 November 2026): Cormorant Garamond for headings, the sans for everything read or pressed,
+   Sacramento only as a signature. Cormorant's small x-height is evened out with font-size-adjust, so the existing
+   size rules still hold. Labels above headings are sentence case in the body face, never tracked capitals. */
+:root body :is(h1,h2,h3,.journal-title,.founder-quote,blockquote){font-family:var(--serif)!important;font-weight:400!important;letter-spacing:-.005em!important;font-size-adjust:.44;overflow-wrap:break-word;min-width:0}
+:root body h3{font-weight:500!important}
+:root body h1{line-height:1.02!important}
+:root body :is(.eyebrow,.eyebrow.eyebrow,.founder-role){font-family:var(--sans);text-transform:none!important;letter-spacing:0!important;font-size:15px!important;font-weight:500}
+:root body :is(h1,h2){text-wrap:balance}
+:root body :is(.hero-foot p,.montage-toggle,label,.element-number,.circle-values,dt,.event-scroll-cue,.cv-arc p,.cv-pillars li,.cv-close-meta){text-transform:none!important;letter-spacing:0!important}
+:root body .presence-story .eyebrow.eyebrow{color:var(--s-sage)!important}

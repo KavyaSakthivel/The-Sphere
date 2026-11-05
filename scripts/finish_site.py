@@ -42,6 +42,25 @@ def founder_section():
   f'<div class="founder-head"><p class="eyebrow">{e(f.get("label") or "THE FOUNDER")}</p><h2 id="founder-name">{e(f["name"])}</h2>{creds}{role}</div>'
   f'<div class="founder-text">{quote}{body}</div></section>')
 
+# Labels read in sentence case, not tracked capitals (the words are unchanged). Proper names keep theirs.
+PROPER=[('the sphere wellness carnival','The Sphere Wellness Carnival'),('the wellness carnival','The Wellness Carnival'),('the sphere','The Sphere'),('wellness carnival','Wellness Carnival')]
+def sentence_case(text):
+ if re.search(r'[a-z]',re.sub(r'&[#\w]+;','',text)): return text
+ s=text.lower().replace(' · ',': ').replace(' &middot; ',': ')
+ s=re.sub(r'(^|[.?!/]\s+)([a-z])',lambda m:m[1]+m[2].upper(),s)
+ for a,b in PROPER: s=re.sub(r'\b'+a+r'\b',b,s,flags=re.I)
+ return s
+CAPS=re.compile(r""">(\s*)([A-Z0-9][A-Z0-9’'&#;.,:?!/ \-·]*[A-Z][A-Z0-9’'&#;.,:?!/ \-·]*)(\s*)<""")
+def labels(s):
+ head,sep,body=s.partition('<body')
+ if not sep: return s
+ parts=re.split(r'(<(?:script|style)\b.*?</(?:script|style)>)',body,flags=re.S)
+ def caps(m):
+  t=m[2]
+  return m[0] if len(re.findall('[A-Z]',t))<4 else '>'+m[1]+sentence_case(t)+m[3]+'<'
+ parts=[x if x.startswith(('<script','<style')) else CAPS.sub(caps,x) for x in parts]
+ return head+sep+''.join(parts)
+
 def build():
  entries=json.loads((ROOT/'data/journal.json').read_text())
  home=(ROOT/'dist/index.html').read_text()
@@ -113,6 +132,7 @@ def build():
     block=block.replace('>',f' style="background-image:url(data:image/webp;base64,{data});background-size:cover;background-position:center;">',1)
    return block
   s=re.sub(r'<figure\b[^>]*>.*?</figure>',preview,s,flags=re.S)
+  s=labels(s)
   s=s.replace('</head>','<link rel="stylesheet" href="/finish.css"></head>')
   # Google Search Console looks for its ownership tag on the home page only.
   verify=json.loads((ROOT/'data/site.json').read_text()).get('google_site_verification','').strip()
