@@ -31,7 +31,9 @@ def founder_section():
  from html import escape as e
  photo=''
  if f.get('photo'):
-  photo=f'<figure class="founder-photo"><img src="/assets/{e(f["photo"],quote=True)}" alt="{e(f.get("photo_alt") or f["name"],quote=True)}" loading="lazy" decoding="async"></figure>'
+  src=f["photo"]; small=re.sub(r'-\d+\.webp$','-640.webp',src)
+  srcset=f' srcset="/assets/{e(small,quote=True)} 640w, /assets/{e(src,quote=True)} {re.search(r"-(\d+)\.webp$",src)[1]}w" sizes="(max-width: 700px) 86vw, 38vw"' if small!=src and (ROOT/'dist/assets'/small).exists() else ''
+  photo=f'<figure class="founder-photo"><img src="/assets/{e(src,quote=True)}"{srcset} alt="{e(f.get("photo_alt") or f["name"],quote=True)}" loading="lazy" decoding="async"></figure>'
  quote=f'<blockquote class="founder-quote">“{e(f["quote"])}”</blockquote>' if f.get('quote') else ''
  role=f'<p class="founder-role">{e(f["role"])}</p>' if f.get('role') else ''
  creds=f'<p class="founder-credentials">{e(f["credentials"])}</p>' if f.get('credentials') else ''

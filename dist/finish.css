@@ -272,7 +272,7 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 :root body .story-founder .founder-text p:first-of-type{color:var(--s-ivory)!important;font-size:clamp(19px,1.5vw,21px)!important;line-height:1.65!important}
 @media(max-width:700px){
  :root body .story-founder,:root body .story-founder.has-photo{grid-template-columns:1fr;grid-template-areas:none}
- :root body .story-founder.has-photo>*{grid-area:auto}
+ :root body .story-founder.has-photo>*,:root body .story-founder.has-photo :is(.founder-photo,.founder-head,.founder-text){grid-area:auto}
  :root body .story-founder:not(.has-photo) .founder-text{border-left:0;padding-left:0;border-top:1px solid #fff8ec26;padding-top:28px}
 }
 /* The footer reads the same on every page, including the carnival. */
@@ -522,3 +522,10 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 :root body .soft-hero>.editorial-photo img[src*="sphere-buddha-garden"]{object-position:50% 30%!important}
 :root body main .soft-hero .eyebrow.eyebrow{letter-spacing:.24em}
 @media (max-width:700px){:root body .soft-hero:not(.soft-hero-centred):after{background:linear-gradient(0deg,#1c2621d9 0%,#1c262180 45%,#1c262126 100%)}:root body .soft-hero-centred:after{background:radial-gradient(ellipse 95% 45% at 50% 50%,#1c2621bf 0%,#1c262180 60%,#1c262140 100%)}}
+/* Founder portrait (Our story): a gallery-style frame. The photo sits inside a fine ivory hairline set
+   18px out from its edge, with a soft shadow, so it reads as a hung portrait on the deep sage, not a snapshot. */
+@media (min-width:701px){:root body .story-founder.has-photo{grid-template-columns:minmax(0,4.4fr) minmax(0,6fr);align-items:center}}
+:root body .story-founder .founder-photo{position:relative;overflow:visible;aspect-ratio:4/5;margin:18px;box-shadow:0 30px 60px -28px #0d1511cc}
+:root body .story-founder .founder-photo:before{content:'';position:absolute;inset:-18px;border:1px solid #fff8ec59;pointer-events:none}
+:root body .story-founder .founder-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:52% 40%;filter:saturate(.9) contrast(1.02)}
+@media (max-width:700px){:root body .story-founder .founder-photo{max-width:420px;width:calc(100% - 36px);margin:18px auto 28px}}
