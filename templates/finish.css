@@ -514,3 +514,11 @@ body .circle-photo figcaption{position:static!important;background:none!importan
  :root body.club-subpage .membership-circle>.membership-notes>p:first-child{grid-column:2;grid-row:1}
  :root body.club-subpage .membership-circle>.membership-notes>dl{grid-column:2;grid-row:2}
 }
+/* Sharp opening photographs (Experiences, Membership, Our story): a soft shadow sits behind the words only, so the photo stays crisp and the type always reads. */
+:root body .soft-hero:not(.soft-hero-centred):after{background:linear-gradient(90deg,#1c2621b3 0%,#1c262166 38%,#1c262100 68%),linear-gradient(0deg,#1c2621b3 0%,#1c262140 40%,#1c262100 70%)}
+:root body .soft-hero-centred:after{background:radial-gradient(ellipse 70% 60% at 50% 50%,#1c262199 0%,#1c262159 55%,#1c262126 100%)}
+:root body .soft-hero>.editorial-photo img[src*="sphere-hands-bowls"]{object-position:60% 62%!important}
+:root body .soft-hero>.editorial-photo img[src*="sphere-meditation-circle"]{object-position:50% 62%!important}
+:root body .soft-hero>.editorial-photo img[src*="sphere-buddha-garden"]{object-position:50% 30%!important}
+:root body main .soft-hero .eyebrow.eyebrow{letter-spacing:.24em}
+@media (max-width:700px){:root body .soft-hero:not(.soft-hero-centred):after{background:linear-gradient(0deg,#1c2621d9 0%,#1c262180 45%,#1c262126 100%)}:root body .soft-hero-centred:after{background:radial-gradient(ellipse 95% 45% at 50% 50%,#1c2621bf 0%,#1c262180 60%,#1c262140 100%)}}
