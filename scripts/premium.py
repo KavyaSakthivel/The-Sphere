@@ -82,7 +82,7 @@ def render_home(html):
     main = re.sub(r'<div class="discover-line".*?</div>', '', main, flags=re.S)
     main = re.sub(r'<details class="experience-directory".*?</details>', '', main, flags=re.S)
     main = re.sub(r'<section class="home-letter\b[^\"]*".*?</section>', '', main, flags=re.S)
-    main = re.sub(r'<div class="membership-notes".*?</dl></div>', '<div class="membership-notes" data-reveal><p>A small circle. A monthly rhythm.<br>A personal conversation first.</p><a class="text-link" href="/membership/">Discover membership <span aria-hidden="true">↗</span></a></div>', main, flags=re.S)
+    main = re.sub(r'<div class="membership-notes".*?</dl></div>', '<div class="membership-notes" data-reveal><p>A small circle. A monthly rhythm.<br>Six months, one session each month.</p><a class="text-link" href="/membership/">Discover membership <span aria-hidden="true">↗</span></a></div>', main, flags=re.S)
     main = re.sub(r'<details id="joining".*?</details>', '', main, flags=re.S)
     main = re.sub(r'^[ \t]+$', '', main, flags=re.M)
     if not CONFIG.get('gatherings_csv'):
@@ -148,18 +148,13 @@ def build_subpages(home, full_main):
     # Membership shows its own circle photograph rather than the homepage's.
     steps = re.findall(r'<li><span>(\d+)</span><div><h3>(.*?)</h3><p>(.*?)</p></div></li>', membership)
     membership = re.sub(r'\s*<details id="joining".*?</details>', '', membership, flags=re.S)
-    joining = ('<section id="joining" class="join-steps" aria-labelledby="joining-title"><h2 id="joining-title">How joining works.</h2><ol>'
-        + ''.join(f'<li><span class="join-number">{n}</span><h3>{h}</h3><p>{t}</p></li>' for n, h, t in steps)
-        + '</ol><button class="soft-hero-cta join-cta" type="button" data-invitation aria-haspopup="dialog">Request an invitation <span aria-hidden="true">→</span></button></section>')
-    membership = membership + joining
-    # Paid membership: one button to the client's Razorpay link (data/site.json membership_payment_url).
-    # Until that link is supplied the button opens the invitation form instead, so it never dead-ends.
     pay_url = CONFIG.get('membership_payment_url', '').strip()
-    pay_button = (f'<a class="soft-hero-cta join-cta" href="{escape(pay_url, quote=True)}" target="_blank" rel="noopener noreferrer">Join The Sphere <span aria-hidden="true">↗</span></a>' if pay_url
-        else '<button class="soft-hero-cta join-cta" type="button" data-invitation aria-haspopup="dialog">Join The Sphere <span aria-hidden="true">→</span></button>')
-    membership += ('<section id="fee" class="member-fee" aria-labelledby="fee-title"><p class="eyebrow">Membership</p><h2 id="fee-title">Six months in the circle.</h2>'
-        '<p class="member-fee-price"><strong>₹10,000</strong><span>for six months &nbsp;&bull;&nbsp; inclusive of GST</span></p>'
-        + pay_button + '<p class="member-fee-note">You will pay securely on Razorpay.</p></section>')
+    joining = ('<section id="joining" class="join-steps" aria-labelledby="joining-title"><h2 id="joining-title">How joining works.</h2><ol>'
+        '<li><span class="join-number">01</span><h3>Join The Sphere.</h3><p>Membership is ₹10,000 for six months, inclusive of GST. You pay securely on Razorpay.</p></li>'
+        '<li><span class="join-number">02</span><h3>One session each month.</h3><p>For six months, you are part of one gathering every month.</p></li>'
+        '<li><span class="join-number">03</span><h3>Details, privately.</h3><p>Venue and gathering details are shared with members privately.</p></li></ol>'
+        f'<a class="soft-hero-cta join-cta" href="{escape(pay_url, quote=True)}" target="_blank" rel="noopener noreferrer">Join The Sphere <span aria-hidden="true">↗</span></a></section>')
+    membership = membership + joining
     membership = membership.replace('sphere-intimate-', 'sphere-bowls-still-').replace('A small circle of women meditating together around singing bowls at The Sphere', 'Singing bowls and a cushion laid out before a session at The Sphere')
     # The bowls still life is a wide frame (1920x813); give the img its true size so the slot matches it.
     membership = re.sub(r'(<img src="/?assets/sphere-bowls-still-[^>]*?) width="1920" height="\d+"', r'\1 width="1920" height="813"', membership)
@@ -175,7 +170,7 @@ def build_subpages(home, full_main):
     letter = re.search(r'<section class="home-letter\b[^\"]*".*?</section>', full_main, re.S)[0]
     for slug, title, description, body in [
         ('experiences', 'The experiences', 'Movement, sound healing, mindfulness and meaningful connection. Explore the thoughtfully curated experiences at The Sphere, Coimbatore.', experience),
-        ('membership', 'Your place in the circle', 'An intentionally intimate women’s wellness circle in Coimbatore. Discover the monthly rhythm and how to request an invitation to The Sphere.', membership + letter),
+        ('membership', 'Your place in the circle', 'An intentionally intimate women’s wellness circle in Coimbatore. Discover the monthly rhythm and join The Sphere: ₹10,000 for six months, one session each month.', membership + letter),
     ]:
         page_head = re.sub(r'<title>.*?</title>', '<title>'+title+' | The Sphere</title>', head)
         page_head = re.sub(r'<meta name="description"[^>]*>', '<meta name="description" content="'+escape(description, quote=True)+'">', page_head)

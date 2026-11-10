@@ -549,16 +549,7 @@
   {
     "source": "[Request an Invitation]",
     "pages": [
-      "index.html",
-      "membership/index.html",
-      "palette-study/camel-rubine/membership/index.html",
-      "palette-study/fairway/membership/index.html",
-      "palette-study/green-velvet/membership/index.html",
-      "palette-study/index.html",
-      "palette-study/olive-earth/membership/index.html",
-      "palette-study/pale-jade/membership/index.html",
-      "palette-study/pine-old-lace/membership/index.html",
-      "philosophy/index.html"
+      "palette-study/index.html"
     ]
   },
   {
