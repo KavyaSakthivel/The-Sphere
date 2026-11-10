@@ -158,7 +158,7 @@ def build_subpages(home, full_main):
     pay_button = (f'<a class="soft-hero-cta join-cta" href="{escape(pay_url, quote=True)}" target="_blank" rel="noopener noreferrer">Join The Sphere <span aria-hidden="true">↗</span></a>' if pay_url
         else '<button class="soft-hero-cta join-cta" type="button" data-invitation aria-haspopup="dialog">Join The Sphere <span aria-hidden="true">→</span></button>')
     membership += ('<section id="fee" class="member-fee" aria-labelledby="fee-title"><p class="eyebrow">Membership</p><h2 id="fee-title">Six months in the circle.</h2>'
-        '<p class="member-fee-price"><strong>₹10,000</strong><span>for six months &nbsp;&bull;&nbsp; GST applicable</span></p>'
+        '<p class="member-fee-price"><strong>₹10,000</strong><span>for six months &nbsp;&bull;&nbsp; inclusive of GST</span></p>'
         + pay_button + '<p class="member-fee-note">You will pay securely on Razorpay.</p></section>')
     membership = membership.replace('sphere-intimate-', 'sphere-bowls-still-').replace('A small circle of women meditating together around singing bowls at The Sphere', 'Singing bowls and a cushion laid out before a session at The Sphere')
     # The bowls still life is a wide frame (1920x813); give the img its true size so the slot matches it.
