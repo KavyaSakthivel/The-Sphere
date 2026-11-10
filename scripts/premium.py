@@ -152,6 +152,14 @@ def build_subpages(home, full_main):
         + ''.join(f'<li><span class="join-number">{n}</span><h3>{h}</h3><p>{t}</p></li>' for n, h, t in steps)
         + '</ol><button class="soft-hero-cta join-cta" type="button" data-invitation aria-haspopup="dialog">Request an invitation <span aria-hidden="true">→</span></button></section>')
     membership = membership + joining
+    # Paid membership: one button to the client's Razorpay link (data/site.json membership_payment_url).
+    # Until that link is supplied the button opens the invitation form instead, so it never dead-ends.
+    pay_url = CONFIG.get('membership_payment_url', '').strip()
+    pay_button = (f'<a class="soft-hero-cta join-cta" href="{escape(pay_url, quote=True)}" target="_blank" rel="noopener noreferrer">Join The Sphere <span aria-hidden="true">↗</span></a>' if pay_url
+        else '<button class="soft-hero-cta join-cta" type="button" data-invitation aria-haspopup="dialog">Join The Sphere <span aria-hidden="true">→</span></button>')
+    membership += ('<section id="fee" class="member-fee" aria-labelledby="fee-title"><p class="eyebrow">Membership</p><h2 id="fee-title">Six months in the circle.</h2>'
+        '<p class="member-fee-price"><strong>₹10,000</strong><span>for six months &nbsp;&bull;&nbsp; GST applicable</span></p>'
+        + pay_button + '<p class="member-fee-note">You will pay securely on Razorpay.</p></section>')
     membership = membership.replace('sphere-intimate-', 'sphere-bowls-still-').replace('A small circle of women meditating together around singing bowls at The Sphere', 'Singing bowls and a cushion laid out before a session at The Sphere')
     # The bowls still life is a wide frame (1920x813); give the img its true size so the slot matches it.
     membership = re.sub(r'(<img src="/?assets/sphere-bowls-still-[^>]*?) width="1920" height="\d+"', r'\1 width="1920" height="813"', membership)
