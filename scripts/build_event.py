@@ -351,9 +351,8 @@ def page(ev):
  <p data-book><a class="cv-button" href="{a(book)}"{new_tab(ev)}>Reserve Your Spot {arrow()}</a></p>
 </section>
 </main>
-<div class="event-bar" data-event-bar aria-hidden="true">
- <p class="cv-bar-price"><strong>{price}</strong>{note_span}</p>
- <a class="cv-button" href="{a(book) if ev['mode'] != 'soon' else '#tickets'}"{new_tab(ev)} tabindex="-1">{'View tickets' if ev['mode'] == 'soon' else 'Book Your Experience'} <span aria-hidden="true">{'↓' if ev['mode'] == 'soon' else '&#8599;'}</span></a>
+<div class="event-bar" data-event-bar>
+ <a class="cv-button" href="{a(book) if ev['mode'] != 'soon' else '#tickets'}"{new_tab(ev)}><span>Reserve Your Spot</span> <strong>{price}</strong> <span aria-hidden="true">{'↓' if ev['mode'] == 'soon' else '&#8599;'}</span></a>
 </div>"""
 
 

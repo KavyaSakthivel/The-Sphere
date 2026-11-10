@@ -134,15 +134,14 @@
 :root body.event-page .carnival .cv-close-meta{margin-top:20px;font-size:13px!important;letter-spacing:.14em;text-transform:uppercase;color:var(--s-text)}
 .cv-close [data-book]{margin-top:32px}
 
-/* Phone booking bar: price and one action, only after the opening has scrolled away. */
+/* Phone booking bar: one Reserve Your Spot button with the price, fixed to the bottom for the whole page. */
 .event-bar{display:none}
 @media(max-width:700px){
- .event-bar{display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;position:fixed;left:0;right:0;bottom:0;z-index:40;padding:10px 5% calc(10px + env(safe-area-inset-bottom));background:var(--s-ivory);border-top:1px solid var(--s-rule);transform:translateY(105%);transition:transform .3s}
- .event-bar.is-visible{transform:none}
- .cv-bar-price{margin:0;display:flex;flex-direction:column;line-height:1.2}
- .cv-bar-price strong{font-size:22px;font-weight:400;color:var(--s-ink)}
- .cv-bar-price span{font-size:12px;color:var(--s-text)}
- body.has-event-dock{padding-bottom:72px}
+ .event-bar{display:block;position:fixed;left:0;right:0;bottom:0;z-index:40;padding:10px 5% calc(10px + env(safe-area-inset-bottom));background:var(--s-ivory);border-top:1px solid var(--s-rule);box-shadow:0 -8px 24px #30362e14}
+ .event-bar .cv-button{display:flex;width:100%;justify-content:center;gap:12px;min-height:52px}
+ .event-bar .cv-button strong{font-weight:600;padding-left:12px;border-left:1px solid currentColor}
+ body.event-page{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+}
 }
 
 /* Tablet and phone */

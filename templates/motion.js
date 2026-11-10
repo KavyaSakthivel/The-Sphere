@@ -77,3 +77,24 @@ document.querySelectorAll('[data-pillar-browser]').forEach(browser => {
   reduced.addEventListener('change', () => { initialiseReveals(); schedule(); });
   small.addEventListener('change', schedule);
 })();
+
+// Home page only: a once-per-visit invitation to the carnival. It opens shortly after arrival, never over the
+// membership dialog, stays closed for the rest of the visit once dismissed, and retires itself after promotion_until.
+(() => {
+  const popup = document.querySelector('[data-carnival-popup]');
+  if (!popup || typeof popup.showModal !== 'function') return;
+  const until = Date.parse(popup.dataset.promotionUntil || '');
+  const key = 'carnival-popup:' + (popup.dataset.promotionKey || '');
+  const read = () => { try { return sessionStorage.getItem(key); } catch (e) { return null; } };
+  const write = () => { try { sessionStorage.setItem(key, '1'); } catch (e) {} };
+  if ((until && Date.now() > until) || read()) { popup.remove(); return; }
+  const close = () => { write(); popup.close(); };
+  popup.querySelector('.carnival-close')?.addEventListener('click', close);
+  popup.querySelector('[data-dismiss-carnival]')?.addEventListener('click', close);
+  popup.addEventListener('click', event => { if (event.target === popup) close(); });
+  popup.addEventListener('cancel', write);
+  popup.querySelector('.carnival-popup-cta')?.addEventListener('click', write);
+  window.setTimeout(() => {
+    if (!document.querySelector('dialog[open]') && !location.hash) popup.showModal();
+  }, 1800);
+})();

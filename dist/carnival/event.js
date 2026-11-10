@@ -3,34 +3,8 @@
 const eventEnd = Date.parse(document.querySelector('main.event')?.dataset.eventEnd || '');
 if (Date.now() > eventEnd) document.body.classList.add('is-past');
 
-// Phones get a slim price-and-tickets bar once the opening and the at-a-glance band have scrolled
-// away; it steps aside while the ticket section or the closing call to action is on screen.
-const bar = document.querySelector('[data-event-bar]');
-const phone = window.matchMedia('(max-width: 700px)');
-if (bar && !document.body.classList.contains('is-past')) {
-  const link = bar.querySelector('a');
-  const inView = new Set();
-  const update = () => {
-    const show = phone.matches && inView.size === 0 && window.scrollY > 200;
-    bar.classList.toggle('is-visible', show);
-    bar.setAttribute('aria-hidden', String(!show));
-    if (link) link.tabIndex = show ? 0 : -1;
-    document.body.classList.toggle('has-event-dock', show);
-  };
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => entry.isIntersecting ? inView.add(entry.target) : inView.delete(entry.target));
-      update();
-    });
-    ['.event-cinematic', '.cv-glance', '#tickets', '.cv-close', 'footer']
-      .map(selector => document.querySelector(selector))
-      .filter(Boolean)
-      .forEach(el => observer.observe(el));
-  }
-  window.addEventListener('scroll', update, { passive: true });
-  phone.addEventListener('change', update);
-  update();
-}
+// The phone booking bar (Reserve Your Spot and the price) stays on screen from top to bottom; the stylesheet
+// shows it on phones and the is-past rule above hides it once the evening is over.
 
 // The contents row underlines the section being read, including after anchor jumps.
 (() => {
