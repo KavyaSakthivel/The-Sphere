@@ -1,6 +1,6 @@
 /* A single editorial system, shared by every page. */
 /* Sage & Stone: brand ivory, sage and terracotta, with a deep sage anchor for type and dark surfaces. */
-:root{--sans:"Avenir Next",Avenir,"Nunito Sans",Arial,sans-serif;--serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;--script:'Sacramento',cursive;--navigation-height:64px;--s-ivory:#fff8ec;--s-stone:#f1eadf;--s-ink:#24302a;--s-text:#5c6559;--s-sage:#9ab7a8;--s-clay:#834c4d;--s-rule:#24302a24;--ink:var(--s-ink);--muted:var(--s-text);--rule:var(--s-rule);--quiet:var(--s-stone)}
+:root{--sans:'DM Sans',Arial,sans-serif;--serif:'Fraunces',Georgia,'Times New Roman',serif;--script:'Fraunces Accent','Fraunces',Georgia,serif;--navigation-height:64px;--s-ivory:#fff8ec;--s-stone:#f1eadf;--s-ink:#24302a;--s-text:#5c6559;--s-sage:#9ab7a8;--s-clay:#834c4d;--s-rule:#24302a24;--ink:var(--s-ink);--muted:var(--s-text);--rule:var(--s-rule);--quiet:var(--s-stone)}
 body{font-family:var(--sans);font-size:18px}
 body .header{height:64px!important;min-height:64px!important;padding:8px 5%!important;background:var(--s-ivory)!important;color:var(--s-ink)!important;gap:20px!important;box-shadow:0 1px 0 var(--s-rule)!important}
 body .header .wordmark{width:120px!important;min-width:120px!important}
@@ -528,11 +528,11 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 :root body .story-founder .founder-photo:before{content:'';position:absolute;inset:-18px;border:1px solid #fff8ec59;pointer-events:none}
 :root body .story-founder .founder-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:52% 40%;filter:saturate(.9) contrast(1.02)}
 @media (max-width:700px){:root body .story-founder .founder-photo{max-width:420px;width:calc(100% - 36px);margin:18px auto 28px}}
-/* Type pairing (5 November 2026): Cormorant Garamond for headings, the sans for everything read or pressed,
-   Sacramento only as a signature. Cormorant's small x-height is evened out with font-size-adjust, so the existing
-   size rules still hold. Labels above headings are sentence case in the body face, never tracked capitals. */
-:root body :is(h1,h2,h3,.journal-title,.founder-quote,blockquote){font-family:var(--serif)!important;font-weight:400!important;letter-spacing:-.005em!important;font-size-adjust:.44;overflow-wrap:break-word;min-width:0}
-:root body h3{font-weight:500!important}
+/* Type pairing (11 November 2026): Fraunces for headings, DM Sans for everything read or pressed, on every page.
+   The words that used to be set in a script are Fraunces italic (see --script and assets/fonts.css).
+   Labels above headings are sentence case in the body face, never tracked capitals. */
+:root body :is(h1,h2,h3,.journal-title,.founder-quote,blockquote){font-family:var(--serif)!important;font-weight:300!important;letter-spacing:-.02em!important;overflow-wrap:break-word;min-width:0}
+:root body h3{font-weight:400!important;letter-spacing:-.01em!important}
 :root body h1{line-height:1.02!important}
 :root body :is(.eyebrow,.eyebrow.eyebrow,.founder-role){font-family:var(--sans);text-transform:none!important;letter-spacing:0!important;font-size:15px!important;font-weight:500}
 :root body :is(h1,h2){text-wrap:balance}
@@ -547,3 +547,116 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 :root body .member-fee-price span{font-size:15px;letter-spacing:.08em;text-transform:uppercase;color:var(--s-text)}
 :root body .member-fee .join-cta{margin-top:32px}
 :root body .member-fee-note{margin:16px 0 0;font-size:13px;color:var(--s-text)}
+
+/* Membership, the single offer (11 November 2026): a photograph and one line, the private circle, the note from
+   The Sphere as the centrepiece, one fee card, how joining works, then the enquiry asked one question at a time.
+   Rules start at #main so they hold against the older page-wide rules above. */
+#main .mo-hero{position:relative;display:flex!important;align-items:center;justify-content:center;min-height:clamp(520px,82vh,780px);margin:0!important;padding:96px 6%!important;background:var(--s-ink)!important;color:var(--s-ivory);text-align:center;overflow:hidden}
+#main .mo-hero-photo{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;opacity:.45}
+#main .mo-hero-copy{position:relative;display:flex;flex-direction:column;align-items:center;gap:28px;max-width:900px}
+#main .mo-hero .eyebrow{margin:0!important;color:var(--s-ivory)!important}
+#main .mo-hero h1{margin:0!important;color:var(--s-ivory)!important;font-size:clamp(46px,7.4vw,104px)!important;line-height:1!important;letter-spacing:-.025em!important}
+#main .mo-button{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:54px;padding:16px 36px;border:1px solid currentColor;font:500 15px/1 var(--sans);letter-spacing:.04em;text-decoration:none;transition:background-color .2s,color .2s,border-color .2s}
+#main .mo-button-line{color:var(--s-ivory)}
+#main .mo-button-line:hover{background:var(--s-ivory);color:var(--s-ink);border-color:var(--s-ivory)}
+#main .mo-button-solid{background:var(--s-ink);border-color:var(--s-ink);color:var(--s-ivory)}
+#main .mo-button-solid:hover{background:var(--s-clay);border-color:var(--s-clay)}
+#main .mo-button:focus-visible{outline:2px solid var(--s-sage);outline-offset:4px}
+#main :is(.mo-circle,.mo-hello,.mo-letter) h2 em{font-family:var(--serif)!important;font-style:italic!important;font-size:1em!important;font-weight:300!important;color:inherit!important}
+
+#main .mo-circle{box-sizing:border-box;max-width:900px;margin:0 auto;padding:clamp(72px,9vw,140px) 6%;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center}
+#main .mo-circle .eyebrow{margin:0!important}
+#main .mo-circle h2{margin:0!important;font-size:clamp(40px,5.4vw,72px)!important;line-height:1.05!important}
+#main .mo-circle p{margin:0!important;max-width:34em;color:var(--s-text)}
+#main .mo-circle .mo-lead{font-size:20px!important;line-height:1.6!important;color:var(--s-ink)}
+#main .mo-circle .mo-right-ones{margin-top:14px!important;max-width:24em;font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(22px,2.3vw,29px)!important;line-height:1.35!important;color:var(--s-ink)}
+#main .mo-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;margin:30px 0 0;border-top:1px solid var(--s-rule);border-bottom:1px solid var(--s-rule);text-align:left}
+#main .mo-facts div{padding:22px 22px 24px}
+#main .mo-facts div+div{border-left:1px solid var(--s-rule)}
+#main .mo-facts dt{margin:0 0 6px;font-size:14px;font-weight:500;color:var(--s-clay)}
+#main .mo-facts dd{margin:0;font-size:16px;line-height:1.5;color:var(--s-ink)}
+
+#main .mo-letter{background:var(--s-stone);padding:clamp(56px,8vw,128px) 6%}
+#main .mo-letter-sheet{box-sizing:border-box;max-width:920px;margin:0 auto;padding:clamp(48px,7vw,112px) clamp(26px,6vw,96px);background:var(--s-ivory);border:1px solid var(--s-rule);display:flex;flex-direction:column;align-items:center;gap:30px;text-align:center}
+#main .mo-letter .eyebrow{margin:0!important}
+#main .mo-letter h2{margin:0!important;max-width:13em;font-size:clamp(36px,5vw,68px)!important;font-style:italic;line-height:1.08!important}
+#main .mo-letter-body{display:flex;flex-direction:column;gap:18px;max-width:31em;padding-top:30px;border-top:1px solid var(--s-rule)}
+#main .mo-letter-body p{margin:0!important;font-size:19px!important;line-height:1.75!important;color:var(--s-ink)}
+#main .mo-letter .mo-signoff{margin:10px 0 0!important;font-family:var(--serif);font-weight:300;font-size:clamp(26px,3.2vw,40px)!important;line-height:1.2!important;letter-spacing:-.015em;color:var(--s-ink)}
+#main .mo-letter .mo-signature{margin:0!important;font-family:var(--serif);font-style:italic;font-weight:400;font-size:24px!important;line-height:1.2!important;color:var(--s-clay)}
+
+#main .mo-offer{background:#dce5dd;padding:clamp(56px,8vw,120px) 6%}
+#main .mo-card{box-sizing:border-box;max-width:720px;margin:0 auto;padding:clamp(52px,7vw,96px) clamp(28px,5vw,72px);background:var(--s-ivory);border:1px solid var(--s-ink);outline:1px solid var(--s-ink);outline-offset:-10px;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center}
+#main .mo-card p{margin:0!important}
+#main .mo-card .mo-price{font-family:var(--serif);font-weight:300;font-size:clamp(60px,9vw,116px)!important;line-height:1!important;letter-spacing:-.03em;font-variant-numeric:lining-nums;color:var(--s-ink)}
+#main .mo-card .mo-term{font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(22px,2.4vw,28px)!important;line-height:1.25!important;color:var(--s-ink)}
+#main .mo-rule{display:block;width:48px;height:1px;margin:10px 0;background:var(--s-ink)}
+#main .mo-card .mo-rhythm{font-size:19px!important;color:var(--s-ink)}
+#main .mo-card .mo-private{max-width:26em;font-size:17px!important;color:var(--s-text)}
+#main .mo-card .mo-button{margin-top:16px}
+#main .mo-card .mo-secure{font-size:14px!important;color:var(--s-text)}
+
+#main .mo-steps{box-sizing:border-box;max-width:1240px;margin:0 auto;padding:clamp(64px,8vw,120px) 6%;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(36px,6vw,88px);align-items:center}
+#main .mo-steps-photo{margin:0;height:clamp(320px,40vw,540px);overflow:hidden;background-color:var(--s-stone)}
+#main .mo-steps-photo img{display:block;width:100%;height:100%;object-fit:cover}
+#main .mo-steps h2{margin:0 0 26px!important;font-size:clamp(32px,3.6vw,48px)!important}
+#main .mo-steps ol{list-style:none;margin:0;padding:0;border-bottom:1px solid var(--s-rule)}
+#main .mo-steps li{display:flex;gap:24px;padding:24px 0;border-top:1px solid var(--s-rule)}
+#main .mo-step-number{flex:none;width:40px;font-family:var(--serif);font-weight:300;font-size:23px;line-height:1.3;font-variant-numeric:lining-nums;color:var(--s-clay)}
+#main .mo-steps h3{margin:0 0 6px!important;font-size:24px!important;line-height:1.25!important}
+#main .mo-steps li p{margin:0!important;font-size:17px!important;line-height:1.6!important;color:var(--s-text)}
+
+#main .mo-hello{background:var(--s-ink);color:var(--s-ivory);padding:clamp(72px,9vw,136px) 6%}
+#main .mo-hello-inner{max-width:680px;margin:0 auto}
+#main .mo-hello .eyebrow{margin:0 0 18px!important;color:#dfc6b6!important}
+#main .mo-hello h2{margin:0 0 22px!important;color:var(--s-ivory)!important;font-size:clamp(40px,5.4vw,72px)!important;line-height:1.05!important}
+#main .mo-hello-inner>p{margin:0!important;color:#fff8eccc}
+#main .mo-form{display:flex;flex-direction:column;gap:26px;margin:clamp(36px,5vw,56px) 0 0;padding:0;border:0;background:none}
+#main .mo-form .field{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;border:0}
+#main .mo-form label{font-size:15px!important;font-weight:500;line-height:1.4;color:var(--s-ivory)}
+#main .mo-form .optional{margin-left:8px;font:400 14px/1.4 var(--sans);letter-spacing:0;color:#fff8ecb3}
+#main .mo-form :is(input:not([type=checkbox]),textarea){box-sizing:border-box;width:100%;min-height:52px;margin:0;padding:12px 0;border:0;border-bottom:1px solid #fff8ec99;border-radius:0;background:transparent;box-shadow:none;color:var(--s-ivory);font:400 19px/1.5 var(--sans);font-size:19px!important;resize:vertical}
+#main .mo-form :is(input,textarea)::placeholder{color:#fff8ec80;opacity:1}
+#main .mo-form :is(input:not([type=checkbox]),textarea):focus-visible{outline:0;border-bottom:2px solid var(--s-sage);padding-bottom:11px}
+#main .mo-last{display:flex;flex-direction:column;gap:26px}
+#main .mo-form .consent{display:flex;align-items:flex-start;gap:14px;margin:0;font-size:15px!important;font-weight:400;line-height:1.55;color:#fff8eccc}
+#main .mo-form .consent input{flex:none;width:22px;height:22px;margin:1px 0 0;accent-color:var(--s-sage)}
+#main .mo-form button{cursor:pointer;font-family:var(--sans)}
+#main .mo-form :is(button[type=submit],.mo-continue){display:inline-flex;align-items:center;justify-content:center;gap:14px;align-self:flex-start;min-height:54px;margin:0;padding:16px 36px;border:1px solid var(--s-ivory)!important;border-radius:0;background:var(--s-ivory)!important;color:var(--s-ink)!important;font-size:15px;font-weight:500;line-height:1;letter-spacing:.04em;transition:background-color .2s,border-color .2s}
+#main .mo-form :is(button[type=submit],.mo-continue):hover{background:var(--s-sage)!important;border-color:var(--s-sage)!important}
+#main .mo-form button:focus-visible{outline:2px solid var(--s-sage);outline-offset:4px}
+#main .mo-form .mo-back{min-height:48px;padding:12px 4px;border:0;background:none;color:var(--s-ivory);font-size:15px;text-decoration:underline;text-underline-offset:6px}
+#main .mo-form .form-status{margin:0!important;min-height:0;font-size:15px!important;color:#f3c9b8}
+#main .mo-form .form-status:empty{display:none}
+/* One question at a time: site.js adds .is-stepped, the count, Continue and Back. */
+#main .mo-form.is-stepped{gap:30px;min-height:360px;justify-content:center}
+#main .mo-form.is-stepped>:is(.field,.mo-last):not(.is-current){display:none!important}
+#main .mo-form.is-stepped .field>label{font-family:var(--serif);font-weight:300;font-size:clamp(32px,4.6vw,54px)!important;line-height:1.08;letter-spacing:-.02em}
+#main .mo-form.is-stepped .field>label .optional{display:block;margin:12px 0 0}
+#main .mo-form.is-stepped .field{gap:18px}
+#main .mo-progress{margin:0!important;font-size:14px!important;font-weight:500;letter-spacing:.06em;color:#dfc6b6}
+#main .mo-step-nav{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px}
+#main .mo-step-nav [hidden]{display:none!important}
+#main .mo-bars{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:8px;margin-top:10px}
+#main .mo-bars span{height:2px;background:#fff8ec40;transition:background-color .3s}
+#main .mo-bars span.is-done{background:var(--s-ivory)}
+#main .mo-hello .form-success{margin:clamp(36px,5vw,56px) 0 0;padding:28px 0 0;border-top:1px solid #fff8ec66;outline:0}
+#main .mo-hello .form-success strong{display:block;margin:0 0 12px;font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(28px,3.4vw,40px);line-height:1.15;color:var(--s-ivory)}
+#main .mo-hello .form-success p{margin:0!important;color:#fff8eccc}
+#main .mo-hello .dialog-or{display:flex;align-items:center;gap:16px;margin:44px 0 18px!important;font-size:14px!important;color:#fff8ecb3}
+#main .mo-hello .dialog-or:before,#main .mo-hello .dialog-or:after{content:'';flex:1;height:1px;background:#fff8ec40;position:static;width:auto}
+#main .mo-hello .dialog-or span{padding:0;background:none}
+#main .mo-hello .dialog-instagram{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0;border:0;background:none;color:var(--s-ivory);font-size:16px;text-decoration:underline;text-underline-offset:6px}
+#main .mo-hello .dialog-small{margin:22px 0 0!important;font-size:14px!important;line-height:1.6!important;color:#fff8ecb3}
+@media (max-width:800px){
+#main .mo-steps{grid-template-columns:minmax(0,1fr)}
+#main .mo-steps-photo{height:260px}
+#main .mo-facts{grid-template-columns:minmax(0,1fr)}
+#main .mo-facts div{padding:18px 4px}
+#main .mo-facts div+div{border-left:0;border-top:1px solid var(--s-rule)}
+#main .mo-hero{min-height:560px;padding:72px 20px!important}
+#main :is(.mo-circle,.mo-letter,.mo-offer,.mo-steps,.mo-hello){padding-left:20px;padding-right:20px}
+#main .mo-card{outline-offset:-7px}
+#main .mo-form.is-stepped{min-height:340px}
+}
+@media (prefers-reduced-motion:reduce){#main .mo-button,#main .mo-form button,#main .mo-bars span{transition:none}}

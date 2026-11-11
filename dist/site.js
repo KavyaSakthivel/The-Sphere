@@ -72,6 +72,57 @@ document.addEventListener('keydown', event => {
 document.querySelectorAll('[data-event-until]').forEach(el => { if (Date.now() > Date.parse(el.dataset.eventUntil)) el.remove(); });
 document.querySelector('#year').textContent = new Date().getFullYear();
 
+// Membership enquiry: one question at a time. The form is complete without this (every question shows
+// at once); here each question takes the stage in turn, with Continue, Back and a quiet count.
+document.querySelectorAll('form[data-steps]').forEach(form => {
+  const steps = [...form.children].filter(el => el.matches('.field, .mo-last'));
+  const submit = form.querySelector('button[type="submit"]');
+  const status = form.querySelector('.form-status');
+  if (steps.length < 2 || !submit || !status) return;
+  let current = 0;
+  const make = (tag, className, text) => {
+    const el = document.createElement(tag);
+    el.className = className;
+    if (text) el.textContent = text;
+    return el;
+  };
+  const progress = make('p', 'mo-progress');
+  progress.setAttribute('aria-live', 'polite');
+  const next = make('button', 'mo-continue', 'Continue');
+  const back = make('button', 'mo-back', 'Back');
+  next.type = back.type = 'button';
+  const nav = make('div', 'mo-step-nav');
+  nav.append(next, submit, back);
+  const bars = make('div', 'mo-bars');
+  bars.setAttribute('aria-hidden', 'true');
+  steps.forEach(() => bars.append(document.createElement('span')));
+  form.insertBefore(progress, steps[0]);
+  form.insertBefore(nav, status);
+  form.append(bars);
+  const show = (index, focus) => {
+    current = index;
+    const last = index === steps.length - 1;
+    steps.forEach((step, i) => step.classList.toggle('is-current', i === index));
+    [...bars.children].forEach((bar, i) => bar.classList.toggle('is-done', i <= index));
+    progress.textContent = `${index + 1} of ${steps.length}`;
+    next.hidden = last;
+    submit.hidden = !last;
+    back.hidden = index === 0;
+    if (focus) steps[index].querySelector('input, textarea')?.focus({ preventScroll: true });
+  };
+  const answered = () => [...steps[current].querySelectorAll('input, textarea')].every(field => field.reportValidity());
+  next.addEventListener('click', () => { if (answered()) show(current + 1, true); });
+  back.addEventListener('click', () => show(current - 1, true));
+  // Enter moves to the next question instead of sending a half-finished note.
+  form.addEventListener('keydown', event => {
+    if (event.key !== 'Enter' || current === steps.length - 1 || !event.target.matches('input')) return;
+    event.preventDefault();
+    next.click();
+  });
+  form.classList.add('is-stepped');
+  show(0, false);
+});
+
 const formCopy = {
   enquiry: {
     heading: 'Thank you — your note is with us.',

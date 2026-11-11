@@ -125,6 +125,57 @@ def render_home(html):
     return html
 
 
+def membership_offer(full_main, dialog):
+    """Membership as a single offer: opening, the private circle, the note from The Sphere as the centrepiece,
+    one fee card, how joining works, then the enquiry asked one question at a time. Every sentence is lifted
+    from the sections already written in templates/premium-main.html and from the enquiry dialog."""
+    circle = re.search(r'<section id="invitation".*?</section>', full_main, re.S)[0]
+    letter = re.search(r'<section class="home-letter\b[^\"]*".*?</section>', full_main, re.S)[0]
+    flat = lambda text: re.sub(r'\s*<br>\s*', ' ', text)
+    intro = flat(re.search(r'</h2><p>(.*?)</p>', circle, re.S)[1])
+    limited, right_ones = re.search(r'<div class="membership-notes"[^>]*><p>(.*?)</p><p class="membership-right-ones">(.*?)</p>', circle, re.S).groups()
+    facts = ''.join(f'<div><dt>{dt}</dt><dd>{dd}</dd></div>' for dt, dd in re.findall(r'<dt>(.*?)</dt><dd>(.*?)</dd>', circle))
+    letter_label = re.search(r'<p class="eyebrow">(.*?)</p>', letter)[1]
+    letter_title = flat(re.search(r'<h2 id="letter-title">(.*?)</h2>', letter, re.S)[1])
+    letter_paragraphs = ''.join(f'<p>{x}</p>' for x in re.findall(r'<p>(.*?)</p>', re.search(r'<div class="letter-prose".*?</div>', letter, re.S)[0]))
+    signoff = re.search(r'<p class="letter-signoff">(.*?)</p>', letter, re.S)[1]
+    pay_url = escape(CONFIG.get('membership_payment_url', '').strip(), quote=True)
+    join = lambda cls: f'<a class="{cls}" href="{pay_url}" target="_blank" rel="noopener noreferrer">Join The Sphere <span aria-hidden="true">↗</span></a>'
+    stem = 'sphere-meditation-circle'
+    opening = (f'<section class="soft-hero mo-hero" aria-labelledby="opening-title"><img class="mo-hero-photo" src="/assets/{stem}-1920.webp" srcset="/assets/{stem}-640.webp 640w, /assets/{stem}-1200.webp 1200w, /assets/{stem}-1920.webp 1920w" sizes="100vw" alt="Women seated in meditation together at The Sphere" fetchpriority="high" decoding="async">'
+        '<div class="mo-hero-copy"><p class="eyebrow">THE SPHERE / MEMBERSHIP</p><h1 id="opening-title">Your place<br>in the circle.</h1>'
+        + join('mo-button mo-button-line') + '</div></section>')
+    statement = ('<section id="invitation" class="mo-circle" aria-labelledby="circle-title"><p class="eyebrow">A PRIVATE CIRCLE</p>'
+        f'<h2 id="circle-title">Intentionally <em>intimate.</em></h2><p class="mo-lead">{intro}</p><p>{limited}</p>'
+        f'<p class="mo-right-ones">{flat(right_ones)}</p><dl class="mo-facts">{facts}</dl></section>')
+    note = (f'<section class="mo-letter" aria-labelledby="letter-title"><div class="mo-letter-sheet"><p class="eyebrow">{letter_label}</p>'
+        f'<h2 id="letter-title">{letter_title}</h2><div class="mo-letter-body">{letter_paragraphs}</div>'
+        f'<p class="mo-signoff">{signoff}</p><p class="mo-signature">The Sphere</p></div></section>')
+    # The fee card and the steps say the same three things; the words are the steps' own.
+    offer = ('<section id="offer" class="mo-offer" aria-labelledby="offer-title"><div class="mo-card"><p class="eyebrow" id="offer-title">MEMBERSHIP</p>'
+        '<p class="mo-price">₹10,000</p><p class="mo-term">for six months, inclusive of GST.</p><span class="mo-rule" aria-hidden="true"></span>'
+        '<p class="mo-rhythm">One session each month.</p><p class="mo-private">Venue and gathering details are shared with members privately.</p>'
+        + join('mo-button mo-button-solid') + '<p class="mo-secure">You pay securely on Razorpay.</p></div></section>')
+    still = 'sphere-bowls-still'
+    joining = (f'<section id="joining" class="mo-steps" aria-labelledby="joining-title"><figure class="mo-steps-photo"><img src="/assets/{still}-1200.webp" srcset="/assets/{still}-640.webp 640w, /assets/{still}-1200.webp 1200w, /assets/{still}-1920.webp 1920w" sizes="(max-width: 800px) 92vw, 44vw" alt="Singing bowls and a cushion laid out before a session at The Sphere" width="1920" height="813" loading="lazy" decoding="async"></figure>'
+        '<div class="mo-steps-copy"><h2 id="joining-title">How joining works.</h2><ol>'
+        '<li><span class="mo-step-number">01</span><div><h3>Join The Sphere.</h3><p>Membership is ₹10,000 for six months, inclusive of GST. You pay securely on Razorpay.</p></div></li>'
+        '<li><span class="mo-step-number">02</span><div><h3>One session each month.</h3><p>For six months, you are part of one gathering every month.</p></div></li>'
+        '<li><span class="mo-step-number">03</span><div><h3>Details, privately.</h3><p>Venue and gathering details are shared with members privately.</p></div></li></ol></div></section>')
+    # The enquiry dialog's own words and form, on the page. site.js turns the form into one question at a
+    # time; without JavaScript every question simply shows at once and the form still sends.
+    inner = re.search(r'<dialog id="invitation-dialog"[^>]*>(.*?)</dialog>', dialog, re.S)[1]
+    inner = re.sub(r'<button class="dialog-close".*?</button>', '', inner, count=1, flags=re.S)
+    inner = inner.replace('<h2 id="invitation-title">', '<h2 id="hello-title">', 1)
+    inner = inner.replace('class="sphere-form" data-sphere-form="enquiry"', 'class="mo-form" data-sphere-form="enquiry" data-steps', 1)
+    # The last question carries the consent line and the send button with it.
+    inner = re.sub(r'(<div class="field"><label for="enquiry-note">.*?</div>)(<label class="consent">.*?</button>)',
+        r'<div class="mo-last">\1\2</div>', inner, count=1, flags=re.S)
+    assert 'class="mo-last"' in inner and 'data-steps' in inner, 'The enquiry form changed shape; update membership_offer'
+    hello = f'<section id="hello" class="mo-hello" aria-labelledby="hello-title"><div class="mo-hello-inner">{inner}</div></section>'
+    return opening + statement + note + offer + joining + hello
+
+
 def build_subpages(home, full_main):
     head = re.search(r'<head>(.*?)</head>', home, re.S)[1]
     shell = re.search(r'<a class="skip".*?<main id="main">', home, re.S)[0].removesuffix('<main id="main">')
@@ -144,33 +195,10 @@ def build_subpages(home, full_main):
      '<p>You might sit across from a woman you’ve never met and leave with a conversation you’ll never forget.</p>'
      '<p class="st-emphasis">Because sometimes wellness isn’t about what you do.<br>It’s about what you feel.</p></div></section>')
     experience = experience + more
-    membership = re.search(r'<section id="invitation".*?</section>', full_main, re.S)[0]
-    # Membership shows its own circle photograph rather than the homepage's.
-    steps = re.findall(r'<li><span>(\d+)</span><div><h3>(.*?)</h3><p>(.*?)</p></div></li>', membership)
-    membership = re.sub(r'\s*<details id="joining".*?</details>', '', membership, flags=re.S)
-    pay_url = CONFIG.get('membership_payment_url', '').strip()
-    joining = ('<section id="joining" class="join-steps" aria-labelledby="joining-title"><h2 id="joining-title">How joining works.</h2><ol>'
-        '<li><span class="join-number">01</span><h3>Join The Sphere.</h3><p>Membership is ₹10,000 for six months, inclusive of GST. You pay securely on Razorpay.</p></li>'
-        '<li><span class="join-number">02</span><h3>One session each month.</h3><p>For six months, you are part of one gathering every month.</p></li>'
-        '<li><span class="join-number">03</span><h3>Details, privately.</h3><p>Venue and gathering details are shared with members privately.</p></li></ol>'
-        f'<a class="soft-hero-cta join-cta" href="{escape(pay_url, quote=True)}" target="_blank" rel="noopener noreferrer">Join The Sphere <span aria-hidden="true">↗</span></a></section>')
-    membership = membership + joining
-    membership = membership.replace('sphere-intimate-', 'sphere-bowls-still-').replace('A small circle of women meditating together around singing bowls at The Sphere', 'Singing bowls and a cushion laid out before a session at The Sphere')
-    # The bowls still life is a wide frame (1920x813); give the img its true size so the slot matches it.
-    membership = re.sub(r'(<img src="/?assets/sphere-bowls-still-[^>]*?) width="1920" height="\d+"', r'\1 width="1920" height="813"', membership)
-    # Membership lays the section out as an editorial stack: title | intro, then the wide bowls photo
-    # across the full width, then quote | notes. Same words, regrouped so the columns line up.
-    membership = membership.replace('class="home-invitation section-pad"', 'class="home-invitation membership-circle section-pad"', 1)
-    membership = re.sub(r'(<div class="invitation-heading"[^>]*>)(<p class="eyebrow">.*?</h2>)(.*?)</div>',
-        r'\1<div class="circle-title">\2</div><div class="circle-intro">\3</div></div>', membership, count=1, flags=re.S)
-    figure = re.search(r'\s*<figure class="editorial-photo intimate-photo".*?</figure>', membership, re.S)[0]
-    membership = membership.replace(figure, '', 1)
-    figure = figure.replace('sizes="(max-width: 700px) 86vw, 52vw"', 'sizes="(max-width: 900px) 92vw, min(1240px, 88vw)"')
-    membership = re.sub(r'(<div class="invitation-heading".*?</div></div>)', lambda m: m.group(1) + figure, membership, count=1, flags=re.S)
-    letter = re.search(r'<section class="home-letter\b[^\"]*".*?</section>', full_main, re.S)[0]
+    membership = membership_offer(full_main, dialog)
     for slug, title, description, body in [
         ('experiences', 'The experiences', 'Movement, sound healing, mindfulness and meaningful connection. Explore the thoughtfully curated experiences at The Sphere, Coimbatore.', experience),
-        ('membership', 'Your place in the circle', 'An intentionally intimate women’s wellness circle in Coimbatore. Discover the monthly rhythm and join The Sphere: ₹10,000 for six months, one session each month.', membership + letter),
+        ('membership', 'Your place in the circle', 'An intentionally intimate women’s wellness circle in Coimbatore. Discover the monthly rhythm and join The Sphere: ₹10,000 for six months, one session each month.', membership),
     ]:
         page_head = re.sub(r'<title>.*?</title>', '<title>'+title+' | The Sphere</title>', head)
         page_head = re.sub(r'<meta name="description"[^>]*>', '<meta name="description" content="'+escape(description, quote=True)+'">', page_head)
@@ -181,10 +209,8 @@ def build_subpages(home, full_main):
                 '<div class="soft-hero-copy"><p class="eyebrow">THE SPHERE / EXPERIENCES</p><h1 id="opening-title">The experiences.</h1>'
                 '<a class="soft-hero-link" href="#experiences">Discover more <span aria-hidden="true">↓</span></a></div></section>')
         else:
-            opening = (f'<section class="soft-hero soft-hero-centred" aria-labelledby="opening-title">{photo("sphere-meditation-circle-1920.webp", "Women seated in meditation together at The Sphere", eager=True)}'
-                '<div class="soft-hero-copy"><p class="eyebrow">THE SPHERE / MEMBERSHIP</p><h1 id="opening-title">Your place in the circle.</h1>'
-                '<button class="soft-hero-cta" type="button" data-invitation aria-haspopup="dialog">Request an invitation <span aria-hidden="true">→</span></button></div></section>')
-        html = f'<!doctype html><html lang="en-IN"><head>{page_head}{meta}<script type="application/ld+json">{json.dumps(graph,ensure_ascii=False)}</script></head><body class="premium-home club-subpage">{shell}<main id="main">{opening}{body}</main>{footer}{dialog}</body></html>'
+            opening = ''
+        html = f'<!doctype html><html lang="en-IN"><head>{page_head}{meta}<script type="application/ld+json">{json.dumps(graph,ensure_ascii=False)}</script></head><body class="premium-home club-subpage{" membership-page" if slug == "membership" else ""}">{shell}<main id="main">{opening}{body}</main>{footer}{dialog if slug != "membership" else ""}</body></html>'
         html = re.sub(r'(href|src)="(assets/|style.css|brand.css|premium.css|site.js|motion.js)', r'\1="/\2', html)
         html = html.replace('srcset="assets/', 'srcset="/assets/').replace(', assets/', ', /assets/')
         html = html.replace('href="#', 'href="/#').replace('href="/#main"', 'href="#main"')

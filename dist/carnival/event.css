@@ -56,7 +56,7 @@
 .cv-intro{padding:var(--cv-pad);display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:var(--cv-gap);align-items:start}
 .cv-intro-copy h2{margin:14px 0 24px}
 :root body.event-page .carnival .cv-lead{font-size:clamp(19px,1.5vw,22px)!important;color:var(--s-ink)!important;line-height:1.55!important;margin:0 0 16px}
-.cv-quote{margin:32px 0 0;padding:4px 0 4px 24px;border-left:1px solid var(--s-clay);font-family:Georgia,"Times New Roman",serif;font-style:italic;font-size:clamp(20px,1.6vw,23px);line-height:1.5;color:var(--s-clay)}
+.cv-quote{margin:32px 0 0;padding:4px 0 4px 24px;border-left:1px solid var(--s-clay);font-family:var(--serif);font-style:italic;font-size:clamp(20px,1.6vw,23px);line-height:1.5;color:var(--s-clay)}
 .cv-who{background:var(--s-stone);padding:clamp(32px,3.5vw,48px)}
 :root body.event-page .carnival .cv-who h2{font-size:clamp(28px,2.4vw,34px)!important;margin:12px 0 16px}
 .cv-who strong{color:var(--s-ink);font-weight:500}

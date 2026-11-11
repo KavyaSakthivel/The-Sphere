@@ -26,3 +26,10 @@ License: https://raw.githubusercontent.com/google/fonts/main/ofl/cormorantgaramo
 Sacramento (script accent, replaces Dancing Script, 5 November 2026): https://fonts.google.com/specimen/Sacramento
 Sacramento-latin.woff2: Latin subset, served by the Google Fonts CSS API (fonts.gstatic.com/s/sacramento/v17/)
 License: https://raw.githubusercontent.com/google/fonts/main/ofl/sacramento/OFL.txt (Sacramento-OFL.txt)
+
+Fraunces (headings) and DM Sans (text) replace every other face across the site, 11 November 2026:
+https://fonts.google.com/specimen/Fraunces and https://fonts.google.com/specimen/DM+Sans
+Fraunces-latin(-ext)(-italic)-wght.woff2: variable 300-600 with optical size, served by the Google Fonts CSS API (fonts.gstatic.com/s/fraunces/v38/)
+DMSans-latin(-ext)(-italic)-wght.woff2: variable 400-700 with optical size, served by the Google Fonts CSS API (fonts.gstatic.com/s/dmsans/v17/)
+The Latin Extended files carry the rupee sign. Licences: Fraunces-OFL.txt, DMSans-OFL.txt
+Nunito Sans, Manrope, Dancing Script, Cormorant Garamond and Sacramento are kept only for the historical palette-study pages.
