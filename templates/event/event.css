@@ -142,7 +142,6 @@
  .event-bar .cv-button strong{font-weight:600;padding-left:12px;border-left:1px solid currentColor}
  body.event-page{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 }
-}
 
 /* Tablet and phone */
 @media(max-width:1000px){
