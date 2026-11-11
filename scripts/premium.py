@@ -205,7 +205,7 @@ def build_subpages(home, full_main):
         meta = f'<link rel="canonical" href="{url("/"+slug+"/")}"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:title" content="{title} | The Sphere"><meta property="og:url" content="{url("/"+slug+"/")}"><meta property="og:description" content="{escape(description, quote=True)}"><meta property="og:image" content="{url("/assets/sphere-connection-1920.webp")}">'
         graph = {'@context':'https://schema.org','@graph':[org(),{'@type':'WebPage','url':url('/'+slug+'/'),'name':title+' | The Sphere'}]}
         if slug == 'experiences':
-            opening = (f'<section class="soft-hero" aria-labelledby="opening-title">{photo("sphere-hands-bowls-1920.webp", "Hands resting on singing bowls during a sound session at The Sphere", eager=True)}'
+            opening = (f'<section class="soft-hero" aria-labelledby="opening-title">{photo("sphere-meditation-circle-1920.webp", "Women seated in meditation together at The Sphere", eager=True)}'
                 '<div class="soft-hero-copy"><p class="eyebrow">THE SPHERE / EXPERIENCES</p><h1 id="opening-title">The experiences.</h1>'
                 '<a class="soft-hero-link" href="#experiences">Discover more <span aria-hidden="true">↓</span></a></div></section>')
         else:
