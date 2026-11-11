@@ -126,8 +126,8 @@ def render_home(html):
 
 
 def membership_offer(full_main, dialog):
-    """Membership as a single offer: opening, the private circle, the note from The Sphere as the centrepiece,
-    one fee card, how joining works, then the enquiry asked one question at a time. Every sentence is lifted
+    """Membership as a single offer: opening, the private circle, one fee card, how joining works,
+    the note from The Sphere, then the enquiry asked one question at a time. Every sentence is lifted
     from the sections already written in templates/premium-main.html and from the enquiry dialog."""
     circle = re.search(r'<section id="invitation".*?</section>', full_main, re.S)[0]
     letter = re.search(r'<section class="home-letter\b[^\"]*".*?</section>', full_main, re.S)[0]
@@ -141,8 +141,8 @@ def membership_offer(full_main, dialog):
     signoff = re.search(r'<p class="letter-signoff">(.*?)</p>', letter, re.S)[1]
     pay_url = escape(CONFIG.get('membership_payment_url', '').strip(), quote=True)
     join = lambda cls: f'<a class="{cls}" href="{pay_url}" target="_blank" rel="noopener noreferrer">Join The Sphere <span aria-hidden="true">↗</span></a>'
-    stem = 'sphere-meditation-circle'
-    opening = (f'<section class="soft-hero mo-hero" aria-labelledby="opening-title"><img class="mo-hero-photo" src="/assets/{stem}-1920.webp" srcset="/assets/{stem}-640.webp 640w, /assets/{stem}-1200.webp 1200w, /assets/{stem}-1920.webp 1920w" sizes="100vw" alt="Women seated in meditation together at The Sphere" fetchpriority="high" decoding="async">'
+    stem = 'sphere-hands-bowls'
+    opening = (f'<section class="soft-hero mo-hero" aria-labelledby="opening-title"><img class="mo-hero-photo" src="/assets/{stem}-1920.webp" srcset="/assets/{stem}-640.webp 640w, /assets/{stem}-1200.webp 1200w, /assets/{stem}-1920.webp 1920w" sizes="100vw" alt="Hands resting on singing bowls during a sound session at The Sphere" fetchpriority="high" decoding="async">'
         '<div class="mo-hero-copy"><p class="eyebrow">THE SPHERE / MEMBERSHIP</p><h1 id="opening-title">Your place<br>in the circle.</h1>'
         + join('mo-button mo-button-line') + '</div></section>')
     statement = ('<section id="invitation" class="mo-circle" aria-labelledby="circle-title"><p class="eyebrow">A PRIVATE CIRCLE</p>'
@@ -173,7 +173,7 @@ def membership_offer(full_main, dialog):
         r'<div class="mo-last">\1\2</div>', inner, count=1, flags=re.S)
     assert 'class="mo-last"' in inner and 'data-steps' in inner, 'The enquiry form changed shape; update membership_offer'
     hello = f'<section id="hello" class="mo-hello" aria-labelledby="hello-title"><div class="mo-hello-inner">{inner}</div></section>'
-    return opening + statement + note + offer + joining + hello
+    return opening + statement + offer + joining + note + hello
 
 
 def build_subpages(home, full_main):

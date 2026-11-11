@@ -552,12 +552,13 @@ body .circle-photo figcaption{position:static!important;background:none!importan
    The Sphere as the centrepiece, one fee card, how joining works, then the enquiry asked one question at a time.
    Rules start at #main so they hold against the older page-wide rules above. */
 #main .mo-hero{position:relative;display:flex!important;align-items:center;justify-content:center;min-height:clamp(520px,82vh,780px);margin:0!important;padding:96px 6%!important;background:var(--s-ink)!important;color:var(--s-ivory);text-align:center;overflow:hidden}
-#main .mo-hero-photo{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;opacity:.45}
+#main .mo-hero-photo{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;opacity:.72}
 #main .mo-hero-copy{position:relative;display:flex;flex-direction:column;align-items:center;gap:28px;max-width:900px}
 #main .mo-hero .eyebrow{margin:0!important;color:var(--s-ivory)!important}
 #main .mo-hero h1{margin:0!important;color:var(--s-ivory)!important;font-size:clamp(46px,7.4vw,104px)!important;line-height:1!important;letter-spacing:-.025em!important}
 #main .mo-button{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:54px;padding:16px 36px;border:1px solid currentColor;font:500 15px/1 var(--sans);letter-spacing:.04em;text-decoration:none;transition:background-color .2s,color .2s,border-color .2s}
-#main .mo-button-line{color:var(--s-ivory)}
+#main .mo-button-line{color:var(--s-ivory);background:#24302a66}
+#main .mo-hero :is(.eyebrow,h1){text-shadow:0 1px 28px #0d1511cc,0 0 3px #0d151166}
 #main .mo-button-line:hover{background:var(--s-ivory);color:var(--s-ink);border-color:var(--s-ivory)}
 #main .mo-button-solid{background:var(--s-ink);border-color:var(--s-ink);color:var(--s-ivory)}
 #main .mo-button-solid:hover{background:var(--s-clay);border-color:var(--s-clay)}
