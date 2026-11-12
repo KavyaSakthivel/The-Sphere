@@ -4,8 +4,8 @@
    photograph, ivory, deep sage, stone, ivory. Tokens (--s-*) come from finish.css. */
 
 .carnival{--cv-pad:clamp(64px,7vw,104px) 7%;--cv-gap:clamp(32px,5vw,72px);background:var(--s-ivory)}
-:root body.event-page .carnival h2{font-size:clamp(34px,3.4vw,48px)!important;line-height:1.1!important}
-:root body.event-page .carnival h3{font-size:clamp(20px,1.6vw,22px)!important;line-height:1.3!important;color:var(--s-ink)}
+:root body.event-page .carnival h2{font-size:clamp(42px,4.6vw,64px)!important;line-height:1.1!important}
+:root body.event-page .carnival h3{font-size:clamp(26px,2.2vw,32px)!important;font-weight:400!important;line-height:1.2!important;color:var(--s-ink)}
 :root body.event-page .carnival p{line-height:1.7}
 .carnival .event-icon{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
 
@@ -32,10 +32,10 @@
 .cv-glance dl{margin:0;display:grid;grid-template-columns:1fr 1.25fr 1fr auto;gap:24px 40px}
 .cv-glance dl>div{display:grid;grid-template-columns:auto 1fr;column-gap:12px;align-content:start}
 .cv-glance .event-icon{grid-row:1/span 2;color:var(--s-sage);margin-top:2px}
-.cv-glance dt{font-size:12px;letter-spacing:.18em;color:var(--s-sage);margin-bottom:6px}
+.cv-glance dt{font-size:14px;letter-spacing:.18em;color:var(--s-sage);margin-bottom:6px}
 .cv-glance dd{margin:0;display:flex;flex-direction:column;gap:2px}
-.cv-glance dd strong{font-weight:400;font-size:17px;color:var(--s-ivory)}
-.cv-glance dd span{font-size:14px;color:#fff8ecb3}
+.cv-glance dd strong{font-weight:400;font-size:19px;color:var(--s-ivory)}
+.cv-glance dd span{font-size:15px;color:#fff8ecb3}
 .cv-glance-price{border-left:1px solid #fff8ec2e;padding-left:40px;grid-template-columns:1fr!important}
 .cv-glance-price dd strong{font-size:34px;letter-spacing:-.01em;line-height:1.1}
 .cv-glance-cta{display:inline-flex;align-items:center;gap:14px;min-height:48px;padding:13px 22px;background:var(--s-ivory);color:var(--s-ink);font-size:14px;font-weight:500;white-space:nowrap;transition:background .25s}
@@ -56,12 +56,12 @@
 .cv-intro{padding:var(--cv-pad);display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:var(--cv-gap);align-items:start}
 .cv-intro-copy h2{margin:14px 0 24px}
 :root body.event-page .carnival .cv-lead{font-size:clamp(19px,1.5vw,22px)!important;color:var(--s-ink)!important;line-height:1.55!important;margin:0 0 16px}
-.cv-quote{margin:32px 0 0;padding:4px 0 4px 24px;border-left:1px solid var(--s-clay);font-family:var(--serif);font-style:italic;font-size:clamp(20px,1.6vw,23px);line-height:1.5;color:var(--s-clay)}
+.cv-quote{margin:32px 0 0;padding:4px 0 4px 24px;border-left:1px solid var(--s-clay);font-family:var(--serif);font-style:italic;font-size:clamp(24px,2.2vw,30px);line-height:1.4;color:var(--s-clay)}
 .cv-who{background:var(--s-stone);padding:clamp(32px,3.5vw,48px)}
-:root body.event-page .carnival .cv-who h2{font-size:clamp(28px,2.4vw,34px)!important;margin:12px 0 16px}
+:root body.event-page .carnival .cv-who h2{font-size:clamp(36px,3.4vw,46px)!important;margin:12px 0 16px}
 .cv-who strong{color:var(--s-ink);font-weight:500}
 .cv-pillars{list-style:none;margin:28px 0 0;padding:20px 0 0;border-top:1px solid var(--s-rule);display:flex;flex-wrap:wrap;gap:10px 22px}
-.cv-pillars li{font-size:12px;letter-spacing:.18em;color:var(--s-clay)}
+.cv-pillars li{font-size:14px;letter-spacing:.18em;color:var(--s-clay)}
 
 /* What the evening includes, visible without a click. */
 .cv-experience{background:var(--s-stone);padding:var(--cv-pad)}
@@ -72,12 +72,12 @@
 .cv-offer li{background:var(--s-ivory);padding:clamp(24px,2.4vw,32px);display:flex;flex-direction:column;gap:10px}
 .cv-icon{display:grid;place-items:center;width:46px;height:46px;border:1px solid #834c4d59;border-radius:50%;color:var(--s-clay);margin-bottom:8px}
 .cv-offer h3{margin:0}
-.cv-offer p{margin:0;font-size:16px!important}
+.cv-offer p{margin:0;font-size:17px!important}
 .cv-moments{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:clamp(40px,5vw,64px)}
 .cv-moments figure{margin:0}
 .cv-moments img{display:block;width:100%;height:auto!important;aspect-ratio:4/5;object-fit:cover}
 .cv-moments figcaption{display:flex;flex-direction:column;gap:4px;padding-top:16px;font-size:19px;color:var(--s-ink)}
-.cv-moments figcaption span{font-size:12px;letter-spacing:.18em;color:var(--s-clay)}
+.cv-moments figcaption span{font-size:14px;letter-spacing:.18em;color:var(--s-clay)}
 .cv-photo-note{margin:20px 0 0;font-size:14px!important;color:var(--s-text)}
 
 /* One photograph, full width, with the evening's line laid over it. */
@@ -86,18 +86,18 @@
 .cv-interlude:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#24302ad9 0%,#24302a80 45%,#24302a0d 80%)}
 .cv-interlude>div{position:absolute;z-index:1;left:7%;bottom:clamp(40px,6vw,80px);max-width:560px}
 :root body.event-page .carnival .cv-interlude .eyebrow{color:var(--s-sage)}
-:root body.event-page .carnival .cv-interlude p:not(.eyebrow){font-size:clamp(32px,3.4vw,48px)!important;line-height:1.15!important;color:var(--s-ivory)!important;margin:14px 0 0;font-weight:400}
+:root body.event-page .carnival .cv-interlude p:not(.eyebrow){font-size:clamp(40px,4.4vw,60px)!important;line-height:1.15!important;color:var(--s-ivory)!important;margin:14px 0 0;font-weight:400}
 
 /* Schedule: the evening as a clean timeline. */
 .cv-schedule{padding:var(--cv-pad);display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:var(--cv-gap);align-items:start}
 .cv-schedule-side{position:sticky;top:140px}
 .cv-schedule-side h2{margin:14px 0 28px}
 .cv-facts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
-.cv-facts li{display:flex;align-items:center;gap:12px;font-size:16px;color:var(--s-ink)}
+.cv-facts li{display:flex;align-items:center;gap:12px;font-size:17px;color:var(--s-ink)}
 .cv-facts .event-icon{color:var(--s-clay)}
 .cv-timeline{list-style:none;margin:0;padding:0;border-top:1px solid var(--s-rule)}
 .cv-timeline li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:24px;padding:24px 0;border-bottom:1px solid var(--s-rule)}
-:root body.event-page .carnival .cv-time{margin:3px 0 0;font-size:14px!important;letter-spacing:.04em;color:var(--s-clay)!important;font-weight:500}
+:root body.event-page .carnival .cv-time{margin:6px 0 0;font-size:15px!important;letter-spacing:.04em;color:var(--s-clay)!important;font-weight:500}
 .cv-timeline h3{margin:0 0 6px}
 .cv-timeline p{margin:0}
 
@@ -131,7 +131,7 @@
 .cv-close{padding:var(--cv-pad);text-align:center;display:flex;flex-direction:column;align-items:center}
 .cv-close h2{margin:14px 0 16px}
 .cv-close p{margin:0}
-:root body.event-page .carnival .cv-close-meta{margin-top:20px;font-size:13px!important;letter-spacing:.14em;text-transform:uppercase;color:var(--s-text)}
+:root body.event-page .carnival .cv-close-meta{margin-top:20px;font-size:14px!important;letter-spacing:.14em;text-transform:uppercase;color:var(--s-text)}
 .cv-close [data-book]{margin-top:32px}
 
 /* Phone booking bar: one Reserve Your Spot button with the price, fixed to the bottom for the whole page. */
@@ -187,12 +187,12 @@ body.is-past [data-book],body.is-past .event-bar{display:none!important}
 .cv-moments figure{background:none!important}
 
 /* Updated carnival information (2026 PDF): rhythm line, three-step arc, agenda subtitle, celebration cards, partner invitation. */
-:root body.event-page .carnival .cv-rhythm{font-size:clamp(18px,1.5vw,22px)!important;font-style:italic;color:var(--s-clay)!important;margin:0 0 22px;line-height:1.5}
+:root body.event-page .carnival .cv-rhythm{font-size:clamp(22px,2vw,28px)!important;font-style:italic;color:var(--s-clay)!important;margin:0 0 22px;line-height:1.5}
 .cv-arc{list-style:none;margin:34px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .cv-arc li{background:var(--s-ink);color:var(--s-ivory);padding:clamp(18px,2vw,26px);min-height:150px;display:flex;flex-direction:column;justify-content:space-between;gap:18px}
-:root body.event-page .carnival .cv-arc h3{margin:0;font-size:clamp(20px,1.8vw,26px)!important;line-height:1.2;color:var(--s-ivory)!important;font-weight:400}
-:root body.event-page .carnival .cv-arc p{margin:0;font-size:12px!important;letter-spacing:.18em;color:var(--s-sage)!important}
-:root body.event-page .carnival .cv-tagline{margin-top:22px;font-style:italic;color:var(--s-clay)!important;font-size:clamp(20px,1.7vw,24px)!important;line-height:1.35}
+:root body.event-page .carnival .cv-arc h3{margin:0;font-size:clamp(26px,2.4vw,34px)!important;line-height:1.2;color:var(--s-ivory)!important;font-weight:400}
+:root body.event-page .carnival .cv-arc p{margin:0;font-size:14px!important;letter-spacing:.18em;color:var(--s-sage)!important}
+:root body.event-page .carnival .cv-tagline{margin-top:22px;font-style:italic;color:var(--s-clay)!important;font-size:clamp(24px,2.2vw,30px)!important;line-height:1.35}
 :root body.event-page .carnival .cv-sub{margin:-12px 0 26px;font-style:italic;color:var(--s-clay)!important}
 .cv-offer-three{grid-template-columns:repeat(3,minmax(0,1fr))}
 .cv-join{padding:var(--cv-pad);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--cv-gap);align-items:start}
@@ -229,7 +229,7 @@ body.is-past [data-book],body.is-past .event-bar{display:none!important}
 .booking-consent input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--s-ink)}
 .booking-dialog .cv-button{justify-content:space-between;width:100%;border:0;cursor:pointer;font:inherit;font-size:14px}
 .booking-dialog .cv-button:disabled{opacity:.6;cursor:progress}
-.booking-note{margin:-8px 0 0;font-size:13px;color:var(--s-text)}
+.booking-note{margin:-8px 0 0;font-size:14px;color:var(--s-text)}
 .booking-error{margin:0;padding:12px 14px;background:var(--s-stone);font-size:14px}
 .booking-error a{text-decoration:underline}
 .booking-error a[hidden]{display:none}
