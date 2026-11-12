@@ -109,7 +109,7 @@ def icon(name): return f'<svg class="event-icon" viewBox="0 0 24 24" aria-hidden
 ABOUT = ('More than<br>a community.',
  'The Sphere is a women\u2019s wellness community created to bring together experiences that nurture the mind, body and soul.',
  'Through thoughtfully curated gatherings, wellness practices and meaningful connections, Sphere creates spaces for women to pause, reconnect and celebrate life.',
- 'Calmness crafted for The Modern Women.')
+ 'Calmness crafted for The Modern Woman.')
 CARNIVAL = ('Where wellness<br>meets celebration.',
  'Ancient rituals. Mindful practices. Music &amp; community. All in one evening.',
  'The Sphere Wellness Carnival brings together ancient rituals, mindful practices, expert conversations, nourishment and music \u2013 all in one immersive evening. A journey that moves from connection and reflection to energy and celebration.')
@@ -156,7 +156,7 @@ TERMS = [
  ('Event details', None),
  ('Entry and eligibility', 'Private, ticketed event for registered guests only. Open to women only. One ticket admits one person and is non-transferable. Please carry your payment receipt for check-in. The organisers may ask for a valid photo ID.'),
  ('Alcohol-free event', 'This is a 100% alcohol-free event. Alcohol, tobacco and other intoxicants are not permitted. The organisers may refuse entry to, or ask to leave, any guest who breaks this rule.'),
- ('Health and wellbeing', 'Activities such as ice plunge, salt bath, breathwork, sound healing and the fire ceremony are optional and taken at your own discretion and risk. If you have a medical condition, are pregnant or have any health concerns, please consult your doctor first. Wellness experiences are not medical treatment.'),
+ ('Health and wellbeing', 'Activities such as breathwork, sound healing and the fire ceremony are optional and taken at your own discretion and risk. If you have a medical condition, are pregnant or have any health concerns, please consult your doctor first. Wellness experiences are not medical treatment.'),
  ('Schedule and activities', 'The programme, timings, facilitators and activities may change for operational or safety reasons. The organisers will make reasonable efforts to inform guests of major changes.'),
  ('Photography and media', 'The event may be photographed or filmed for documentation and promotion by The Sphere. By attending, you agree that your image may appear in this material. If you prefer not to be photographed, please tell the team at check-in.'),
  ('Conduct', 'Guests are expected to respect others, the venue and its staff. The organisers may ask anyone who behaves disruptively or unsafely to leave without a refund.'),
@@ -309,7 +309,7 @@ def page(ev):
 </section>
 
 <section class="cv-join" aria-labelledby="join-title">
- <div><p class="eyebrow">JOIN THE SPHERE</p><h2 id="join-title">{JOIN[0]}</h2></div>
+ <div><p class="eyebrow">PARTNER WITH US</p><h2 id="join-title">{JOIN[0]}</h2></div>
  <div class="cv-join-copy"><p>{JOIN[1]}</p><p>{JOIN[2]}</p><p class="cv-quote">{JOIN[3]}</p></div>
 </section>
 

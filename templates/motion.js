@@ -96,5 +96,5 @@ document.querySelectorAll('[data-pillar-browser]').forEach(browser => {
   popup.querySelector('.carnival-popup-cta')?.addEventListener('click', write);
   window.setTimeout(() => {
     if (!document.querySelector('dialog[open]') && !location.hash) popup.showModal();
-  }, 1800);
+  }, 1500);
 })();

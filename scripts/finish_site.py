@@ -12,7 +12,7 @@ INSTAGRAM=('<a class="footer-instagram" href="https://www.instagram.com/thespher
 CONTACT=('<p class="footer-contact"><a href="mailto:thespherewomen@gmail.com">thespherewomen@gmail.com</a>'
  '<a href="tel:+919843133380">+91 98431 33380</a></p>')
 # Pages that close with the "Stay close" inbox, as the homepage does.
-INBOX_PAGES={'experiences','membership','philosophy'}
+INBOX_PAGES={'experiences','philosophy'}
 NAV_TARGETS={'philosophy':'/philosophy/','experiences':'/experiences/','membership':'/membership/','carnival':'/carnival/'}
 
 def current_page(s,where):
@@ -86,13 +86,19 @@ def build():
    s=s.replace('The Sphere</span><span>PEACE. PURPOSE. CONNECTION.</span>','The Sphere Wellness Foundation</span><a href="/terms/">Terms &amp; Conditions</a>',1)
   # The footer names the page as the navigation does.
   s=re.sub(r'(<footer>.*?)>Our philosophy<',r'\1>Our story<',s,count=1,flags=re.S)
-  # Joining is by payment: every invitation call to action becomes Join The Sphere, straight to Razorpay.
-  pay=json.loads((ROOT/'data/site.json').read_text()).get('membership_payment_url','').strip()
-  if pay:
-   def join(m):
-    cls=re.search(r'class="([^"]*)"',m[0]); cls=f' class="{cls[1]}"' if cls else ''
-    return f'<a{cls} href="{pay}" target="_blank" rel="noopener noreferrer">Join The Sphere <span aria-hidden="true">↗</span></a>'
-   s=re.sub(r'<(a|button)\b(?=[^>]*data-invitation)(?![^>]*data-sphere)[^>]*>(?:(?!</\1>).)*?(?:Request an invitation|Looking to join)(?:(?!</\1>).)*?</\1>',join,s,flags=re.S)
+  # Every "Join The Sphere" call to action opens the Membership page, which explains the offer and holds
+  # the one Join now button that goes to Razorpay (see membership_offer in premium.py).
+  def join(m):
+   cls=re.search(r'class="([^"]*)"',m[0]); cls=f' class="{cls[1]}"' if cls else ''
+   return f'<a{cls} href="/membership/">Join The Sphere <span aria-hidden="true">↗</span></a>'
+  s=re.sub(r'<(a|button)\b(?=[^>]*data-invitation)(?![^>]*data-sphere)[^>]*>(?:(?!</\1>).)*?(?:Request an invitation|Looking to join)(?:(?!</\1>).)*?</\1>',join,s,flags=re.S)
+  # The enquiry dialog has no button that opens it (the enquiry form lives on the Membership page), so it
+  # is not shipped on other pages.
+  s=re.sub(r'<dialog id="invitation-dialog".*?</dialog>','',s,flags=re.S)
+  # The event page has one purchase: the ticket. Its header does not also offer the membership.
+  if where=='carnival':
+   s=re.sub(r'<a class="header-invite"[^>]*>.*?</a>','',s,count=1,flags=re.S)
+   s=re.sub(r'(<nav id="mobile-nav".*?)<a href="/membership/">Join The Sphere.*?</a>(.*?</nav>)',r'\1\2',s,count=1,flags=re.S)
   s=re.sub(r'<div class="intro-end".*?</div>','',s,flags=re.S)
   s=re.sub(r'<figcaption>A LITTLE ROOM TO SIMPLY BE</figcaption>','',s)
   s=s.replace('<span>PEACE. PURPOSE. CONNECTION.</span>','')

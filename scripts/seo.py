@@ -27,6 +27,9 @@ def apply_seo(html,entry=None):
   graph.append({'@type':'Article','@id':url(path+'#article'),'headline':entry['title'],'description':entry['subtitle'],'articleSection':'The Sphere Journal','inLanguage':'en-IN','mainEntityOfPage':{'@id':url(path+'#webpage')},'author':{'@id':url('/#organization')},'publisher':{'@id':url('/#organization')},'articleBody':'\n\n'.join(entry['paragraphs'])})
   graph.append({'@type':'BreadcrumbList','itemListElement':[{'@type':'ListItem','position':1,'name':'The Sphere','item':url()},{'@type':'ListItem','position':2,'name':entry['title'],'item':url(path)}]})
  structured=json.dumps({'@context':'https://schema.org','@graph':graph},ensure_ascii=False).replace('<',r'\u003c')
+ # The home page shares the sound-session photograph; articles keep the plain card.
+ share=url('/assets/sphere-sound-session-1200.webp')
+ image_tags='' if entry else f'<meta property="og:image" content="{share}"><meta property="og:image:alt" content="A Sphere facilitator playing singing bowls as women rest together"><meta name="twitter:image" content="{share}">'
  metadata=f'''\n  <link rel="canonical" href="{escape(url(path),quote=True)}">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <meta property="og:site_name" content="The Sphere">
@@ -35,7 +38,7 @@ def apply_seo(html,entry=None):
   <meta property="og:title" content="{escape(title,quote=True)}">
   <meta property="og:description" content="{escape(description,quote=True)}">
   <meta property="og:url" content="{escape(url(path),quote=True)}">
-  <meta name="twitter:card" content="summary">
+  {image_tags}<meta name="twitter:card" content="{'summary' if entry else 'summary_large_image'}">
   <meta name="twitter:title" content="{escape(title,quote=True)}">
   <meta name="twitter:description" content="{escape(description,quote=True)}">
   <script type="application/ld+json">{structured}</script>

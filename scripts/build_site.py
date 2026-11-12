@@ -67,8 +67,8 @@ enquiry_form=(f'<form class="sphere-form" data-sphere-form="enquiry" action="{at
  '<input id="enquiry-phone" name="WhatsApp" type="tel" autocomplete="tel" inputmode="tel" placeholder="+91"></div>'
  '<div class="field"><label for="enquiry-note">What brings you to The Sphere? <span class="optional">optional</span></label>'
  '<textarea id="enquiry-note" name="Message" rows="3" placeholder="A line or two is plenty."></textarea></div>'
- '<label class="consent"><input type="checkbox" name="Consent" value="Yes — happy to be contacted" required>'
- '<span>Yes, The Sphere may email or message me about membership and gatherings.</span></label>'
+ '<label class="consent"><input type="checkbox" name="Gathering notes" value="Yes — happy to hear about gatherings">'
+ '<span>I\u2019d also like to hear about gatherings.</span></label>'
  '<button class="button button-dark" type="submit">Send my enquiry <span aria-hidden="true">↗</span></button>'
  '<p class="form-status" role="status" aria-live="polite"></p></form>')
 inbox_form=(f'<form class="sphere-form sphere-form-inline" data-sphere-form="inbox" action="{attr(ENDPOINT)}" method="POST" novalidate>'
@@ -146,7 +146,7 @@ dialog=('<dialog id="invitation-dialog" aria-labelledby="invitation-title">'
  f'<p class="dialog-small">Your details come straight to The Sphere\u2019s own inbox. We use them only to reply to you, and we never share or sell them.</p></dialog>')
 html=re.sub(r'<dialog id="invitation-dialog".*?</dialog>',lambda _:dialog,html,flags=re.S,count=1)
 inbox=('<section id="inbox" class="inbox section-pad">'
- '<p class="eyebrow">WELLNESS IN YOUR INBOX</p>'
+ '<p class="eyebrow">NOTES BY EMAIL</p>'
  '<h2>Stay <em>close.</em></h2>'
  '<p class="inbox-intro">Early word on gatherings, gentle reminders to pause, and the occasional '
  'note from the circle. Sent rarely. Never shared.</p>'
@@ -220,8 +220,8 @@ def stamp(page):
  page.write_text(re.sub(r'((?:/|\.\./)*[\w/.-]*\.(?:css|js|mp4|webm|jpg))(?:\?v=[^"]*)?"',version,html))
 from finish_site import build as finish_site
 finish_site()
-from build_palette_study import build as build_palette_study
-build_palette_study()
+# The palette comparisons are internal design studies and are no longer published. To regenerate them for a
+# client review, run: python3 scripts/build_palette_study.py
 for page in (ROOT/'dist').rglob('*.html'):
  stamp(page)
 print('Built the premium homepage, full philosophy, journal and event pages.')
