@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>The Sphere: type comparison</title>
+<!-- Review page only. It is not part of dist/ and is not published. It loads the candidate fonts from Google Fonts
+     (all SIL Open Font Licence), so it needs an internet connection. The wording is the site's own. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&family=DM+Sans:opsz,wght@9..40,300..600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Hanken+Grotesk:wght@300..600&family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400..600&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Cardo:ital@0;1&display=swap">
+<style>
+:root{--ivory:#fff8ec;--stone:#f1eadf;--ink:#24302a;--clay:#834c4d;--sage:#9ab7a8;--bw:400}
+*{box-sizing:border-box}
+body{margin:0;background:#e9e3d6;color:var(--ink);font:16px/1.5 system-ui,sans-serif}
+.bar{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;padding:14px 24px;background:#24302a;color:#fff8ec;font-size:14px}
+.bar label{display:flex;gap:8px;align-items:center}
+.bar select{font:inherit;padding:4px 8px}
+.note{max-width:980px;margin:28px auto 0;padding:0 24px;font-size:15px;color:#3b463f}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:28px;padding:28px 24px 64px;max-width:1500px;margin:0 auto}
+@media(max-width:480px){.grid{grid-template-columns:1fr;padding:20px 12px}}
+.combo{background:var(--ivory);border:1px solid #24302a24;display:flex;flex-direction:column}
+.tag{display:flex;justify-content:space-between;gap:12px;padding:12px 18px;background:#24302a;color:#fff8ec;font:500 13px/1.4 system-ui,sans-serif}
+.tag b{font-weight:600}
+.dark{background:#24302a;color:#fff8ec;padding:44px 30px 40px}
+.light{padding:34px 30px 40px}
+.eyebrow{font-family:var(--sans);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;margin:0 0 18px;color:var(--sage)}
+.light .eyebrow{color:var(--clay)}
+h1,h2{font-family:var(--serif);font-weight:var(--hw,300);letter-spacing:var(--hls,-.02em);line-height:1.04;margin:0}
+h1{font-size:clamp(42px,5vw,60px)}
+h2{font-size:clamp(34px,4vw,46px);margin-bottom:18px}
+em{font-style:italic}
+p{font-family:var(--sans);font-size:17px;line-height:1.6;font-weight:var(--bw);margin:0 0 16px;max-width:34em}
+.price{font-family:var(--serif);font-weight:var(--hw,300);font-size:68px;line-height:1;letter-spacing:-.03em;margin:22px 0 6px}
+.term{font-family:var(--serif);font-style:italic;font-size:22px;margin:0 0 20px}
+.btn{display:inline-flex;align-items:center;gap:12px;min-height:50px;padding:0 28px;border:1px solid currentColor;font-family:var(--sans);font-size:15px;font-weight:500;letter-spacing:.04em;margin-top:8px}
+.dark .btn{color:#fff8ec}.light .btn{background:var(--ink);color:var(--ivory);border-color:var(--ink)}
+.meta{font-family:var(--sans);font-size:14px;color:#5c6559;margin:18px 0 0}
+.verdict{padding:14px 18px 18px;border-top:1px solid #24302a1f;font:14px/1.55 system-ui,sans-serif;color:#3b463f;background:#f6efe3}
+.A{--serif:'Fraunces',serif;--sans:'DM Sans',sans-serif}
+.B{--serif:'Cormorant Garamond',serif;--sans:'Hanken Grotesk',sans-serif;--hw:300;--hls:-.01em}
+.C{--serif:'Instrument Serif',serif;--sans:'Instrument Sans',sans-serif;--hw:400;--hls:-.01em}
+.D{--serif:'Bodoni Moda',serif;--sans:'Hanken Grotesk',sans-serif;--hw:400;--hls:-.015em}
+.E{--serif:'Fraunces',serif;--sans:'Hanken Grotesk',sans-serif}
+.F{--serif:'Cardo',serif;--sans:'Hanken Grotesk',sans-serif;--hw:400;--hls:-.01em}
+.B h1,.B h2{font-size:clamp(46px,5.6vw,68px)}.B .price{font-size:78px}.B p{font-size:18px}
+.C h1,.C h2{font-size:clamp(46px,5.4vw,66px)}
+.B .eyebrow,.C .eyebrow,.D .eyebrow{font-size:12px}
+.D h1,.D h2{font-size:clamp(38px,4.6vw,54px)}.D .price{font-size:60px}
+</style>
+</head>
+<body>
+<div class="bar">
+  <strong>The Sphere: type comparison</strong>
+  <label>Body weight
+    <select id="bw"><option value="300">Light 300</option><option value="350">350</option><option value="400" selected>Regular 400</option></select>
+  </label>
+  <span>Same wording and colours in every box. Only the fonts change. A is what the site uses today.</span>
+</div>
+<p class="note">Note: Instrument Serif and Cardo have one regular weight, so they ignore the heading weight. Instrument Sans starts at 400, so its "Light 300" setting shows as 400. Fonts are loaded from Google Fonts for this review only.</p>
+<main class="grid" id="grid"></main>
+<script>
+const combos=[
+ ['A','Fraunces Light + DM Sans','Current site','Warm, soft, friendly. The display cut is elegant at large sizes; DM Sans body is round and common on tech sites.'],
+ ['B','Cormorant Garamond Light + Hanken Grotesk','Most "fashion house"','Finest and most classical. Very high contrast and small on the line, so it needs a larger size; the best match for light-weight luxury headlines.'],
+ ['C','Instrument Serif + Instrument Sans','Most contemporary','Narrow, sharp, editorial. Feels like a modern magazine; one weight only, so emphasis comes from italics.'],
+ ['D','Bodoni Moda + Hanken Grotesk','Most dramatic','Fashion-style Didone with hairline strokes. Striking, but cooler and more formal than a warm women’s circle.'],
+ ['E','Fraunces Light + Hanken Grotesk','Smallest change','Keeps the current headlines and swaps only the body font for a more neutral sans. Lowest risk.'],
+ ['F','Cardo + Hanken Grotesk','Soho House recipe','The free pairing Soho House uses. Bookish and warm, less refined than the others at display sizes.']
+];
+const grid=document.getElementById('grid');
+combos.forEach(([k,name,tag,verdict])=>{
+ grid.insertAdjacentHTML('beforeend',`<section class="combo ${k}">
+ <div class="tag"><b>${k}. ${name}</b><span>${tag}</span></div>
+ <div class="dark"><p class="eyebrow">Crafted calm for the modern woman</p><h1>A little more<br>room for you.</h1><p style="margin-top:22px;font-weight:400">A women’s wellness club in Coimbatore.</p><span class="btn">Join The Sphere →</span></div>
+ <div class="light"><p class="eyebrow">A private circle</p><h2>Intentionally <em>intimate.</em></h2>
+ <p>For women who value privacy, meaningful connection and thoughtfully curated experiences. Once a month, usually in the first week. Venue details shared privately.</p>
+ <div class="price">₹10,000</div><div class="term">for six months, inclusive of GST.</div>
+ <span class="btn">Join now →</span><p class="meta">You pay securely on Razorpay.</p></div>
+ <div class="verdict"><b>${tag}.</b> ${verdict}</div></section>`);
+});
+document.getElementById('bw').addEventListener('change',e=>document.documentElement.style.setProperty('--bw',e.target.value));
+</script>
+</body>
+</html>
