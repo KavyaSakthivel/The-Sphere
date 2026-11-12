@@ -170,7 +170,7 @@ def membership_offer(full_main, dialog):
         '<p class="mo-rhythm">One session each month.</p><p class="mo-private">Venue and gathering details are shared with members privately.</p>'
         + join_now + '<p class="mo-secure">You pay securely on Razorpay.</p></div></section>')
     still = 'sphere-bowls-still'
-    joining = (f'<section id="joining" class="mo-steps" aria-labelledby="joining-title"><figure class="mo-steps-photo"><img src="/assets/{still}-1200.webp" srcset="/assets/{still}-640.webp 640w, /assets/{still}-1200.webp 1200w, /assets/{still}-1920.webp 1920w" sizes="(max-width: 800px) 92vw, 44vw" alt="Singing bowls and a cushion laid out before a session at The Sphere" width="1920" height="813" loading="lazy" decoding="async"></figure>'
+    joining = (f'<section id="joining" class="mo-steps" aria-labelledby="joining-title">'
         '<div class="mo-steps-copy"><h2 id="joining-title">How joining <em>works.</em></h2><ol>'
         '<li><span class="mo-step-number">01</span><div><h3>Join The Sphere.</h3><p>Membership is ₹10,000 for six months, inclusive of GST. You pay securely on Razorpay.</p></div></li>'
         '<li><span class="mo-step-number">02</span><div><h3>One session each month.</h3><p>For six months, you are part of one gathering every month.</p></div></li>'

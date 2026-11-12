@@ -754,3 +754,51 @@ body .circle-photo figcaption{position:static!important;background:none!importan
 :root body.story-page .st-lead,:root body.premium-home main .more-wellness-story p.st-lead{font-size:clamp(21px,1.7vw,24px)!important}
 :root body.story-page .st-why-close p:not(.st-emphasis){font-size:clamp(20px,1.6vw,23px)!important;line-height:1.6!important;color:var(--s-ink)!important}
 :root body.story-page .st-copy p:not(.st-lead):not(.st-emphasis){font-size:19px!important}
+
+/* Membership: the note from The Sphere sits on a deep green, softly mottled like dark suede (12 November 2026).
+   Layered radial glows give the uneven, cloudy colour; the film grain adds the fine texture; faint ivory rings keep
+   the circle motif. The ivory arch stays as it was, so the note itself reads exactly as before. */
+#main .mo-letter{background-color:#10221d!important;background-image:radial-gradient(ellipse 60% 50% at 22% 18%,#2a5248cc,transparent 70%),radial-gradient(ellipse 55% 45% at 80% 62%,#1f4238b3,transparent 70%),radial-gradient(ellipse 70% 40% at 50% 105%,#050d0be6,transparent 70%),repeating-radial-gradient(circle at 50% 46%,transparent 0 119px,#fff8ec0f 119px 120px),url("/assets/film-grain.svg")!important;background-blend-mode:normal,normal,normal,normal,soft-light}
+#main .mo-letter-sheet{box-shadow:0 50px 90px -40px #02080699,0 0 0 1px #fff8ec1f!important}
+
+/* ===== Membership: How joining works, and the hello form (12 November 2026) =====
+   Joining is three columns under a centred heading instead of a photograph beside a tall list, so the section is a
+   third of its old height. The hello form moves to a light stone surface so it no longer joins the dark green note
+   above and the dark footer below; the page now alternates light, dark, light, dark. */
+#main .mo-steps{display:block;max-width:1160px;padding:clamp(64px,7vw,104px) 6%;text-align:center}
+#main .mo-steps-copy{max-width:none;margin:0 auto}
+#main .mo-steps h2{text-align:center}
+#main .mo-steps h2:after{margin:clamp(22px,2.4vw,30px) auto clamp(30px,3.6vw,48px)}
+#main .mo-steps ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,4vw,64px);text-align:center}
+#main .mo-steps li{display:flex;flex-direction:column;align-items:center;gap:14px;padding:0!important;border:0!important;border-top:1px solid var(--s-rule)!important;padding-top:clamp(24px,2.6vw,36px)!important}
+#main .mo-steps li>div{padding:0!important;border:0!important}
+#main .mo-step-number{font-size:clamp(48px,5vw,68px)}
+#main .mo-steps li p{margin:0 auto!important;max-width:24em;font-size:18px!important;line-height:1.65!important;color:var(--s-ink)!important}
+@media(max-width:800px){#main .mo-steps ol{grid-template-columns:1fr;gap:34px}#main .mo-steps{padding:56px 20px}}
+
+#main .mo-hello{background:var(--s-stone)!important;color:var(--s-ink)}
+#main .mo-hello .eyebrow{color:var(--s-clay)!important}
+#main .mo-hello h2{color:var(--s-ink)!important}
+#main .mo-hello-inner>p{color:var(--s-ink)!important}
+#main .mo-form label{color:var(--s-ink)}
+#main .mo-form .optional{color:var(--s-text)}
+#main .mo-form :is(input:not([type=checkbox]),textarea){border-bottom-color:#24302a80;color:var(--s-ink)}
+#main .mo-form :is(input,textarea)::placeholder{color:#24302a8c}
+#main .mo-form :is(input:not([type=checkbox]),textarea):focus-visible{border-bottom-color:var(--s-clay)}
+#main .mo-form .consent{color:var(--s-ink)}
+#main .mo-form .consent input{accent-color:var(--s-clay)}
+#main .mo-form :is(button[type=submit],.mo-continue){border-color:var(--s-ink)!important;background:var(--s-ink)!important;color:var(--s-ivory)!important}
+#main .mo-form :is(button[type=submit],.mo-continue):hover{background:var(--s-clay)!important;border-color:var(--s-clay)!important}
+#main .mo-form button:focus-visible{outline-color:var(--s-clay)}
+#main .mo-form .mo-back{color:var(--s-ink)}
+#main .mo-form .form-status{color:var(--s-clay)}
+#main .mo-progress{color:var(--s-clay)}
+#main .mo-bars span{background:#24302a26}
+#main .mo-bars span.is-done{background:var(--s-ink)}
+#main .mo-hello .form-success{border-top-color:#24302a40}
+#main .mo-hello .form-success strong{color:var(--s-ink)}
+#main .mo-hello .form-success p{color:var(--s-ink)!important}
+#main .mo-hello .dialog-or{color:var(--s-text)}
+#main .mo-hello .dialog-or:before,#main .mo-hello .dialog-or:after{background:#24302a33}
+#main .mo-hello .dialog-instagram{color:var(--s-ink)}
+#main .mo-hello .dialog-small{color:var(--s-text)!important}
