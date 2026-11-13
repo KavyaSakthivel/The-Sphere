@@ -16,7 +16,7 @@
   "refund_policy": "",
   "show_on_home": true,
   "promotion_until": "2027-01-01T00:00:00+05:30",
-  "booking_api": "preview",
+  "booking_api": "on",
   "max_tickets_per_booking": 10,
   "website_ticket_limit": null,
   "booking_dialog": {
