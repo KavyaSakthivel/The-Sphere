@@ -28,6 +28,8 @@ CREATE TABLE IF NOT EXISTS bookings (
   meta_last_attempt_at BIGINT       NULL,
   meta_last_error      VARCHAR(500) NULL,
   meta_fbtrace_id      VARCHAR(64)  NULL,
+  request_key          VARCHAR(64)  NULL,                    -- the page's retry key: a repeat request gets the same booking
+  UNIQUE KEY request_key (request_key),
   KEY bookings_status (event_slug, status),
   KEY bookings_meta (status, meta_status)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

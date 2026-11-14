@@ -50,6 +50,23 @@ if (Date.now() > eventEnd) document.body.classList.add('is-past');
   try { if (params.get('fbclid')) sessionStorage.setItem('sphere-fbclid', params.get('fbclid')); } catch {}
   let quantity = 1;
 
+  // One retry key per selection (ticket count and consent answer). Pressing Continue again, or reloading
+  // after an answer was lost, repeats the same request, and the server returns the same booking and link
+  // instead of making a second one. A different selection is a different booking, so it gets a new key.
+  const KEY_STORE = 'sphere-booking-attempt';
+  const newKey = () => (crypto.randomUUID ? crypto.randomUUID()
+    : Array.from(crypto.getRandomValues(new Uint8Array(16)), b => b.toString(16).padStart(2, '0')).join(''));
+  let attempt = null;
+  try { attempt = JSON.parse(sessionStorage.getItem(KEY_STORE) || 'null'); } catch {}
+  const keyFor = (q, c) => {
+    if (!attempt || attempt.quantity !== q || attempt.consent !== c || typeof attempt.key !== 'string') {
+      attempt = { key: newKey(), quantity: q, consent: c };
+      try { sessionStorage.setItem(KEY_STORE, JSON.stringify(attempt)); } catch {}
+    }
+    return attempt.key;
+  };
+  const forgetKey = () => { attempt = null; try { sessionStorage.removeItem(KEY_STORE); } catch {} };
+
   const render = () => {
     out.value = out.textContent = String(quantity);
     total.textContent = rupees(price * quantity);
@@ -81,17 +98,29 @@ if (Date.now() > eventEnd) document.body.classList.add('is-past');
     error.hidden = true;
     let fbclid = null;
     try { fbclid = params.get('fbclid') || sessionStorage.getItem('sphere-fbclid'); } catch {}
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 15000);
+    const post = async requestKey => {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 15000);
+      try {
+        const res = await fetch('/api/bookings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify({ quantity, consent: consent.checked, fbclid, requestKey }),
+          signal: controller.signal,
+        });
+        return { res, data: await res.json().catch(() => ({})) };
+      } finally {
+        clearTimeout(timer);
+      }
+    };
     try {
-      const res = await fetch('/api/bookings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'same-origin',
-        body: JSON.stringify({ quantity, consent: consent.checked, fbclid }),
-        signal: controller.signal,
-      });
-      const data = await res.json().catch(() => ({}));
+      let { res, data } = await post(keyFor(quantity, consent.checked));
+      // That key's booking is paid, closed or about to expire: this is a new booking, with a new key.
+      if (data.error === 'request_key_used' || data.error === 'request_key_mismatch') {
+        forgetKey();
+        ({ res, data } = await post(keyFor(quantity, consent.checked)));
+      }
       const target = res.ok && data.url ? new URL(data.url) : null;
       // Only ever leave for Razorpay.
       if (target && target.protocol === 'https:' && /(^|\.)(rzp\.io|razorpay\.com)$/.test(target.hostname)) {
@@ -102,10 +131,12 @@ if (Date.now() > eventEnd) document.body.classList.add('is-past');
       fallback.hidden = data.error === 'sold_out' || data.error === 'event_over';
     } catch {
       fallback.hidden = false;
-    } finally {
-      clearTimeout(timer);
     }
     error.hidden = false;
     busy(false);
   });
+
+  // Coming back from Razorpay with the browser's back button restores this page as it was left, with
+  // Continue still marked busy. Let the guest use it again; the same selection returns the same link.
+  window.addEventListener('pageshow', e => { if (e.persisted) busy(false); });
 })();

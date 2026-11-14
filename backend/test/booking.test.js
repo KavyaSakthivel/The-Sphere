@@ -7,7 +7,7 @@ const crypto = require('crypto');
 const { loadConfig } = require('../config');
 const { FileStore, MySqlStore } = require('../store');
 const { createApi, rateLimiter } = require('../app');
-const { verifyWebhookSignature } = require('../razorpay');
+const { verifyWebhookSignature, RazorpayError } = require('../razorpay');
 const { createMeta, hashEmail, hashPhone, normalisePhone, sha256 } = require('../meta');
 
 const WEBHOOK_SECRET = 'whsec_test_123';
@@ -26,13 +26,27 @@ function setup({ env = {}, metaFails = 0, metaPermanent = false, limiter } = {})
     ? new MySqlStore({ host: process.env.TEST_DB_HOST, port: Number(process.env.TEST_DB_PORT || 3306), user: process.env.TEST_DB_USER,
       password: process.env.TEST_DB_PASSWORD || '', database: process.env.TEST_DB_NAME })
     : new FileStore(null);
+  // A fake Razorpay as strict as the real one: each reference_id is accepted once, expire_by must be at least
+  // 15 minutes ahead, and links can be looked up by reference. `rz.next` scripts the next create call:
+  // 'lost' creates the link but the answer never arrives; 'down' fails before anything is created.
   const links = [];
+  const rz = { next: [], lookups: 0, creates: 0 };
   const razorpay = {
     async createPaymentLink({ booking, expiresAt }) {
-      const link = { id: `plink_${links.length + 1}`, short_url: `https://rzp.io/rzp/x${links.length + 1}`, booking, expiresAt };
+      rz.creates += 1;
+      const mode = rz.next.shift();
+      if (mode === 'down') throw new TypeError('fetch failed');
+      if (mode === 'refuse') throw new RazorpayError('Razorpay POST /payment_links failed (400): The amount is invalid', 400);
+      if (links.some(l => l.reference_id === booking.id)) throw new RazorpayError('Razorpay POST /payment_links failed (400): payment link with given reference_id already exists', 400);
+      if (Math.floor(expiresAt / 1000) < Math.floor(clock / 1000) + 15 * 60) throw new RazorpayError('Razorpay POST /payment_links failed (400): expire_by should be at least 15 minutes in the future', 400);
+      const n = links.length + 1;
+      const link = { id: `plink_${n}`, short_url: `https://rzp.io/rzp/x${n}`, booking, expiresAt, reference_id: booking.id,
+        amount: booking.amountPaise, currency: 'INR', status: 'created', expire_by: Math.floor(expiresAt / 1000), notes: { source: 'website', booking_id: booking.id } };
       links.push(link);
+      if (mode === 'lost') { const e = new Error('The operation was aborted due to timeout'); e.name = 'TimeoutError'; throw e; }
       return link;
     },
+    async findPaymentLinksByReference(ref) { rz.lookups += 1; return links.filter(l => l.reference_id === ref); },
   };
   const metaCalls = [];
   let failuresLeft = metaFails;
@@ -50,7 +64,7 @@ function setup({ env = {}, metaFails = 0, metaPermanent = false, limiter } = {})
   const api = createApi({ config, store, razorpay, meta, now: () => clock, log: (level, msg, f) => logs.push({ level, msg, ...f }), limiter });
   const server = http.createServer((req, res) => api.handle(req, res, new URL(req.url, 'http://x').pathname));
   return {
-    config, store, links, metaCalls, api, logs, server,
+    config, store, links, rz, metaCalls, api, logs, server,
     tick: ms => { clock += ms; },
     async listen() {
       await store.init();
@@ -414,4 +428,136 @@ test('requests that arrive while the app is still starting wait for it, within a
   // One that never connects: refused after the wait, and the page falls back to the shared link.
   const stuck = startBackend(env, { startupWaitMs: 50, storeInit: () => new Promise(() => {}) });
   assert.equal(await get(serve(stuck)), 503);
+});
+
+// ---------------------------------------------------------------- retry keys
+
+const statuses = async t => (await t.store.stats(t.config.event.slug)).bookings;
+
+test('retry key: a link created but its answer lost is found again, not made twice', async () => {
+  const t = setup(); await t.listen();
+  try {
+    const requestKey = crypto.randomUUID();
+    t.rz.next.push('lost');
+    const first = await book(t, { quantity: 2, consent: true, requestKey }, { cookie: `_fbp=${FBP}` });
+    assert.equal(first.status, 502);
+    assert.equal(first.body.error, 'payment_link_failed');
+    assert.equal(t.links.length, 1, 'Razorpay made the link even though the answer was lost');
+
+    const again = await book(t, { quantity: 2, consent: true, requestKey }, { cookie: `_fbp=${FBP}` });
+    assert.equal(again.status, 200);
+    assert.equal(again.body.url, t.links[0].short_url);
+    assert.equal(again.body.amount, 5798);
+    assert.equal(t.links.length, 1, 'no second link');
+    assert.deepEqual(await statuses(t), { created: 1 }, 'no second booking');
+    const b = await t.store.getBooking(again.body.bookingId);
+    assert.equal(b.paymentLinkId, t.links[0].id);
+    assert.equal(b.requestKey, requestKey);
+    assert.equal(b.fbp, FBP);
+
+    // Pressing again returns the stored link without asking Razorpay anything.
+    const { creates, lookups } = t.rz;
+    const third = await book(t, { quantity: 2, consent: true, requestKey });
+    assert.equal(third.status, 200);
+    assert.equal(third.body.bookingId, b.id);
+    assert.equal(third.body.url, t.links[0].short_url);
+    assert.deepEqual([t.rz.creates, t.rz.lookups], [creates, lookups]);
+
+    // Paying that link gives exactly one Purchase.
+    assert.equal((await webhook(t, paidEvent(t.links[0], b))).body.outcome, 'paid');
+    await settle();
+    assert.equal(t.metaCalls.length, 1);
+    assert.equal(t.metaCalls[0].body.data[0].custom_data.order_id, b.id);
+  } finally { await t.close(); }
+});
+
+test('retry key: Razorpay down before creating, a later retry makes the link with a fresh expiry', async () => {
+  const t = setup(); await t.listen();
+  try {
+    const requestKey = crypto.randomUUID();
+    t.rz.next.push('down');
+    assert.equal((await book(t, { quantity: 1, consent: false, requestKey })).status, 502);
+    assert.equal(t.links.length, 0);
+    assert.deepEqual(await statuses(t), { created: 1 }, 'kept open for the retry, not failed');
+
+    // Ten minutes on, the original expiry is too close for Razorpay (it needs 15 minutes): a fresh one is used.
+    t.tick(10 * 60e3);
+    const again = await book(t, { quantity: 1, consent: false, requestKey });
+    assert.equal(again.status, 200);
+    assert.equal(t.links.length, 1);
+    assert.equal(t.links[0].expiresAt, NOW + 30 * 60e3);
+    assert.equal((await t.store.getBooking(again.body.bookingId)).expiresAt, NOW + 30 * 60e3);
+    assert.deepEqual(await statuses(t), { created: 1 });
+  } finally { await t.close(); }
+});
+
+test('retry key: two presses at once give one booking and one link', async () => {
+  const t = setup(); await t.listen();
+  try {
+    const requestKey = crypto.randomUUID();
+    const [a, b] = await Promise.all([book(t, { quantity: 3, requestKey }), book(t, { quantity: 3, requestKey })]);
+    assert.ok(a.status === 201 || a.status === 200, `first: ${a.status} ${JSON.stringify(a.body)}`);
+    assert.ok(b.status === 201 || b.status === 200, `second: ${b.status} ${JSON.stringify(b.body)}`);
+    assert.equal(a.body.bookingId, b.body.bookingId);
+    assert.equal(a.body.url, b.body.url);
+    assert.equal(t.links.length, 1);
+    assert.deepEqual(await statuses(t), { created: 1 });
+  } finally { await t.close(); }
+});
+
+test('retry key: a different selection, a paid or expiring booking, or a bad key is never replayed', async () => {
+  const t = setup(); await t.listen();
+  try {
+    const requestKey = crypto.randomUUID();
+    const first = await book(t, { quantity: 1, consent: true, requestKey });
+    assert.equal(first.status, 201);
+    // Consent is never carried over to a selection the guest did not make with it, nor the ticket count changed.
+    assert.equal((await book(t, { quantity: 1, consent: false, requestKey })).body.error, 'request_key_mismatch');
+    assert.equal((await book(t, { quantity: 2, consent: true, requestKey })).body.error, 'request_key_mismatch');
+
+    const booking = await t.store.getBooking(first.body.bookingId);
+    assert.equal((await webhook(t, paidEvent(t.links[0], booking))).body.outcome, 'paid');
+    const replay = await book(t, { quantity: 1, consent: true, requestKey });
+    assert.equal(replay.status, 409);
+    assert.equal(replay.body.error, 'request_key_used');
+    const fresh = await book(t, { quantity: 1, consent: true, requestKey: crypto.randomUUID() });
+    assert.equal(fresh.status, 201);
+    assert.notEqual(fresh.body.bookingId, booking.id);
+
+    // A link about to expire is not handed out again.
+    const late = crypto.randomUUID();
+    assert.equal((await book(t, { quantity: 1, requestKey: late })).status, 201);
+    t.tick(19 * 60e3);
+    assert.equal((await book(t, { quantity: 1, requestKey: late })).body.error, 'request_key_used');
+
+    for (const bad of ['short', 'x'.repeat(65), 'has spaces in it here', 12345678901234567]) {
+      const r = await book(t, { quantity: 1, requestKey: bad });
+      assert.equal(r.status, 400, String(bad));
+      assert.equal(r.body.error, 'invalid_request_key');
+    }
+  } finally { await t.close(); }
+});
+
+test('retry key: a definite refusal from Razorpay fails the booking, and the key starts afresh', async () => {
+  const t = setup(); await t.listen();
+  try {
+    const requestKey = crypto.randomUUID();
+    t.rz.next.push('refuse');
+    assert.equal((await book(t, { quantity: 1, requestKey })).status, 502);
+    assert.deepEqual(await statuses(t), { failed: 1 });
+    assert.equal((await book(t, { quantity: 1, requestKey })).body.error, 'request_key_used');
+  } finally { await t.close(); }
+});
+
+test('no retry key (a page cached before keys): every request is its own booking, as before', async () => {
+  const t = setup(); await t.listen();
+  try {
+    const a = await book(t, { quantity: 1 });
+    const b = await book(t, { quantity: 1 });
+    assert.equal(a.status, 201); assert.equal(b.status, 201);
+    assert.notEqual(a.body.bookingId, b.body.bookingId);
+    t.rz.next.push('lost');
+    assert.equal((await book(t, { quantity: 1 })).status, 502);
+    assert.deepEqual(await statuses(t), { created: 2, failed: 1 }, 'nothing can come back for it, so it fails');
+  } finally { await t.close(); }
 });

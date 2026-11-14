@@ -15,6 +15,12 @@ Meta Events Manager ◀──Purchase (CAPI)── backend/ ◀──payment_lin
 1. A guest picks a ticket count on `/carnival/`. The server prices it from `data/event.json`
    (never from the browser), saves a booking, and creates **that booking's own** Razorpay Payment Link,
    tagged `notes.source = website`, `booking_id`, `quantity`.
+   Each request carries the page's retry key (one random key per ticket count and consent answer). A repeat
+   with the same key gets the same booking and link: if Razorpay's answer was lost (timeout, dropped
+   connection, 5xx), the booking stays open and the next attempt finds the link by `reference_id` or
+   creates it, with a fresh expiry. A different selection is a new key; a key whose booking is paid, closed,
+   failed or within 2 minutes of expiry answers `request_key_used`, and the page starts again with a new key.
+   Requests without a key (pages cached before keys) work as before.
 2. The guest pays on Razorpay's hosted checkout. Card and UPI details never reach our server.
 3. Razorpay calls `POST /api/webhooks/razorpay`. The server checks the HMAC signature on the raw
    body, recognises the link as a website booking, and reconciles link status, payment status,
@@ -109,14 +115,17 @@ In **test mode** first, then again in live mode (keys and webhooks are separate 
 
 ## Operations
 
-- **Logs:** one JSON line per event (`booking_created`, `booking_paid`, `meta_purchase_sent`,
-  `meta_purchase_failed`, `payment_mismatch`, `webhook_bad_signature`). No secrets or raw personal data.
+- **Logs:** one JSON line per event (`booking_created`, `booking_repeated`, `booking_recovered`,
+  `payment_link_uncertain`, `booking_paid`, `meta_purchase_sent`, `meta_purchase_failed`, `payment_mismatch`,
+  `webhook_bad_signature`). No secrets or raw personal data.
+- **Schema changes:** the server adds missing columns itself at start-up (`request_key`). If that fails,
+  the log shows `backend_start_failed` and the page falls back to the shared link until it is fixed.
 - **A webhook never arrived:** `npm run bookings -- reconcile` asks Razorpay about unpaid links.
 - **Meta token was wrong, now fixed:** `npm run bookings -- retry`.
 - **`review` bookings:** money and booking disagree; look the payment up in Razorpay. Never sent to Meta.
 - **Optional caps:** `max_tickets_per_booking` (default 10) and `website_ticket_limit` (website
   bookings only; WhatsApp and QR sales are not counted, so it cannot stop overselling across channels).
-- **Tests:** `npm test` (18 tests, file store). Against MySQL:
+- **Tests:** `npm test` (25 tests, file store). Against MySQL:
   `TEST_DB_HOST=… TEST_DB_USER=… TEST_DB_NAME=… npm test`. Both pass on Node 18 and 24 and MySQL 9.
 
 ## Privacy and compliance

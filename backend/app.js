@@ -9,7 +9,7 @@
 // reported: links made in the Razorpay dashboard or QR payments are recognised and ignored.
 const crypto = require('crypto');
 const { problems } = require('./config');
-const { verifyWebhookSignature } = require('./razorpay');
+const { verifyWebhookSignature, isUncertain } = require('./razorpay');
 const { purchaseEvent, hashEmail, hashPhone } = require('./meta');
 const { META_MAX_ATTEMPTS, META_WINDOW_MS } = require('./store');
 
@@ -70,6 +70,10 @@ function bookingId(now) {
 const FBP = /^fb\.[0-2]\.\d{10,13}\.\d{1,30}$/;
 const FBC = /^fb\.[0-2]\.\d{10,13}\.[\w-]{1,480}$/;
 const FBCLID = /^[\w-]{1,480}$/;
+// The page's retry key (a random UUID): every attempt at one selection carries the same key.
+const REQUEST_KEY = /^[A-Za-z0-9_-]{16,64}$/;
+// A booking found again by its retry key is handed back only while its link has this long left to run.
+const REUSE_MARGIN_MS = 2 * 60e3;
 
 // Fixed-window limits: per address, and for the whole site so a botnet cannot mint links without end.
 function rateLimiter({ perIp = 10, global = 300, windowMs = 10 * 60e3 } = {}) {
@@ -106,6 +110,14 @@ function createApi({ config, store, razorpay, meta, now = () => Date.now(), log 
     const quantity = input?.quantity;
     if (typeof quantity !== 'number' || !Number.isInteger(quantity) || quantity < 1 || quantity > event.maxPerBooking) throw new HttpError(400, 'invalid_quantity');
     const consent = input.consent === true;
+    let requestKey = null;
+    if (input.requestKey != null) {
+      if (typeof input.requestKey !== 'string' || !REQUEST_KEY.test(input.requestKey)) throw new HttpError(400, 'invalid_request_key');
+      requestKey = input.requestKey;
+      // A repeat of a request already made (its answer was lost, or the guest pressed again): same booking.
+      const existing = await store.getBookingByRequestKey(requestKey);
+      if (existing) return resumeBooking(res, existing, { quantity, consent });
+    }
 
     if (event.websiteTicketLimit != null) {
       const taken = await store.countActiveTickets(event.slug, t);
@@ -123,24 +135,96 @@ function createApi({ config, store, razorpay, meta, now = () => Date.now(), log 
 
     // The price always comes from data/event.json on the server, never from the browser.
     const expiresAt = t + config.bookingTtlMinutes * 60e3;
-    const booking = await store.insertBooking({
-      id: bookingId(t), eventSlug: event.slug, quantity, unitPricePaise: event.unitPricePaise,
-      amountPaise: event.unitPricePaise * quantity, consent, fbp, fbc,
-      clientIp: consent ? ip : null, userAgent: String(req.headers['user-agent'] || '').slice(0, 512) || null,
-      createdAt: t, expiresAt,
-    });
+    let booking;
+    try {
+      booking = await store.insertBooking({
+        id: bookingId(t), eventSlug: event.slug, quantity, unitPricePaise: event.unitPricePaise,
+        amountPaise: event.unitPricePaise * quantity, consent, fbp, fbc,
+        clientIp: consent ? ip : null, userAgent: String(req.headers['user-agent'] || '').slice(0, 512) || null,
+        createdAt: t, expiresAt, requestKey,
+      });
+    } catch (err) {
+      // The same key arrived twice at once and the other request won: answer with its booking.
+      if (err.code === 'DUPLICATE_REQUEST_KEY') return resumeBooking(res, await store.getBookingByRequestKey(requestKey), { quantity, consent });
+      throw err;
+    }
 
+    const link = await obtainLink(booking, { expiresAt, lookFirst: false });
+    log('info', 'booking_created', { booking: booking.id, quantity, consent, link: link.id });
+    sendBooking(res, 201, booking, link.short_url);
+  }
+
+  function sendBooking(res, status, booking, url) {
+    sendJson(res, status, { bookingId: booking.id, url, amount: booking.amountPaise / 100, currency: 'INR' });
+  }
+
+  // A request carrying a retry key that already has a booking. The original selection stands: a different
+  // ticket count or consent answer is a new booking with a new key, never a change to this one, so consent
+  // given or withheld is never carried over to something the guest did not agree to.
+  async function resumeBooking(res, booking, { quantity, consent }) {
+    if (booking.quantity !== quantity || booking.consent !== consent) throw new HttpError(409, 'request_key_mismatch');
+    // Paid, closed, failed or about to expire: the page starts again with a new key.
+    if (booking.status !== 'created' || booking.expiresAt - now() < REUSE_MARGIN_MS) throw new HttpError(409, 'request_key_used');
+    if (booking.paymentLinkId) {
+      log('info', 'booking_repeated', { booking: booking.id, link: booking.paymentLinkId });
+      sendBooking(res, 200, booking, booking.paymentLinkUrl);
+      return;
+    }
+    // No link recorded: an earlier attempt lost Razorpay's answer, or a request with this key is still waiting for it.
+    const link = await obtainLink(booking, { expiresAt: now() + config.bookingTtlMinutes * 60e3, lookFirst: true });
+    log('info', 'booking_recovered', { booking: booking.id, link: link.id });
+    sendBooking(res, 200, booking, link.short_url);
+  }
+
+  // Razorpay accepts each reference_id (our booking id) once and can be asked for the link by it, so a link
+  // whose creation answer was lost is found again rather than made twice.
+  async function findLink(booking) {
+    const found = await razorpay.findPaymentLinksByReference(booking.id);
+    return found.find(l => l.reference_id === booking.id && l.notes?.source === 'website' && l.status === 'created' &&
+      Number(l.amount) === booking.amountPaise && l.currency === 'INR' && l.short_url) || null;
+  }
+
+  async function adopt(booking, link) {
+    const expiresAt = Number(link.expire_by) ? Number(link.expire_by) * 1000 : null;
+    if (await store.attachPaymentLink(booking.id, link.id, link.short_url, expiresAt)) return link;
+    // Another request attached a different link first (Razorpay's one-link-per-reference rule makes this
+    // unexpected); the booking keeps that one.
+    const current = await store.getBooking(booking.id);
+    return { id: current.paymentLinkId, short_url: current.paymentLinkUrl };
+  }
+
+  async function obtainLink(booking, { expiresAt, lookFirst }) {
+    const keyed = !!booking.requestKey;
+    const unsure = err => {
+      // The link may or may not exist. With a retry key the booking stays open, and the page's next attempt
+      // finds the link by reference or creates it. Without one, nothing can come back for it.
+      log('error', 'payment_link_uncertain', { booking: booking.id, error: err.message, recoverable: keyed });
+      return (keyed ? Promise.resolve() : store.markFailed(booking.id)).then(() => { throw new HttpError(502, 'payment_link_failed'); });
+    };
+    const failed = async err => {
+      await store.markFailed(booking.id);
+      log('error', 'payment_link_failed', { booking: booking.id, error: err.message });
+      throw new HttpError(502, 'payment_link_failed');
+    };
+
+    if (lookFirst) {
+      let found;
+      try { found = await findLink(booking); } catch (err) { return unsure(err); }
+      if (found) return adopt(booking, found);
+    }
     let link;
     try {
       link = await razorpay.createPaymentLink({ booking, event, expiresAt });
     } catch (err) {
-      await store.markFailed(booking.id);
-      log('error', 'payment_link_failed', { booking: booking.id, error: err.message });
-      throw new HttpError(502, 'payment_link_failed');
+      if (isUncertain(err)) return unsure(err);
+      // Razorpay refuses a reference it has already used: another request for this booking got there first.
+      // Any other refusal leaves nothing to find, and the booking fails as before.
+      let found = null;
+      try { found = await findLink(booking); } catch (lookupErr) { return unsure(lookupErr); }
+      if (found) return adopt(booking, found);
+      return failed(err);
     }
-    await store.attachPaymentLink(booking.id, link.id, link.short_url);
-    log('info', 'booking_created', { booking: booking.id, quantity, consent, link: link.id });
-    sendJson(res, 201, { bookingId: booking.id, url: link.short_url, amount: booking.amountPaise / 100, currency: 'INR' });
+    return adopt(booking, { ...link, expire_by: link.expire_by || Math.floor(expiresAt / 1000) });
   }
 
   // ------------------------------------------------------------ POST /api/webhooks/razorpay

@@ -15,6 +15,10 @@ class RazorpayError extends Error {
   constructor(message, status, detail) { super(message); this.status = status; this.detail = detail; }
 }
 
+// A timeout, a dropped connection or a Razorpay 5xx leaves it unknown whether the link was created.
+// Any other error is Razorpay's definite answer.
+function isUncertain(err) { return !(err instanceof RazorpayError) || err.status >= 500; }
+
 function createRazorpay({ keyId, keySecret, apiBase }, fetchImpl = fetch) {
   const auth = 'Basic ' + Buffer.from(`${keyId}:${keySecret}`).toString('base64');
 
@@ -53,8 +57,13 @@ function createRazorpay({ keyId, keySecret, apiBase }, fetchImpl = fetch) {
       });
     },
     fetchPaymentLink(id) { return call('GET', `/payment_links/${encodeURIComponent(id)}`); },
+    // https://razorpay.com/docs/api/payments/payment-links/fetch-all-standard/ (reference_id filter)
+    async findPaymentLinksByReference(referenceId) {
+      const res = await call('GET', `/payment_links?reference_id=${encodeURIComponent(referenceId)}`);
+      return Array.isArray(res?.payment_links) ? res.payment_links : [];
+    },
     fetchPayment(id) { return call('GET', `/payments/${encodeURIComponent(id)}`); },
   };
 }
 
-module.exports = { verifyWebhookSignature, createRazorpay, RazorpayError };
+module.exports = { verifyWebhookSignature, createRazorpay, RazorpayError, isUncertain };

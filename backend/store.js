@@ -17,8 +17,12 @@ function newBooking(fields) {
     clientIp: fields.clientIp || null, userAgent: fields.userAgent || null, emHash: null, phHash: null,
     createdAt: fields.createdAt, expiresAt: fields.expiresAt, paidAt: null, paymentTime: null,
     metaStatus: 'pending', metaAttempts: 0, metaLastAttemptAt: null, metaLastError: null, metaFbtraceId: null,
+    requestKey: fields.requestKey || null,
   };
 }
+
+// insertBooking throws this when another request already holds the same retry key.
+class DuplicateRequestKey extends Error { constructor() { super('duplicate request key'); this.code = 'DUPLICATE_REQUEST_KEY'; } }
 
 // ------------------------------------------------------------------ JSON file / memory
 
@@ -38,11 +42,23 @@ class FileStore {
     fs.renameSync(tmp, this.file);
   }
 
-  async insertBooking(fields) { const b = newBooking(fields); this.data.bookings[b.id] = b; this.save(); return { ...b }; }
+  async insertBooking(fields) {
+    const b = newBooking(fields);
+    if (b.requestKey && Object.values(this.data.bookings).some(x => x.requestKey === b.requestKey)) throw new DuplicateRequestKey();
+    this.data.bookings[b.id] = b; this.save(); return { ...b };
+  }
   async getBooking(id) { const b = this.data.bookings[id]; return b ? { ...b } : null; }
   async getBookingByLink(linkId) { const b = Object.values(this.data.bookings).find(x => x.paymentLinkId === linkId); return b ? { ...b } : null; }
+  async getBookingByRequestKey(key) { const b = Object.values(this.data.bookings).find(x => x.requestKey === key); return b ? { ...b } : null; }
 
-  async attachPaymentLink(id, linkId, url) { Object.assign(this.data.bookings[id], { paymentLinkId: linkId, paymentLinkUrl: url }); this.save(); }
+  // Attaches only if the booking has no link yet, or already this one; true when the booking now holds it.
+  async attachPaymentLink(id, linkId, url, expiresAt) {
+    const b = this.data.bookings[id];
+    if (!b || (b.paymentLinkId && b.paymentLinkId !== linkId)) return false;
+    Object.assign(b, { paymentLinkId: linkId, paymentLinkUrl: url }, expiresAt ? { expiresAt } : {});
+    this.save();
+    return true;
+  }
   async markFailed(id) { const b = this.data.bookings[id]; if (b && b.status === 'created') { b.status = 'failed'; this.save(); } }
 
   async countActiveTickets(slug, now) {
@@ -148,6 +164,7 @@ const COLUMNS = {
   emHash: 'em_hash', phHash: 'ph_hash', createdAt: 'created_at', expiresAt: 'expires_at', paidAt: 'paid_at',
   paymentTime: 'payment_time', metaStatus: 'meta_status', metaAttempts: 'meta_attempts',
   metaLastAttemptAt: 'meta_last_attempt_at', metaLastError: 'meta_last_error', metaFbtraceId: 'meta_fbtrace_id',
+  requestKey: 'request_key',
 };
 const NUMERIC = new Set(['quantity', 'unitPricePaise', 'amountPaise', 'createdAt', 'expiresAt', 'paidAt', 'paymentTime', 'metaAttempts', 'metaLastAttemptAt']);
 const fromRow = row => {
@@ -166,6 +183,21 @@ class MySqlStore {
     this.pool = mysql.createPool({ ...this.options, connectionLimit: 5, waitForConnections: true, charset: 'utf8mb4', supportBigNumbers: true });
     const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
     for (const statement of schema.replace(/--[^\n]*/g, '').split(';').map(s => s.trim()).filter(Boolean)) await this.pool.query(statement);
+    await this.migrate();
+  }
+
+  // Columns added after the table first went live. CREATE TABLE IF NOT EXISTS leaves an existing table as it
+  // is, so they are added here. Both of Hostinger's processes start at once and may race: the loser's
+  // "already exists" error is expected. Any other failure stops start-up, so bookings never run half-migrated.
+  async migrate() {
+    const [rows] = await this.pool.query(
+      "SELECT COUNT(*) AS n FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='bookings' AND COLUMN_NAME='request_key'");
+    if (Number(rows[0].n) > 0) return;
+    try {
+      await this.pool.query('ALTER TABLE bookings ADD COLUMN request_key VARCHAR(64) NULL, ADD UNIQUE KEY request_key (request_key)');
+    } catch (err) {
+      if (err.errno !== 1060 && err.errno !== 1061) throw err; // ER_DUP_FIELDNAME, ER_DUP_KEYNAME
+    }
   }
 
   async q(sql, params) { const [result] = await this.pool.execute(sql, params); return result; }
@@ -173,13 +205,25 @@ class MySqlStore {
   async insertBooking(fields) {
     const b = newBooking(fields);
     const keys = Object.keys(COLUMNS);
-    await this.q(`INSERT INTO bookings (${keys.map(k => COLUMNS[k]).join(',')}) VALUES (${keys.map(() => '?').join(',')})`,
-      keys.map(k => (k === 'consent' ? (b.consent ? 1 : 0) : b[k])));
+    try {
+      await this.q(`INSERT INTO bookings (${keys.map(k => COLUMNS[k]).join(',')}) VALUES (${keys.map(() => '?').join(',')})`,
+        keys.map(k => (k === 'consent' ? (b.consent ? 1 : 0) : b[k])));
+    } catch (err) {
+      if (err.errno === 1062 && b.requestKey && /request_key/.test(err.message)) throw new DuplicateRequestKey(); // ER_DUP_ENTRY
+      throw err;
+    }
     return b;
   }
   async getBooking(id) { return fromRow((await this.q('SELECT * FROM bookings WHERE id=?', [id]))[0]); }
   async getBookingByLink(linkId) { return fromRow((await this.q('SELECT * FROM bookings WHERE payment_link_id=?', [linkId]))[0]); }
-  async attachPaymentLink(id, linkId, url) { await this.q('UPDATE bookings SET payment_link_id=?, payment_link_url=? WHERE id=?', [linkId, url, id]); }
+  async getBookingByRequestKey(key) { return fromRow((await this.q('SELECT * FROM bookings WHERE request_key=?', [key]))[0]); }
+  async attachPaymentLink(id, linkId, url, expiresAt) {
+    await this.q(`UPDATE bookings SET payment_link_id=?, payment_link_url=?, expires_at=COALESCE(?, expires_at)
+      WHERE id=? AND (payment_link_id IS NULL OR payment_link_id=?)`, [linkId, url, expiresAt || null, id, linkId]);
+    // Re-read rather than trust affectedRows, which is 0 when the row already held exactly these values.
+    const b = await this.getBooking(id);
+    return !!b && b.paymentLinkId === linkId;
+  }
   async markFailed(id) { await this.q("UPDATE bookings SET status='failed' WHERE id=? AND status='created'", [id]); }
 
   async countActiveTickets(slug, now) {
@@ -251,4 +295,4 @@ function createStore(config) {
   return new FileStore(config.dataDir ? path.join(config.dataDir, 'bookings.json') : null);
 }
 
-module.exports = { createStore, FileStore, MySqlStore, META_MAX_ATTEMPTS, META_WINDOW_MS };
+module.exports = { createStore, FileStore, MySqlStore, DuplicateRequestKey, META_MAX_ATTEMPTS, META_WINDOW_MS };
