@@ -233,3 +233,18 @@ body.is-past [data-book],body.is-past .event-bar{display:none!important}
 .booking-error{margin:0;padding:12px 14px;background:var(--s-stone);font-size:14px}
 .booking-error a{text-decoration:underline}
 .booking-error a[hidden]{display:none}
+
+/* Booking confirmation (/carnival/booked/): one message at a time, chosen by booked.js. Without
+   JavaScript the plain thank-you shows. */
+.booked-page [data-when] { display: none; }
+.booked-page[data-state="checking"] [data-when="checking"],
+.booked-page[data-state="paid"] [data-when="paid"],
+.booked-page[data-state="pending"] [data-when="pending"],
+.booked-page[data-state="closed"] [data-when="closed"],
+.booked-page[data-state="thanks"] [data-when="thanks"] { display: block; }
+.booked-page .booked-status { margin: 1.25rem 0 2rem; font-size: 1.125rem; line-height: 1.6; }
+.booked-details { display: grid; grid-template-columns: max-content 1fr; gap: .5rem 1.5rem; margin: 1.5rem 0 0; }
+.booked-details dt { color: var(--muted, #45483e); }
+.booked-details dd { margin: 0; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.booked-event, .booked-contact { margin: 0 0 1.25rem; }
+.booked-event span { display: block; }

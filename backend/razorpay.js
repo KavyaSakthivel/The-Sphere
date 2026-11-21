@@ -54,6 +54,9 @@ function createRazorpay({ keyId, keySecret, apiBase }, fetchImpl = fetch) {
         // Notes come back in every webhook and show in the dashboard, so they tell website sales apart from
         // links sent on WhatsApp. They hold no personal data.
         notes: { source: 'website', booking_id: booking.id, quantity: String(booking.quantity), event: event.slug },
+        // After paying, the guest returns to our confirmation page; Razorpay adds the link id and our
+        // booking reference to the address. Razorpay accepts only "get" here.
+        ...(event.confirmationUrl ? { callback_url: event.confirmationUrl, callback_method: 'get' } : {}),
       });
     },
     fetchPaymentLink(id) { return call('GET', `/payment_links/${encodeURIComponent(id)}`); },

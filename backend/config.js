@@ -34,6 +34,9 @@ function loadConfig(env = process.env) {
       itemId: `${event.slug}-entry`,
       itemName: `${event.name} – Entry ticket`,
       sourceUrl: `${siteUrl}/${event.slug}/`,
+      // Where Razorpay sends the guest after paying. Only once the client has approved the page's wording.
+      confirmationUrl: event.booking_confirmation && event.booking_confirmation.draft === false
+        ? `${siteUrl}/${event.slug}/booked/` : null,
     },
     razorpay: {
       keyId: env.RAZORPAY_KEY_ID || '',

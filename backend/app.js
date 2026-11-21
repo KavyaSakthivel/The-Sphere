@@ -86,7 +86,11 @@ function rateLimiter({ perIp = 10, global = 300, windowMs = 10 * 60e3 } = {}) {
   };
 }
 
-function createApi({ config, store, razorpay, meta, now = () => Date.now(), log = defaultLog, limiter = rateLimiter() }) {
+const BOOKING_ID = /^SPH-\d{6}-[2-9A-Z]{10}$/;
+const LINK_ID = /^plink_[A-Za-z0-9]{6,40}$/;
+
+function createApi({ config, store, razorpay, meta, now = () => Date.now(), log = defaultLog, limiter = rateLimiter(),
+  confirmLimiter = rateLimiter({ perIp: 120, global: 3000 }) }) {
   const issues = problems(config);
   const bookingsOpen = config.bookingsEnabled && issues.blocking.length === 0;
   const event = config.event;
@@ -227,6 +231,25 @@ function createApi({ config, store, razorpay, meta, now = () => Date.now(), log 
     return adopt(booking, { ...link, expire_by: link.expire_by || Math.floor(expiresAt / 1000) });
   }
 
+  // ------------------------------------------------------------ GET /api/bookings/confirmation
+  // The confirmation page asks whether the booking it was sent back for is paid, and whether the guest
+  // agreed to share it with Meta, so it knows whether to send the browser Purchase. Read-only: arriving on
+  // the page proves nothing, so only the signed webhook ever marks a booking paid. Both ids must match the
+  // stored booking, and both are unguessable.
+  async function confirmation(req, res) {
+    const q = new URL(req.url, 'http://x').searchParams;
+    const id = q.get('booking') || '', link = q.get('link') || '';
+    if (!BOOKING_ID.test(id) || !LINK_ID.test(link)) throw new HttpError(400, 'invalid_request');
+    if (!confirmLimiter(clientIp(req, config.trustProxy) || 'unknown', now())) throw new HttpError(429, 'too_many_requests');
+    const booking = await store.getBooking(id);
+    if (!booking || booking.paymentLinkId !== link) throw new HttpError(404, 'not_found');
+    const status = booking.status === 'paid' ? 'paid' : ['created', 'review'].includes(booking.status) ? 'pending' : 'closed';
+    sendJson(res, 200, status === 'paid'
+      ? { status, bookingId: booking.id, quantity: booking.quantity, value: booking.amountPaise / 100, unitPrice: booking.unitPricePaise / 100,
+        currency: 'INR', consent: booking.consent, itemId: event.itemId, eventId: `purchase.${booking.id}` }
+      : { status });
+  }
+
   // ------------------------------------------------------------ POST /api/webhooks/razorpay
   async function webhook(req, res) {
     const raw = await readBody(req, WEBHOOK_BODY_LIMIT);
@@ -352,6 +375,7 @@ function createApi({ config, store, razorpay, meta, now = () => Date.now(), log 
   const routes = {
     'POST /api/bookings': createBooking,
     'POST /api/webhooks/razorpay': webhook,
+    'GET /api/bookings/confirmation': confirmation,
     'GET /api/health': (req, res) => sendJson(res, 200, { ok: true, bookings: bookingsOpen ? 'open' : 'closed' }),
     'HEAD /api/health': (req, res) => sendJson(res, 200, {}),
   };

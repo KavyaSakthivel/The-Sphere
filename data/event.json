@@ -34,5 +34,20 @@
     "error": "We could not start your booking.",
     "fallback": "Book on Razorpay instead",
     "close": "Close"
+  },
+  "booking_confirmation": {
+    "draft": false,
+    "_note": "The page guests see after paying on Razorpay (/carnival/booked/). On 2026-11-21 the client asked us to write this wording in a professional tone; it adds no facts beyond the event details above. While draft is true, Razorpay does not send guests to this page.",
+    "title": "Thank you",
+    "checking": "One moment while we confirm your payment.",
+    "paid": "Your booking is confirmed. We look forward to welcoming you to The Sphere Wellness Carnival.",
+    "booking_label": "Booking reference",
+    "tickets_label": "Tickets",
+    "total_label": "Amount paid",
+    "pending": "Razorpay is still confirming your payment. This can take a few minutes, so please do not pay again.",
+    "closed": "This booking was not completed. You are welcome to book again from the Carnival page.",
+    "thanks": "Thank you for booking The Sphere Wellness Carnival. We look forward to welcoming you.",
+    "questions": "For any questions about your booking, please write to",
+    "back": "Back to the Carnival"
   }
 }

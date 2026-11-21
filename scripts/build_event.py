@@ -469,6 +469,39 @@ def terms_page(home, ev):
  return html.replace('href="#', 'href="/#').replace('href="/#main"', 'href="#main"')
 
 
+def booked_page(home, ev):
+ """/<slug>/booked/: where Razorpay returns a guest after paying for a website booking. booked.js asks the
+ server whether that booking is paid; only then does it show the booking and, if the guest agreed to share
+ it with Meta, send the browser Purchase with the same event id as the server's, so Meta counts it once.
+ Arriving without Razorpay's details (the shared payment page, a bookmark) shows a plain thank-you and
+ sends nothing. Not indexed and not in the sitemap: it says nothing on its own."""
+ c = ev['booking_confirmation']
+ head = re.search(r'<head>(.*?)</head>', (ROOT/'templates/original-index.html').read_text(), re.S)[1]
+ title = f"{c['title']} | {ev['name']}"
+ head = re.sub(r'<title>.*?</title>', '<title>'+escape(title)+'</title>', head, count=1)
+ head = re.sub(r'<meta name="description"[^>]*>', f'<meta name="description" content="{a(ev["name"])}">', head, count=1)
+ head = head.replace('</script>', '</script>\n  <link rel="stylesheet" href="/'+ev['slug']+'/event.css?v=5">\n  <script src="/'+ev['slug']+'/booked.js?v=1" defer></script>', 1)
+ meta = '\n  <meta name="robots" content="noindex,nofollow">\n  <meta name="referrer" content="no-referrer">\n'
+ shell = re.search(r'<a class="skip".*?<main id="main">', home, re.S)[0].removesuffix('<main id="main">')
+ footer = re.search(r'<footer>.*?</footer>', home, re.S)[0]
+ invitation = re.search(r'<dialog id="invitation-dialog".*?</dialog>', home, re.S)[0]
+ states = ''.join(f'<p data-when="{k}">{escape(c[k])}</p>' for k in ('checking', 'pending', 'closed', 'thanks'))
+ paid = (f'<div data-when="paid"><p>{escape(c["paid"])}</p><dl class="booked-details">'
+  f'<dt>{escape(c["booking_label"])}</dt><dd data-field="bookingId"></dd>'
+  f'<dt>{escape(c["tickets_label"])}</dt><dd data-field="quantity"></dd>'
+  f'<dt>{escape(c["total_label"])}</dt><dd data-field="total"></dd></dl></div>')
+ body = (f'<main id="main"><article class="article-reading booked-page" data-booked data-state="thanks">'
+  f'<p class="eyebrow">{escape(ev["name"]).upper()}</p><h1>{escape(c["title"])}</h1>'
+  f'<div class="booked-status" role="status" aria-live="polite">{states}{paid}</div>'
+  f'<p class="booked-event"><span>{full_date(ev["start_at"])}, {hours(ev)}</span><span>{escape(where(ev))}</span></p>'
+  f'<p class="booked-contact">{escape(c["questions"])} <a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a>.</p>'
+  f'<p><a class="text-link" href="{ev["path"]}">{escape(c["back"])} <span aria-hidden="true">→</span></a></p>'
+  f'</article></main>')
+ html = f'<!doctype html><html lang="en-IN"><head>{head}{meta}</head><body class="article-page">{shell}{body}{footer}{invitation}</body></html>'
+ html = re.sub(r'(href|src|srcset)="(assets/|style.css|brand.css|premium.css|site.js|motion.js)', r'\1="/\2', html)
+ return html.replace('href="#', 'href="/#').replace('href="/#main"', 'href="#main"')
+
+
 def build(home):
  ev = load()
  folder = ROOT/'dist'/(ev['slug'] if ev else 'carnival')
@@ -478,13 +511,16 @@ def build(home):
  if folder.exists():
   shutil.rmtree(folder)
  folder.mkdir(parents=True)
- for name in ('event.css', 'event.js'):
+ for name in ('event.css', 'event.js', 'booked.js'):
   shutil.copyfile(TEMPLATES/name, folder/name)
  if has_montage():
   for name in ('hero.mp4', 'hero.webm', 'hero-poster.jpg'):
    shutil.copyfile(MONTAGE/name, folder/name)
  title = f"{ev['name']} | {full_date(ev['start_at'])}, {ev['city']}"
  (folder/'index.html').write_text(assemble(home, ev, ev['path'], title, with_booking(ev, page(ev))))
+ if ev.get('booking_confirmation'):
+  (folder/'booked').mkdir()
+  (folder/'booked'/'index.html').write_text(booked_page(home, ev))
  terms = ROOT/'dist/terms'; terms.mkdir(exist_ok=True)
  (terms/'index.html').write_text(terms_page(home, ev))
  sitemap = ROOT/'dist/sitemap.xml'

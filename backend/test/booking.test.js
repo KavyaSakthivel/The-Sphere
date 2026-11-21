@@ -40,7 +40,7 @@ function setup({ env = {}, metaFails = 0, metaPermanent = false, limiter } = {})
       if (links.some(l => l.reference_id === booking.id)) throw new RazorpayError('Razorpay POST /payment_links failed (400): payment link with given reference_id already exists', 400);
       if (Math.floor(expiresAt / 1000) < Math.floor(clock / 1000) + 15 * 60) throw new RazorpayError('Razorpay POST /payment_links failed (400): expire_by should be at least 15 minutes in the future', 400);
       const n = links.length + 1;
-      const link = { id: `plink_${n}`, short_url: `https://rzp.io/rzp/x${n}`, booking, expiresAt, reference_id: booking.id,
+      const link = { id: `plink_Fake${String(n).padStart(8, "0")}`, short_url: `https://rzp.io/rzp/x${n}`, booking, expiresAt, reference_id: booking.id,
         amount: booking.amountPaise, currency: 'INR', status: 'created', expire_by: Math.floor(expiresAt / 1000), notes: { source: 'website', booking_id: booking.id } };
       links.push(link);
       if (mode === 'lost') { const e = new Error('The operation was aborted due to timeout'); e.name = 'TimeoutError'; throw e; }
@@ -560,4 +560,76 @@ test('no retry key (a page cached before keys): every request is its own booking
     assert.equal((await book(t, { quantity: 1 })).status, 502);
     assert.deepEqual(await statuses(t), { created: 2, failed: 1 }, 'nothing can come back for it, so it fails');
   } finally { await t.close(); }
+});
+
+// ---------------------------------------------------------------- confirmation page
+
+const confirm = async (t, booking, link) => {
+  const res = await fetch(`${t.base}/api/bookings/confirmation?booking=${encodeURIComponent(booking)}&link=${encodeURIComponent(link)}`);
+  return { status: res.status, body: await res.json() };
+};
+
+test('confirmation: says paid only after the signed webhook, with what the page needs for the Purchase', async () => {
+  const t = setup(); await t.listen();
+  try {
+    const r = await book(t, { quantity: 2, consent: true, requestKey: crypto.randomUUID() });
+    const booking = await t.store.getBooking(r.body.bookingId);
+    const link = t.links[0];
+
+    // Arriving on the page proves nothing: before Razorpay's webhook it is pending, and asking changes nothing.
+    assert.deepEqual((await confirm(t, booking.id, link.id)).body, { status: 'pending' });
+    assert.equal((await t.store.getBooking(booking.id)).status, 'created');
+
+    await webhook(t, paidEvent(link, booking));
+    const paid = await confirm(t, booking.id, link.id);
+    assert.equal(paid.status, 200);
+    assert.deepEqual(paid.body, { status: 'paid', bookingId: booking.id, quantity: 2, value: 5798, unitPrice: 2899, currency: 'INR',
+      consent: true, itemId: t.config.event.itemId, eventId: `purchase.${booking.id}` });
+    await settle();
+    // The browser Purchase uses the same event id as the server's, so Meta keeps one.
+    assert.equal(t.metaCalls[0].body.data[0].event_id, paid.body.eventId);
+  } finally { await t.close(); }
+});
+
+test('confirmation: no consent, wrong or made-up ids, and closed bookings reveal nothing to send', async () => {
+  const t = setup(); await t.listen();
+  try {
+    const r = await book(t, { quantity: 1, consent: false });
+    const booking = await t.store.getBooking(r.body.bookingId);
+    await webhook(t, paidEvent(t.links[0], booking));
+    assert.equal((await confirm(t, booking.id, t.links[0].id)).body.consent, false);
+
+    const other = await book(t, { quantity: 1, consent: true });
+    assert.equal((await confirm(t, other.body.bookingId, t.links[0].id)).status, 404, 'link of another booking');
+    assert.equal((await confirm(t, 'SPH-261110-ABCDEFGHJK', 'plink_abcdef')).status, 404, 'no such booking');
+    for (const [b, l] of [['x', t.links[0].id], [booking.id, 'nope'], ['', ''], [`${booking.id}'`, t.links[0].id]]) {
+      assert.equal((await confirm(t, b, l)).status, 400, `${b} ${l}`);
+    }
+
+    const expired = paidEvent(t.links[1], await t.store.getBooking(other.body.bookingId));
+    expired.event = 'payment_link.expired'; expired.payload.payment_link.entity.status = 'expired';
+    await webhook(t, expired);
+    assert.deepEqual((await confirm(t, other.body.bookingId, t.links[1].id)).body, { status: 'closed' });
+  } finally { await t.close(); }
+});
+
+test('confirmation page: Razorpay is told to return guests to it only once the client approves the wording', async () => {
+  const { createRazorpay } = require('../razorpay');
+  const bodies = [];
+  const rz = createRazorpay({ keyId: 'k', keySecret: 's', apiBase: 'https://api.example' }, async (url, init) => {
+    bodies.push(JSON.parse(init.body));
+    return new Response(JSON.stringify({ id: 'plink_abc123', short_url: 'https://rzp.io/x' }), { status: 200 });
+  });
+  const booking = { id: 'SPH-261110-ABCDEFGHJK', amountPaise: 289900, quantity: 1 };
+  const event = { name: 'Carnival', slug: 'carnival' };
+  await rz.createPaymentLink({ booking, event, expiresAt: NOW + 20 * 60e3 });
+  await rz.createPaymentLink({ booking, event: { ...event, confirmationUrl: 'https://spherewellness.in/carnival/booked/' }, expiresAt: NOW + 20 * 60e3 });
+  assert.equal(bodies[0].callback_url, undefined);
+  assert.equal(bodies[0].callback_method, undefined);
+  assert.equal(bodies[1].callback_url, 'https://spherewellness.in/carnival/booked/');
+  assert.equal(bodies[1].callback_method, 'get');
+
+  const draft = loadConfig({});
+  assert.equal(draft.event.confirmationUrl, require('../../data/event.json').booking_confirmation?.draft === false
+    ? 'https://spherewellness.in/carnival/booked/' : null);
 });
