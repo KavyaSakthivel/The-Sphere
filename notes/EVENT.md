@@ -27,6 +27,13 @@ the price to answer doubts first), the ticket, questions and the closing invitat
 plain type for quick scanning; the script face is kept for headline accents. The booking bar appears
 once the opening card scrolls away and, on wide screens, also carries the section links.
 
+## Programme (25 November 2026)
+
+From the club's December poster: **2:30 PM – 10:00 PM** at **Jenney's Residency**, and the programme is Inauguration &
+Foundation, Yoga & Breathwork, Sound Healing, Wellness Speech, Tribal Fusion Dance, Cacao Ceremony, Ecstatic Dance,
+Dinner. The poster gives no per-item times, so none are shown. Fire Ceremony, the DJ party and the nutrition talk are
+gone. Each item has an illustrated icon (`ILLUSTRATIONS` in `scripts/build_event.py`, colours in `event.css`).
+
 ## Booking modes
 
 The page picks its mode from `data/event.json`:

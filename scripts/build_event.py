@@ -105,6 +105,45 @@ ICON_PATHS = {
 }
 def icon(name): return f'<svg class="event-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">{ICON_PATHS[name]}</svg>'
 
+# Illustrated programme icons (24 Nov 2026, at the club's request): fine terracotta line drawings with a gold accent
+# on a soft organic shape. Drawn for The Sphere, so there is no licensing question. 64 x 64 units; colours in event.css.
+BLOB = '<path class="ill-bg" d="M33 4C46 3 59 12 60 27C61 42 52 58 35 60C19 62 5 52 4 35C3 19 18 5 33 4Z"/>'
+ILLUSTRATIONS = {
+ 'lotus': '<circle class="ill-gold" cx="32" cy="11" r="2.2"/><path class="ill-line" d="M32 5.5V3M27.5 9.5l-1.8-1.6M36.5 9.5l1.8-1.6"/>'
+  '<path class="ill-line" d="M32 18C37 25 37 34 32 42C27 34 27 25 32 18Z"/>'
+  '<path class="ill-line" d="M32 42C24 40 19 33 19 25C25 27 29 32 32 42ZM32 42C40 40 45 33 45 25C39 27 35 32 32 42Z"/>'
+  '<path class="ill-line" d="M32 43C22 44 14 40 10 33C17 32 25 35 32 43ZM32 43C42 44 50 40 54 33C47 32 39 35 32 43Z"/>'
+  '<path class="ill-line" d="M15 49H49M21 53H43"/>',
+ 'yoga': '<circle class="ill-line" cx="32" cy="16" r="4"/><path class="ill-line" d="M28 24Q32 22 36 24L37.5 35Q32 37.5 26.5 35Z"/>'
+  '<path class="ill-line" d="M28 25C23 29 21 34 22.5 39M36 25C41 29 43 34 41.5 39"/>'
+  '<path class="ill-line" d="M15 43C22 37 42 37 49 43C42 47.5 22 47.5 15 43Z"/>'
+  '<path class="ill-gold-line" d="M45 13c3-2.5 7-.5 5 3M48 20c3-1.5 6 .5 4 3M14 15c-3-2.5-7-.5-5 3"/>',
+ 'bowl': '<path class="ill-gold-line" d="M24 25c2-3 2-6 0-9M32 23c2-3.5 2-7 0-10.5M40 25c2-3 2-6 0-9"/>'
+  '<path class="ill-gold" d="M16 34H48C48 44 41 50 32 50C23 50 16 44 16 34Z"/>'
+  '<path class="ill-line" d="M16 34H48C48 44 41 50 32 50C23 50 16 44 16 34Z"/><ellipse class="ill-line" cx="32" cy="34" rx="16" ry="3"/>'
+  '<path class="ill-line" d="M21 54H43M46 27L55 19"/><circle class="ill-line" cx="56" cy="18" r="2"/>',
+ 'speech': '<path class="ill-line" d="M12 14H36Q40 14 40 18V30Q40 34 36 34H22L16 40V34H12Q8 34 8 30V18Q8 14 12 14Z"/>'
+  '<path class="ill-line" d="M14 21H32M14 27H26"/>'
+  '<path class="ill-line ill-fill" d="M28 28H52Q56 28 56 32V44Q56 48 52 48H50V54L44 48H32Q28 48 28 44V32Q28 28 32 28Z"/>'
+  '<path class="ill-gold" d="M42 35C40.5 32.5 36.5 33.5 36.5 36.3C36.5 39 42 42 42 42C42 42 47.5 39 47.5 36.3C47.5 33.5 43.5 32.5 42 35Z"/>',
+ 'tribal': '<path class="ill-gold" d="M19 11C16 9 17 4.5 19.5 2.5C19.5 4.5 22.5 5.5 21.5 8.5C21.2 10 20.3 11 19 11ZM44.5 11C42 10 42.5 6 44.5 3.5C45 5.5 47.5 6.5 46.8 9C46.3 10.5 45.5 11 44.5 11Z"/>'
+  '<circle class="ill-line" cx="32" cy="17" r="3.5"/><path class="ill-line" d="M31 24C26 21 22.5 17 20 12M33 24C38 21 41.5 17 44 12"/>'
+  '<path class="ill-line" d="M32 21C30 27 33.5 31 31 36"/><path class="ill-line" d="M23 53C25.5 45 28 39.5 31 36C34 39.5 38 45 41 53Z"/>'
+  '<path class="ill-gold-line" d="M26.5 38.5L28 41M31 38v3M35.5 38.5L34 41M25 53v3M29 53v3M33 53v3M37 53v3"/>',
+ 'cacao': '<path class="ill-gold" d="M25 24C23.5 21 19.5 22 19.5 25C19.5 28 25 31 25 31C25 31 30.5 28 30.5 25C30.5 22 26.5 21 25 24Z"/>'
+  '<path class="ill-line" d="M13 35H37V41C37 47.5 32 51 25 51C18 51 13 47.5 13 41Z"/><path class="ill-line" d="M37 37.5C42 37.5 42 44.5 37 44.5M9 54H41"/>'
+  '<g transform="rotate(18 51 29)"><path class="ill-gold" d="M51 13C58.5 17 59.5 36 51 45C42.5 36 43.5 17 51 13Z" opacity=".35"/><path class="ill-line" d="M51 13C58.5 17 59.5 36 51 45C42.5 36 43.5 17 51 13ZM51 13C49 23 49 35 51 45M51 13C53 23 53 35 51 45M47 20.5Q51 22.5 55 20.5M45.6 29Q51 31.5 56.4 29M46.6 37.5Q51 39.5 55.4 37.5"/></g>',
+ 'ecstatic': '<circle class="ill-line" cx="37" cy="12.5" r="3.5"/><path class="ill-line" d="M36 17L32 31M35 20C41 18 45.5 14 48.5 9M34 21C28 20 23 22 19 19"/>'
+  '<path class="ill-line" d="M32 31C36 37 40 41 45 44M32 31C29 38 25 42 19 46"/>'
+  '<path class="ill-gold-line" d="M10 32C14 23 23 25 21 31C19 37 28 41 35 37C40 34 45 38 47 33"/>'
+  '<path class="ill-gold" d="M52 22l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1zM13 9l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>',
+ 'dinner': '<path class="ill-gold-line" d="M26 9c-2 3 2 5 0 8M32 7c-2 3 2 5 0 8M38 9c-2 3 2 5 0 8"/>'
+  '<circle class="ill-line" cx="32" cy="38" r="16"/><circle class="ill-line" cx="32" cy="38" r="12"/>'
+  '<circle class="ill-gold" cx="27" cy="34.5" r="3.5"/><circle class="ill-line" cx="27" cy="34.5" r="3.5"/>'
+  '<circle class="ill-line" cx="37" cy="34.5" r="3.5"/><circle class="ill-line" cx="32" cy="43" r="3.5"/>',
+}
+def illustration(name): return f'<svg class="cv-ill" viewBox="0 0 64 64" aria-hidden="true" focusable="false">{BLOB}{ILLUSTRATIONS[name]}</svg>'
+
 # The updated carnival information (TheSphere_All Page new.pdf), word for word.
 ABOUT = ('More than<br>a community.',
  'The Sphere is a women\u2019s wellness community created to bring together experiences that nurture the mind, body and soul.',
@@ -114,20 +153,15 @@ CARNIVAL = ('Where wellness<br>meets celebration.',
  'Ancient rituals. Mindful practices. Music &amp; community. All in one evening.',
  'The Sphere Wellness Carnival brings together ancient rituals, mindful practices, expert conversations, nourishment and music \u2013 all in one immersive evening. A journey that moves from connection and reflection to energy and celebration.')
 ARC = [('Come to pause.', 'STILLNESS'), ('Stay to connect.', 'COMMUNITY'), ('Leave with a little more lightness.', 'RENEWAL')]
-CHIPS = ['CACAO', 'BREATHWORK', 'SOUND HEALING', 'FIRE CEREMONY', 'CELEBRATION', 'MUSIC', 'NUTRITION']
-# "05 \u2013 The Celebration". The PDF's Dinner line is cut off mid-sentence ("...and time to"), so Dinner carries the club's earlier line from preview.html until the full sentence arrives.
-CELEBRATION = [
- ('bowl', 'Dinner', 'Nourishing food, conversations and community.'),
- ('flame', 'Fire Ceremony', 'A symbolic moment to release, renew and let go.'),
- ('music', 'DJ Party', 'Wellness can also mean music, movement, laughter and dancing.'),
-]
+# The programme on the club's December 2026 poster.
+CHIPS = ['YOGA &amp; BREATHWORK', 'SOUND HEALING', 'TRIBAL FUSION DANCE', 'CACAO CEREMONY', 'ECSTATIC DANCE', 'DINNER']
 JOIN = ('One Evening.<br>Many Experiences.<br>One Community.',
  'The Sphere Wellness Carnival brings together a curated community of women, creators, entrepreneurs, wellness enthusiasts and conscious brands.',
  'We invite influencers, collaborators, wellness brands, marketing partners and sponsors to be part of an experience designed to create genuine connection and lasting memories.',
  'Let\u2019s create something meaningful together.')
 FAQS = [
  ('What is The Sphere Wellness Carnival?', 'The Sphere Wellness Carnival brings together ancient rituals, mindful practices, expert conversations, nourishment and music \u2013 all in one immersive evening. A journey that moves from connection and reflection to energy and celebration.'),
- ('When and where is the event?', "20 December 2026, from 3:00 PM to 10:00 PM at Jenney's Club, Coimbatore."),
+ ('When and where is the event?', None),
  ('Do I need prior wellness experience?', 'No. The experience is designed to be accessible to participants.'),
  ('Is alcohol served?', 'No. An alcohol-free celebration bringing everyone together through music and good energy.'),
  ('Can I attend alone?', 'Yes. The event is designed to encourage community and meaningful connections.'),
@@ -139,16 +173,17 @@ TICKET_ABOUT = 'A festival of wellness, music and connection. The Sphere Wellnes
 HOSTED_BY = 'Hosted by The Sphere, founded by Sumi Rengaraj.'
 CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_SHOWN = 'thespherewomen@gmail.com', '+919843133380', '+91 98431 33380'
 OWNER = 'THE SPHERE WELLNESS FOUNDATION'
-# One timeline: the payment page's times, with the updated PDF's "Experience" lines beneath the matching slot.
-SCHEDULE = [
- ('3:00 PM', 'Arrival &amp; registration', [('', 'Step in, settle down and connect with the Sphere community.')]),
- ('4:30 PM', 'Inauguration', []),
- ('5:00 &ndash; 6:00 PM', 'Cacao &amp; Breathwork', [('Cacao Ceremony', 'A mindful, heart-centred experience to slow down and connect.'),
-                                                    ('Breathwork (Yoga &amp; Pranayama)', 'Breathe deeper. Release tension. Create space.')]),
- ('6:00 &ndash; 7:00 PM', 'Sound Healing', [('', 'A calming journey through sound, vibration and stillness.')]),
- ('7:00 &ndash; 7:15 PM', 'Nutrition Speech', [('', 'Simple, meaningful insights on nourishing yourself from within.')]),
- ('7:15 &ndash; 8:30 PM', 'Dinner', []),
- ('8:30 &ndash; 10:00 PM', 'Fire Ceremony &amp; DJ Sober Party', [('', 'A symbolic moment to release, renew and let go.')]),
+# The programme, in order and word for word from the club's December 2026 poster ("Your evening, your
+# experience"). The poster gives no time for each item, so none is shown.
+PROGRAMME = [
+ ('lotus', 'Inauguration &amp; Foundation', 'Opening the space with a shared intention.'),
+ ('yoga', 'Yoga &amp; Breathwork', 'A mindful practice to ground, energize and center.'),
+ ('bowl', 'Sound Healing', 'A restorative journey through sound.'),
+ ('speech', 'Wellness Speech', 'A conversation on mental wellbeing.'),
+ ('tribal', 'Tribal Fusion Dance', 'A guided expression workshop.'),
+ ('cacao', 'Cacao Ceremony', 'A heart-opening ritual with cacao.'),
+ ('ecstatic', 'Ecstatic Dance', 'A free-flowing celebration of movement.'),
+ ('dinner', 'Dinner', 'To nourish, reflect and close the day together.'),
 ]
 # Terms & Conditions: the club's own wording. Section 1 states the event details from data/event.json so the
 # page can never disagree with the rest of the site.
@@ -166,11 +201,12 @@ TERMS = [
 ]
 TERMS_CONSENT = f'You agree to share information entered on this page with {OWNER} (owner of this page) and Razorpay, adhering to applicable laws.'
 # The preview's own header links, reused as a jump row so a reader can go straight to what they need.
-SECTIONS = [('experience', 'Experience'), ('celebration', 'Celebration'), ('tickets', 'Tickets'), ('faq', 'FAQs')]
+SECTIONS = [('experience', 'Experience'), ('tickets', 'Tickets'), ('faq', 'FAQs')]
 
 
 def faqs(ev):
- items = [(q, escape(ans)) for q, ans in FAQS]
+ when = f"{full_date(ev['start_at'])}, from {hours(ev).replace(' – ', ' to ')} at {where(ev)}."
+ items = [(q, escape(when if ans is None else ans)) for q, ans in FAQS]
  # Shown only once the club has supplied its own policy wording.
  if ev.get('refund_policy'):
   items.append(('Can I cancel or transfer my ticket?', escape(ev['refund_policy'])))
@@ -221,7 +257,7 @@ def jump_links(): return ''.join(f'<a href="#{i}">{t}</a>' for i, t in SECTIONS)
 
 
 def mobile_links():
- icons = ['leaf', 'clock', 'calendar', 'heart']
+ icons = ['clock', 'calendar', 'heart']
  return ''.join(f'<a href="#{section}" tabindex="-1">{icon(symbol)}<span>{label}</span></a>'
   for (section, label), symbol in zip(SECTIONS, icons))
 
@@ -238,9 +274,7 @@ def page(ev):
  ticket_note = f'<p class="cv-ticket-note">{escape(ev["ticket_note"])}</p>' if ev.get('ticket_note') else ''
  date, time, place = full_date(ev['start_at']), hours(ev), escape(where(ev))
  audience = escape(ev['audience'])
- celebrate = ''.join(f'<li><span class="cv-icon">{icon(i)}</span><h3>{t}</h3>{f"<p>{d}</p>" if d else ""}</li>' for i, t, d in CELEBRATION)
- def sub(items): return ''.join(f'<p>{f"<strong>{n}:</strong> " if n else ""}{d}</p>' for n, d in items)
- timed = ''.join(f'<li><p class="cv-time">{w}</p><div><h3>{t}</h3>{sub(items)}</div></li>' for w, t, items in SCHEDULE)
+ timed = ''.join(f'<li><span class="cv-step">{illustration(i)}</span><div><h3>{t}</h3><p>{d}</p></div></li>' for i, t, d in PROGRAMME)
  arc = ''.join(f'<li><h3>{t}</h3><p>{k}</p></li>' for t, k in ARC)
  chips = ''.join(f'<li>{c}</li>' for c in CHIPS)
  glance_cta = (f'<a class="cv-glance-cta" href="#tickets">View tickets <span aria-hidden="true">↓</span></a>' if ev['mode'] == 'soon'
@@ -297,16 +331,10 @@ def page(ev):
    <li>{icon('pin')}{place}</li>
   </ul>
  </div>
- <ol class="cv-timeline">{timed}</ol>
+ <ol class="cv-timeline cv-programme">{timed}</ol>
 </section>
 
 <section class="cv-interlude" aria-label="Together at The Sphere"><img src="/assets/sphere-circle-calm-1920.webp" srcset="/assets/sphere-circle-calm-1200.webp 1200w, /assets/sphere-circle-calm-1920.webp 1920w" sizes="100vw" alt="Women seated in meditation in a circle around a facilitator and singing bowls at The Sphere" width="1920" height="1280" loading="lazy" decoding="async"><div><p class="eyebrow">A LITTLE LESS RUSH. A LITTLE MORE YOU.</p><p>Come as you are.<br>Leave a little lighter.</p></div></section>
-
-<section id="celebration" class="cv-experience" aria-labelledby="celebration-title">
- <div class="cv-heading"><div><p class="eyebrow">THE CELEBRATION</p><h2 id="celebration-title">And then,<br>we celebrate.</h2></div>
- <p>An alcohol-free celebration bringing everyone together through music and good energy.</p></div>
- <ul class="cv-offer cv-offer-three">{celebrate}</ul>
-</section>
 
 <section class="cv-join" aria-labelledby="join-title">
  <div><p class="eyebrow">PARTNER WITH US</p><h2 id="join-title">{JOIN[0]}</h2></div>
@@ -431,7 +459,7 @@ def assemble(home, ev, path, title, body):
  head = re.sub(r'<meta name="description"[^>]*>', f'<meta name="description" content="{a(ev["description"])}">', head, count=1)
  head = head.replace('width=device-width,initial-scale=1', 'width=device-width,initial-scale=1,viewport-fit=cover')
  head = re.sub(r'<meta name="theme-color"[^>]*>', '<meta name="theme-color" content="#24302a">', head, count=1)
- head = head.replace('</script>', '</script>\n  <link rel="stylesheet" href="/'+ev['slug']+'/event.css?v=5">\n  <script src="/'+ev['slug']+'/event.js?v=5" defer></script>', 1)
+ head = head.replace('</script>', '</script>\n  <link rel="stylesheet" href="/'+ev['slug']+'/event.css?v=6">\n  <script src="/'+ev['slug']+'/event.js?v=6" defer></script>', 1)
  shell = re.search(r'<a class="skip".*?<main id="main">', home, re.S)[0].removesuffix('<main id="main">')
  # On the event page the header's call to action is the ticket itself.
  shell = shell.replace(f'href="{ev["path"]}" data-event-until', f'href="{ev["path"]}" aria-current="page" data-event-until')
@@ -480,7 +508,7 @@ def booked_page(home, ev):
  title = f"{c['title']} | {ev['name']}"
  head = re.sub(r'<title>.*?</title>', '<title>'+escape(title)+'</title>', head, count=1)
  head = re.sub(r'<meta name="description"[^>]*>', f'<meta name="description" content="{a(ev["name"])}">', head, count=1)
- head = head.replace('</script>', '</script>\n  <link rel="stylesheet" href="/'+ev['slug']+'/event.css?v=5">\n  <script src="/'+ev['slug']+'/booked.js?v=1" defer></script>', 1)
+ head = head.replace('</script>', '</script>\n  <link rel="stylesheet" href="/'+ev['slug']+'/event.css?v=6">\n  <script src="/'+ev['slug']+'/booked.js?v=1" defer></script>', 1)
  meta = '\n  <meta name="robots" content="noindex,nofollow">\n  <meta name="referrer" content="no-referrer">\n'
  shell = re.search(r'<a class="skip".*?<main id="main">', home, re.S)[0].removesuffix('<main id="main">')
  footer = re.search(r'<footer>.*?</footer>', home, re.S)[0]

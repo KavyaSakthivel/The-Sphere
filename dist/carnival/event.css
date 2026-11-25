@@ -248,3 +248,14 @@ body.is-past [data-book],body.is-past .event-bar{display:none!important}
 .booked-details dd { margin: 0; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .booked-event, .booked-contact { margin: 0 0 1.25rem; }
 .booked-event span { display: block; }
+
+/* Programme (Dec 2026 poster): eight moments in order, each with an illustrated icon drawn for The Sphere:
+   fine terracotta lines, a gold accent, a soft organic shape behind. */
+.cv-programme li{grid-template-columns:76px minmax(0,1fr);align-items:center;gap:20px;padding:22px 0}
+.cv-step{display:grid;place-items:center;width:72px;height:72px}
+.cv-ill{width:72px;height:72px;overflow:visible}
+.cv-ill .ill-bg,.cv-ill .ill-fill{fill:var(--s-stone)}
+.cv-ill .ill-line{fill:none;stroke:var(--s-clay);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.cv-ill .ill-gold{fill:#e2ab64}
+.cv-ill .ill-gold-line{fill:none;stroke:#d9963f;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:700px){.cv-programme li{grid-template-columns:60px minmax(0,1fr);gap:14px}.cv-step,.cv-ill{width:60px;height:60px}}
