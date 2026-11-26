@@ -44,7 +44,23 @@ The page picks its mode from `data/event.json`:
 | `razorpay_button_id` | **Recommended.** Razorpay's checkout opens on top of the Sphere page |
 | `payment_url` | Every Book button goes to a hosted Razorpay Payment Page |
 | `payment_url` + `booking_api: "preview"` / `"on"` | Book buttons open a ticket-count dialog; our server creates that booking's own Razorpay link so the sale can be reported to Meta. `preview` runs only at `/carnival/?booking=preview`. See `notes/BOOKINGS.md` |
+| `payment_url` + `booking_api: "page"` (**now**, 26 November 2026) | Book buttons open the ticket-count dialog; Continue goes to the club's Razorpay Payment Page (`payment_page.url`) with that count filled in (`?ticket_cost=N`), where Razorpay asks for name, email and phone, and an optional Yes/No question about sharing with Meta. No Meta consent box in our dialog. The server reports sales to Meta from Razorpay's payment notice, for guests who answer Yes (see below) |
 | after 10 PM on the 20th | Automatic: every booking button and the booking bar disappear |
+
+## Payment Page mode (26 November 2026)
+
+At the client's request the dialog now sends guests to `https://pages.razorpay.com/thesphere` instead of a
+per-booking link. Notes:
+
+- Use the `pages.razorpay.com` address: the `rzp.io/rzp/thesphere` short link drops `?ticket_cost=N`.
+- `ticket_cost` is Razorpay's name for the page's "Ticket Cost" item. If the item is renamed, update
+  `payment_page.quantity_param` or guests arrive with 1 ticket.
+- **Meta:** the server reports Payment Page sales from Razorpay's payment notice, with hashed email, phone
+  and name, for guests who answer Yes to the page's Meta question. See `notes/BOOKINGS.md`, "Payment Page sales".
+- **Return to the site:** set in Razorpay (Payment Page → Settings → after payment, redirect to
+  `https://spherewellness.in/carnival/booked/`). That page shows a plain thank-you for these guests and
+  sends nothing to Meta, because a redirect alone does not prove payment.
+- `booking_api: "on"` brings back the per-booking flow unchanged.
 
 ## When the client sends the payment link
 

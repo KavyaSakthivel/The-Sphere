@@ -633,3 +633,147 @@ test('confirmation page: Razorpay is told to return guests to it only once the c
   assert.equal(draft.event.confirmationUrl, require('../../data/event.json').booking_confirmation?.draft === false
     ? 'https://spherewellness.in/carnival/booked/' : null);
 });
+
+// ---------------------------------------------------------------- Payment Page sales
+const PAGE = 'pl_Tlh7aAMTEeEA0P';
+function pageEvent({ type = 'payment.captured', id = 'pay_Page0000000001', amount = 3 * 289900, where = 'order_notes', notes = {}, status = 'captured' } = {}) {
+  const payment = { id, entity: 'payment', amount, currency: 'INR', status, order_id: 'order_P1', email: 'Asha.Raman@Example.com',
+    contact: '+919843100000', created_at: Math.floor(NOW / 1000), notes: { name: 'Asha  Devi Raman', email: 'asha.raman@example.com', phone: '9843100000', ...notes } };
+  const order = { id: 'order_P1', entity: 'order', amount, status: 'paid', notes: [] };
+  if (where === 'order_notes') order.notes = { payment_page_id: PAGE };
+  if (where === 'payment_field') payment.payment_link_id = PAGE;
+  const payload = { payment: { entity: payment } };
+  if (type === 'order.paid') payload.order = { entity: order };
+  else if (where === 'order_notes') payload.order = { entity: order }; // so the id is visible either way in tests
+  return { entity: 'event', event: type, payload, created_at: Math.floor(NOW / 1000) };
+}
+const pageSetup = sharing => { const t = setup(); t.config.event.paymentPage = { id: PAGE, metaSharing: 'off', consentField: null, ...sharing }; return t; };
+
+test('payment page: a paid sale reaches Meta once, with hashed email, phone and name, ticket count from the amount', async () => {
+  const t = pageSetup({ metaSharing: 'notice' }); await t.listen();
+  try {
+    const first = await webhook(t, pageEvent({ type: 'payment.captured' }));
+    assert.equal(first.body.outcome, 'paid');
+    // Razorpay also sends order.paid for the same payment, and may resend either: still one sale, one Purchase.
+    assert.equal((await webhook(t, pageEvent({ type: 'order.paid' }))).body.outcome, 'already_paid');
+    const burst = await Promise.all([1, 2, 3].map(() => webhook(t, pageEvent())));
+    assert.ok(burst.every(r => r.status === 200 && r.body.outcome === 'already_paid'));
+    await settle();
+    await t.api.sweep({ ignoreBackoff: true });
+    assert.equal(t.metaCalls.length, 1);
+    const ev = t.metaCalls[0].body.data[0];
+    assert.equal(ev.event_name, 'Purchase');
+    assert.equal(ev.event_id, 'purchase.PP-pay_Page0000000001');
+    assert.equal(ev.custom_data.value, 8697);
+    assert.equal(ev.custom_data.num_items, 3);
+    assert.equal(ev.custom_data.currency, 'INR');
+    assert.deepEqual(ev.user_data.em, [hashEmail('asha.raman@example.com')]);
+    assert.deepEqual(ev.user_data.ph, [hashPhone('919843100000')]);
+    assert.deepEqual(ev.user_data.fn, [sha256('asha')]);
+    assert.deepEqual(ev.user_data.ln, [sha256('raman')]);
+    const b = await t.store.getBooking('PP-pay_Page0000000001');
+    assert.equal(b.status, 'paid'); assert.equal(b.metaStatus, 'sent');
+    assert.equal(b.emHash, null, 'identifiers deleted once Meta has the event');
+    assert.equal(b.fnHash, null);
+  } finally { await t.close(); }
+});
+
+test('payment page: the page id is recognised on the payment itself too', async () => {
+  const t = pageSetup({ metaSharing: 'notice' }); await t.listen();
+  try {
+    assert.equal((await webhook(t, pageEvent({ where: 'payment_field', amount: 289900 }))).body.outcome, 'paid');
+    await settle();
+    assert.equal(t.metaCalls[0].body.data[0].custom_data.num_items, 1);
+  } finally { await t.close(); }
+});
+
+test('payment page: sharing off records the sale and sends nothing to Meta', async () => {
+  const t = pageSetup({ metaSharing: 'off' }); await t.listen();
+  try {
+    assert.equal((await webhook(t, pageEvent())).body.outcome, 'paid');
+    await settle(); await t.api.sweep({ ignoreBackoff: true });
+    const b = await t.store.getBooking('PP-pay_Page0000000001');
+    assert.equal(b.status, 'paid'); assert.equal(b.quantity, 3); assert.equal(b.metaStatus, 'skipped');
+    assert.equal(b.emHash, null); assert.equal(b.fnHash, null);
+    assert.equal(t.metaCalls.length, 0);
+  } finally { await t.close(); }
+});
+
+test('payment page: with a tick-box field, only guests who tick it are sent', async () => {
+  const t = pageSetup({ metaSharing: 'off', consentField: 'share_with_meta' }); await t.listen();
+  try {
+    await webhook(t, pageEvent({ id: 'pay_Ticked00000001', notes: { share_with_meta: 'Yes' } }));
+    await webhook(t, pageEvent({ id: 'pay_Unticked000001', notes: { share_with_meta: '' } }));
+    await webhook(t, pageEvent({ id: 'pay_SaidNo00000001', notes: { share_with_meta: 'No, thank you' } }));
+    await webhook(t, pageEvent({ id: 'pay_Missing0000001' }));
+    // Razorpay may tidy the long field name in its notice: still recognised.
+    await webhook(t, pageEvent({ id: 'pay_Tidied00000001', notes: { SHARE_WITH_META: 'Yes' } }));
+    await settle(); await t.api.sweep({ ignoreBackoff: true });
+    assert.equal(t.metaCalls.length, 2);
+    assert.deepEqual(t.metaCalls.map(c => c.body.data[0].custom_data.order_id).sort(), ['PP-pay_Ticked00000001', 'PP-pay_Tidied00000001']);
+    assert.equal((await t.store.getBooking('PP-pay_Unticked000001')).metaStatus, 'skipped');
+  } finally { await t.close(); }
+});
+
+test('payment page: other payments are ignored, and the log shows field names but no personal details', async () => {
+  const t = pageSetup({ metaSharing: 'notice' }); await t.listen();
+  try {
+    const membership = pageEvent({ where: 'nowhere', amount: 1000000 });
+    assert.equal((await webhook(t, membership)).body.outcome, 'not_payment_page');
+    const line = t.logs.find(l => l.msg === 'payment_not_page');
+    assert.ok(line.fields.payment.includes('email'));
+    assert.ok(line.fields['payment.notes'].includes('name'));
+    assert.doesNotMatch(JSON.stringify(t.logs), /asha|9843100000/i);
+    assert.equal(await t.store.getBooking('PP-pay_Page0000000001'), null);
+    await settle();
+    assert.equal(t.metaCalls.length, 0);
+  } finally { await t.close(); }
+});
+
+test('payment page: a convenience fee on top counts the tickets, and Meta is told the ticket total', async () => {
+  const t = pageSetup({ metaSharing: 'notice' }); await t.listen();
+  try {
+    const withFee = pageEvent({ where: 'payment_field', amount: Math.round(3 * 289900 * 1.0236) });
+    assert.equal((await webhook(t, withFee)).body.outcome, 'paid');
+    await settle();
+    const ev = t.metaCalls[0].body.data[0];
+    assert.equal(ev.custom_data.num_items, 3);
+    assert.equal(ev.custom_data.value, 8697);
+    const line = t.logs.find(l => l.msg === 'booking_paid');
+    assert.deepEqual(line.found, { email: true, phone: true, firstName: true, surname: true, consentAnswer: null });
+  } finally { await t.close(); }
+});
+
+test('payment page: an amount that is not whole tickets, or a payment not captured, is never recorded or sent', async () => {
+  const t = pageSetup({ metaSharing: 'notice' }); await t.listen();
+  try {
+    assert.equal((await webhook(t, pageEvent({ amount: Math.round(289900 * 1.5) }))).body.outcome, 'review');
+    assert.equal((await webhook(t, pageEvent({ id: 'pay_Small000000001', amount: 100000 }))).body.outcome, 'review');
+    assert.equal((await webhook(t, pageEvent({ id: 'pay_Failed00000001', status: 'failed' }))).body.outcome, 'review');
+    await settle();
+    assert.equal(await t.store.getBooking('PP-pay_Page0000000001'), null);
+    assert.equal(t.metaCalls.length, 0);
+  } finally { await t.close(); }
+});
+
+test('payment page: names are lower-cased letters, first word and last word', () => {
+  const { normaliseName } = require('../meta');
+  assert.deepEqual(normaliseName('  Asha  Devi Raman '), { fn: 'asha', ln: 'raman' });
+  assert.deepEqual(normaliseName('PRIYA'), { fn: 'priya', ln: null });
+  assert.deepEqual(normaliseName("Dr. K. O'Neil"), { fn: 'dr', ln: 'oneil' });
+  assert.deepEqual(normaliseName(''), { fn: null, ln: null });
+});
+
+test('payment page: the live consent field from the Razorpay page is the one configured', async () => {
+  const field = require('../../data/event.json').payment_page.consent_field;
+  const t = setup(); await t.listen();
+  try {
+    assert.equal(t.config.event.paymentPage.consentField, field);
+    await webhook(t, pageEvent({ id: 'pay_LiveYes0000001', notes: { [field]: 'Yes' } }));
+    await webhook(t, pageEvent({ id: 'pay_LiveNo00000001', notes: { [field]: 'No ' } }));
+    await webhook(t, pageEvent({ id: 'pay_LiveBlank00001', notes: { [field]: '' } }));
+    await settle(); await t.api.sweep({ ignoreBackoff: true });
+    assert.deepEqual(t.metaCalls.map(c => c.body.data[0].custom_data.order_id), ['PP-pay_LiveYes0000001']);
+    assert.equal(t.logs.find(l => l.msg === 'booking_paid').found.consentAnswer, true);
+  } finally { await t.close(); }
+});

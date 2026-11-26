@@ -26,14 +26,16 @@ if (Date.now() > eventEnd) document.body.classList.add('is-past');
   update();
 })();
 
-// Booking through The Sphere's own API (data/event.json booking_api): the guest picks a ticket count,
-// the server creates that booking's own Razorpay link, and the guest pays there. Every button keeps the
+// Booking (data/event.json booking_api): the guest picks a ticket count. In 'page' mode the page then sends
+// them to the club's Razorpay Payment Page with that count filled in. In 'on' mode The Sphere's own API
+// creates that booking's own Razorpay link, and the guest pays there. Every button keeps the
 // shared Razorpay link as its href, so without JavaScript, or whenever the API fails, booking still works.
 (() => {
   const dialog = document.querySelector('[data-booking-dialog]');
   if (!dialog || typeof dialog.showModal !== 'function' || document.body.classList.contains('is-past')) return;
   const params = new URLSearchParams(location.search);
-  if (dialog.dataset.mode !== 'on' && params.get('booking') !== 'preview') return;
+  const mode = dialog.dataset.mode;
+  if (mode !== 'on' && mode !== 'page' && params.get('booking') !== 'preview') return;
 
   const price = Number(dialog.dataset.price);
   const max = Math.max(1, Number(dialog.dataset.max) || 1);
@@ -95,6 +97,20 @@ if (Date.now() > eventEnd) document.body.classList.add('is-past');
     e.preventDefault();
     if (submit.disabled) return;
     busy(true);
+    // Payment Page mode: straight to the club's Razorpay page with the ticket count filled in. Razorpay
+    // asks for name, email and phone there. Only ever leave for Razorpay.
+    if (mode === 'page') {
+      try {
+        const target = new URL(dialog.dataset.page);
+        if (target.protocol === 'https:' && /(^|\.)razorpay\.com$/.test(target.hostname)) {
+          target.searchParams.set(dialog.dataset.pageQty, String(quantity));
+          location.assign(target.href);
+          return;
+        }
+      } catch {}
+      location.assign(dialog.dataset.fallback);
+      return;
+    }
     error.hidden = true;
     let fbclid = null;
     try { fbclid = params.get('fbclid') || sessionStorage.getItem('sphere-fbclid'); } catch {}

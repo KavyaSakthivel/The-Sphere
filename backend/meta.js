@@ -18,6 +18,13 @@ function normalisePhone(phone) {
   if (d.length === 10) d = '91' + d; // Indian numbers given without the country code
   return d.length >= 11 && d.length <= 15 ? d : null;
 }
+// Names: lower-case letters only, first word as first name and last word as surname (Meta's fn and ln).
+function normaliseName(name) {
+  const words = String(name || '').normalize('NFKC').toLowerCase().replace(/[^\p{L}\s]/gu, '').trim().split(/\s+/).filter(Boolean);
+  if (!words.length) return { fn: null, ln: null };
+  return { fn: words[0], ln: words.length > 1 ? words[words.length - 1] : null };
+}
+const hashName = name => { const { fn, ln } = normaliseName(name); return { fnHash: fn ? sha256(fn) : null, lnHash: ln ? sha256(ln) : null }; };
 const hashEmail = email => { const e = normaliseEmail(email); return e ? sha256(e) : null; };
 const hashPhone = phone => { const p = normalisePhone(phone); return p ? sha256(p) : null; };
 
@@ -31,6 +38,8 @@ function purchaseEvent(booking, event) {
   if (booking.consent) {
     if (booking.emHash) userData.em = [booking.emHash];
     if (booking.phHash) userData.ph = [booking.phHash];
+    if (booking.fnHash) userData.fn = [booking.fnHash];
+    if (booking.lnHash) userData.ln = [booking.lnHash];
     if (booking.fbp) userData.fbp = booking.fbp;
     if (booking.fbc) userData.fbc = booking.fbc;
     if (booking.clientIp) userData.client_ip_address = booking.clientIp;
@@ -90,4 +99,4 @@ function createMeta({ accessToken, datasetId, apiVersion, testEventCode, apiBase
   };
 }
 
-module.exports = { purchaseEvent, createMeta, MetaError, eventIdFor, hashEmail, hashPhone, normaliseEmail, normalisePhone, sha256 };
+module.exports = { purchaseEvent, createMeta, MetaError, eventIdFor, hashEmail, hashPhone, hashName, normaliseEmail, normalisePhone, normaliseName, sha256 };

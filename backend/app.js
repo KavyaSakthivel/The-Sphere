@@ -1,17 +1,20 @@
 // The booking API, mounted by server.js under /api/.
 //
 //   POST /api/bookings                 the carnival page asks for a payment link for n tickets
-//   POST /api/webhooks/razorpay        Razorpay reports a paid, expired or cancelled link
+//   POST /api/webhooks/razorpay        Razorpay reports a paid, expired or cancelled link, or a payment on the
+//                                      club's Payment Page (payment.captured / order.paid)
 //   GET  /api/health                   is the API up (no configuration details are exposed)
 //
 // A Purchase reaches Meta only after Razorpay's signed webhook says the link is paid and the amount,
 // currency and booking all match what this server created. Website bookings are the only ones
-// reported: links made in the Razorpay dashboard or QR payments are recognised and ignored.
+// reported: links made in the Razorpay dashboard or QR payments are recognised and ignored. Sales on the club's
+// own Payment Page (data/event.json payment_page) are reported too, from Razorpay's signed payment notice.
 const crypto = require('crypto');
 const { problems } = require('./config');
 const { verifyWebhookSignature, isUncertain } = require('./razorpay');
-const { purchaseEvent, hashEmail, hashPhone } = require('./meta');
+const { purchaseEvent, hashEmail, hashPhone, hashName } = require('./meta');
 const { META_MAX_ATTEMPTS, META_WINDOW_MS } = require('./store');
+const PAYMENT_ID = /^pay_[A-Za-z0-9]{6,40}$/;
 
 const BOOKING_BODY_LIMIT = 4 * 1024;
 const WEBHOOK_BODY_LIMIT = 1024 * 1024;
@@ -280,6 +283,10 @@ function createApi({ config, store, razorpay, meta, now = () => Date.now(), log 
   async function handleEvent(body) {
     const type = body.event;
     const linkEntity = body.payload?.payment_link?.entity;
+    const page = event?.paymentPage;
+    if (page && (type === 'payment.captured' || type === 'order.paid' || (type === 'payment_link.paid' && linkEntity?.id === page.id))) {
+      return handlePagePayment(body, page);
+    }
     if (!linkEntity?.id) return { outcome: 'ignored' };
     const booking = await store.getBookingByLink(linkEntity.id);
     // Links created in the dashboard (for WhatsApp) also fire these events; only ours are website sales.
@@ -322,6 +329,73 @@ function createApi({ config, store, razorpay, meta, now = () => Date.now(), log 
     }
     if (changed) log('info', 'booking_paid', { booking: booking.id, payment: payment.id, quantity: booking.quantity, amount: booking.amountPaise / 100 });
     return { outcome: changed ? 'paid' : 'already_paid', bookingId: booking.id };
+  }
+
+  // ------------------------------------------------------------ Payment Page sales
+  // The club's Razorpay Payment Page collects name, email and phone itself; nothing about the guest passes
+  // through our site. Razorpay's signed payment.captured / order.paid notice is the proof of payment, and it
+  // carries what the guest typed. Each payment becomes a paid booking (id PP-<payment id>), so the Meta
+  // delivery, retries and one-Purchase-per-sale guarantees below apply unchanged.
+  //
+  // Razorpay does not document how these notices name the Payment Page, so a payment counts only if its
+  // payment or order entity (or their notes) contains the page id. Every other captured payment (membership,
+  // WhatsApp links, QR) is ignored. Unmatched payments log the field names present, never values, so the
+  // first live sale shows where Razorpay puts the page id if it is somewhere else.
+  async function handlePagePayment(body, page) {
+    const payment = body.payload?.payment?.entity || {};
+    const order = body.payload?.order?.entity || {};
+    const link = body.payload?.payment_link?.entity || {};
+    if (!PAYMENT_ID.test(payment.id || '')) return { outcome: 'ignored' };
+    if (!mentions([payment, order, link], page.id)) {
+      log('info', 'payment_not_page', { payment: payment.id, event: body.event, fields: fieldNames({ payment, order }) });
+      return { outcome: 'not_payment_page' };
+    }
+
+    const id = `PP-${payment.id}`;
+    if (await store.getBooking(id)) return { outcome: 'already_paid', bookingId: id };
+
+    // Tickets from the order total when Razorpay sends it, else from the payment. If the account passes
+    // Razorpay's convenience fee to guests, the payment is a little over the ticket total: up to 5% over is
+    // accepted, and Meta is told the ticket total, not the fee.
+    const paidPaise = Number(order.amount) > 0 ? Number(order.amount) : Number(payment.amount);
+    const quantity = Math.floor(paidPaise / event.unitPricePaise);
+    const amount = quantity * event.unitPricePaise;
+    const mismatch = [
+      payment.status !== 'captured' && 'payment status',
+      payment.currency !== 'INR' && 'currency',
+      !(quantity >= 1 && quantity <= 100 && paidPaise - amount <= amount * 0.05) && 'amount is not a whole number of tickets',
+      !(Number(payment.amount) >= amount) && 'payment amount',
+    ].filter(Boolean);
+    if (mismatch.length) {
+      log('error', 'payment_page_mismatch', { payment: payment.id, mismatch });
+      return { outcome: 'review' };
+    }
+
+    const notes = { ...plainNotes(order.notes), ...plainNotes(payment.notes) };
+    const answer = page.consentField ? noteFor(notes, page.consentField) : undefined;
+    const consent = page.consentField ? ticked(answer) : page.metaSharing === 'notice';
+    const t = now();
+    try {
+      await store.insertBooking({
+        id, eventSlug: event.slug, quantity, unitPricePaise: event.unitPricePaise, amountPaise: amount,
+        consent, createdAt: t, expiresAt: t,
+      });
+    } catch (err) {
+      if (err.code === 'DUPLICATE_BOOKING') return { outcome: 'already_paid', bookingId: id };
+      throw err;
+    }
+    const name = notes.name || notes.full_name || payment.card?.name || '';
+    const ids = { emHash: hashEmail(payment.email || notes.email), phHash: hashPhone(payment.contact || notes.phone), ...hashName(name) };
+    const changed = await store.markPaid(id, {
+      status: 'paid', paymentId: payment.id, paidAt: t,
+      paymentTime: Number(payment.created_at) || Math.floor(t / 1000),
+      ...ids, metaStatus: 'pending', metaLastError: null,
+    });
+    // Which details Razorpay's notice carried (found or not, never the values), to check the first live sales.
+    if (changed) log('info', 'booking_paid', { booking: id, payment: payment.id, source: 'payment_page', quantity, amount: amount / 100, consent,
+      found: { email: !!ids.emHash, phone: !!ids.phHash, firstName: !!ids.fnHash, surname: !!ids.lnHash,
+        consentAnswer: page.consentField ? answer !== undefined : null } });
+    return { outcome: changed ? 'paid' : 'already_paid', bookingId: id };
   }
 
   // ------------------------------------------------------------ Meta delivery
@@ -397,6 +471,36 @@ function createApi({ config, store, razorpay, meta, now = () => Date.now(), log 
 
   return { handle, deliver, sweep, handleEvent, bookingsOpen, issues };
 }
+
+// Whether any value in these entities (two levels deep, including notes) is exactly this id.
+function mentions(entities, id) {
+  const seen = (v, depth) => v === id || (depth > 0 && v && typeof v === 'object' && Object.values(v).some(x => seen(x, depth - 1)));
+  return entities.some(e => seen(e, 2));
+}
+// The shape of a payload, for the log: field names only, never values.
+function fieldNames(entities) {
+  const out = {};
+  for (const [name, e] of Object.entries(entities)) {
+    out[name] = Object.keys(e || {}).slice(0, 60);
+    const notes = plainNotes(e?.notes);
+    if (Object.keys(notes).length) out[name + '.notes'] = Object.keys(notes).slice(0, 30);
+  }
+  return out;
+}
+// Razorpay sends notes as an object, or as an empty array when there are none.
+const plainNotes = n => (n && typeof n === 'object' && !Array.isArray(n) ? n : {});
+// A note by field name, ignoring case, spaces and punctuation: the Razorpay field's name is long
+// ("spread_the_calm._we'd_love_to_share…") and a notice may carry it tidied up.
+const squash = k => String(k).toLowerCase().replace(/[^a-z0-9]/g, '');
+const noteFor = (notes, field) => {
+  if (Object.prototype.hasOwnProperty.call(notes, field)) return notes[field];
+  const want = squash(field);
+  const key = Object.keys(notes).find(k => squash(k) === want);
+  return key === undefined ? undefined : notes[key];
+};
+// The consent field on the Razorpay page (a Yes/No dropdown): only a clear yes counts. Blank, "No" or
+// anything unexpected means the guest did not agree.
+const ticked = v => v != null && /^(yes\b.*|true|on|1|checked)$/i.test(String(v).trim());
 
 // One JSON line per event: easy to read in Hostinger's logs. Callers never pass secrets or raw personal data.
 function defaultLog(level, msg, fields = {}) {

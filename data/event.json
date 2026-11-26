@@ -16,7 +16,16 @@
   "refund_policy": "",
   "show_on_home": true,
   "promotion_until": "2027-01-01T00:00:00+05:30",
-  "booking_api": "on",
+  "booking_api": "page",
+  "payment_page": {
+    "_note": "booking_api 'page' (26 November 2026, client request): the dialog sends guests to this Razorpay Payment Page with the ticket count filled in; Razorpay collects name, email and phone. Use the pages.razorpay.com address: the rzp.io short link drops the ticket count. quantity_param is Razorpay's name for the page's 'Ticket Cost' item; if the item is renamed in Razorpay, update it here or guests land on 1 ticket. booking_api 'on' goes back to one Razorpay link per booking through our server, reported to Meta.",
+    "url": "https://pages.razorpay.com/thesphere",
+    "quantity_param": "ticket_cost",
+    "razorpay_page_id": "pl_Tlh7aAMTEeEA0P",
+    "_meta_note": "Paid sales on this page are reported to Meta by the server (Razorpay webhook events payment.captured and order.paid). meta_sharing 'off': recorded, nothing sent. 'notice': the guest's hashed email, phone and name go to Meta for every sale; switch on only once the Razorpay page tells guests their details are shared with Meta. consent_field: the name of a tick-box field on the Razorpay page; when set, only guests who tick it are sent.",
+    "meta_sharing": "off",
+    "consent_field": "spread_the_calm._we'd_love_to_share_this_booking_with_meta."
+  },
   "max_tickets_per_booking": 10,
   "website_ticket_limit": null,
   "booking_dialog": {

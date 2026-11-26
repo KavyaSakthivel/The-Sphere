@@ -19,6 +19,8 @@ CREATE TABLE IF NOT EXISTS bookings (
   user_agent           VARCHAR(512) NULL,
   em_hash              CHAR(64)     NULL,                    -- SHA-256 of the normalised email, never the email
   ph_hash              CHAR(64)     NULL,                    -- SHA-256 of the normalised phone, never the phone
+  fn_hash              CHAR(64)     NULL,                    -- SHA-256 of the first name (Payment Page sales)
+  ln_hash              CHAR(64)     NULL,                    -- SHA-256 of the surname (Payment Page sales)
   created_at           BIGINT       NOT NULL,
   expires_at           BIGINT       NOT NULL,
   paid_at              BIGINT       NULL,

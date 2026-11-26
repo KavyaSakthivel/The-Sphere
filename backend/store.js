@@ -7,14 +7,14 @@ const path = require('path');
 const ACTIVE = ['created', 'paid', 'review'];
 const META_MAX_ATTEMPTS = 8;
 const META_WINDOW_MS = 7 * 24 * 3600 * 1000; // Meta rejects events older than seven days
-const IDENTIFIERS = { fbp: null, fbc: null, clientIp: null, emHash: null, phHash: null };
+const IDENTIFIERS = { fbp: null, fbc: null, clientIp: null, emHash: null, phHash: null, fnHash: null, lnHash: null };
 
 function newBooking(fields) {
   return {
     id: fields.id, eventSlug: fields.eventSlug, quantity: fields.quantity, unitPricePaise: fields.unitPricePaise,
     amountPaise: fields.amountPaise, currency: 'INR', status: 'created', paymentLinkId: null, paymentLinkUrl: null,
     paymentId: null, consent: !!fields.consent, fbp: fields.fbp || null, fbc: fields.fbc || null,
-    clientIp: fields.clientIp || null, userAgent: fields.userAgent || null, emHash: null, phHash: null,
+    clientIp: fields.clientIp || null, userAgent: fields.userAgent || null, emHash: null, phHash: null, fnHash: null, lnHash: null,
     createdAt: fields.createdAt, expiresAt: fields.expiresAt, paidAt: null, paymentTime: null,
     metaStatus: 'pending', metaAttempts: 0, metaLastAttemptAt: null, metaLastError: null, metaFbtraceId: null,
     requestKey: fields.requestKey || null,
@@ -23,6 +23,8 @@ function newBooking(fields) {
 
 // insertBooking throws this when another request already holds the same retry key.
 class DuplicateRequestKey extends Error { constructor() { super('duplicate request key'); this.code = 'DUPLICATE_REQUEST_KEY'; } }
+// ... and this when a booking with the same id already exists (a Payment Page sale recorded twice at once).
+class DuplicateBooking extends Error { constructor() { super('duplicate booking'); this.code = 'DUPLICATE_BOOKING'; } }
 
 // ------------------------------------------------------------------ JSON file / memory
 
@@ -44,6 +46,7 @@ class FileStore {
 
   async insertBooking(fields) {
     const b = newBooking(fields);
+    if (this.data.bookings[b.id]) throw new DuplicateBooking();
     if (b.requestKey && Object.values(this.data.bookings).some(x => x.requestKey === b.requestKey)) throw new DuplicateRequestKey();
     this.data.bookings[b.id] = b; this.save(); return { ...b };
   }
@@ -68,11 +71,11 @@ class FileStore {
   }
 
   // Returns true only for the delivery that moved the booking to paid (or review).
-  async markPaid(id, { status, paymentId, paidAt, paymentTime, emHash, phHash, metaStatus, metaLastError }) {
+  async markPaid(id, { status, paymentId, paidAt, paymentTime, emHash, phHash, fnHash, lnHash, metaStatus, metaLastError }) {
     const b = this.data.bookings[id];
     if (!b || b.status === 'paid' || b.status === 'review') return false;
     Object.assign(b, { status, paymentId, paidAt, paymentTime, metaStatus, metaLastError: metaLastError || null });
-    if (b.consent) Object.assign(b, { emHash, phHash });
+    if (b.consent) Object.assign(b, { emHash: emHash || null, phHash: phHash || null, fnHash: fnHash || null, lnHash: lnHash || null });
     this.save();
     return true;
   }
@@ -161,7 +164,7 @@ const COLUMNS = {
   id: 'id', eventSlug: 'event_slug', quantity: 'quantity', unitPricePaise: 'unit_price_paise', amountPaise: 'amount_paise',
   currency: 'currency', status: 'status', paymentLinkId: 'payment_link_id', paymentLinkUrl: 'payment_link_url',
   paymentId: 'payment_id', consent: 'consent', fbp: 'fbp', fbc: 'fbc', clientIp: 'client_ip', userAgent: 'user_agent',
-  emHash: 'em_hash', phHash: 'ph_hash', createdAt: 'created_at', expiresAt: 'expires_at', paidAt: 'paid_at',
+  emHash: 'em_hash', phHash: 'ph_hash', fnHash: 'fn_hash', lnHash: 'ln_hash', createdAt: 'created_at', expiresAt: 'expires_at', paidAt: 'paid_at',
   paymentTime: 'payment_time', metaStatus: 'meta_status', metaAttempts: 'meta_attempts',
   metaLastAttemptAt: 'meta_last_attempt_at', metaLastError: 'meta_last_error', metaFbtraceId: 'meta_fbtrace_id',
   requestKey: 'request_key',
@@ -190,13 +193,20 @@ class MySqlStore {
   // is, so they are added here. Both of Hostinger's processes start at once and may race: the loser's
   // "already exists" error is expected. Any other failure stops start-up, so bookings never run half-migrated.
   async migrate() {
-    const [rows] = await this.pool.query(
-      "SELECT COUNT(*) AS n FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='bookings' AND COLUMN_NAME='request_key'");
-    if (Number(rows[0].n) > 0) return;
-    try {
-      await this.pool.query('ALTER TABLE bookings ADD COLUMN request_key VARCHAR(64) NULL, ADD UNIQUE KEY request_key (request_key)');
-    } catch (err) {
-      if (err.errno !== 1060 && err.errno !== 1061) throw err; // ER_DUP_FIELDNAME, ER_DUP_KEYNAME
+    const added = [
+      ['request_key', 'ADD COLUMN request_key VARCHAR(64) NULL, ADD UNIQUE KEY request_key (request_key)'],
+      ['fn_hash', 'ADD COLUMN fn_hash CHAR(64) NULL'],
+      ['ln_hash', 'ADD COLUMN ln_hash CHAR(64) NULL'],
+    ];
+    for (const [column, change] of added) {
+      const [rows] = await this.pool.query(
+        "SELECT COUNT(*) AS n FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='bookings' AND COLUMN_NAME=?", [column]);
+      if (Number(rows[0].n) > 0) continue;
+      try {
+        await this.pool.query(`ALTER TABLE bookings ${change}`);
+      } catch (err) {
+        if (err.errno !== 1060 && err.errno !== 1061) throw err; // ER_DUP_FIELDNAME, ER_DUP_KEYNAME
+      }
     }
   }
 
@@ -210,6 +220,7 @@ class MySqlStore {
         keys.map(k => (k === 'consent' ? (b.consent ? 1 : 0) : b[k])));
     } catch (err) {
       if (err.errno === 1062 && b.requestKey && /request_key/.test(err.message)) throw new DuplicateRequestKey(); // ER_DUP_ENTRY
+      if (err.errno === 1062 && /PRIMARY/.test(err.message)) throw new DuplicateBooking();
       throw err;
     }
     return b;
@@ -232,11 +243,11 @@ class MySqlStore {
     return Number(rows[0].n);
   }
 
-  async markPaid(id, { status, paymentId, paidAt, paymentTime, emHash, phHash, metaStatus, metaLastError }) {
+  async markPaid(id, { status, paymentId, paidAt, paymentTime, emHash, phHash, fnHash, lnHash, metaStatus, metaLastError }) {
     const r = await this.q(`UPDATE bookings SET status=?, payment_id=?, paid_at=?, payment_time=?, meta_status=?, meta_last_error=?,
-      em_hash=IF(consent=1, ?, NULL), ph_hash=IF(consent=1, ?, NULL)
+      em_hash=IF(consent=1, ?, NULL), ph_hash=IF(consent=1, ?, NULL), fn_hash=IF(consent=1, ?, NULL), ln_hash=IF(consent=1, ?, NULL)
       WHERE id=? AND status NOT IN ('paid','review')`,
-      [status, paymentId, paidAt, paymentTime, metaStatus, metaLastError || null, emHash || null, phHash || null, id]);
+      [status, paymentId, paidAt, paymentTime, metaStatus, metaLastError || null, emHash || null, phHash || null, fnHash || null, lnHash || null, id]);
     return r.affectedRows === 1;
   }
 
@@ -263,7 +274,7 @@ class MySqlStore {
   async finishMeta(id, { status, error, fbtraceId }) {
     const clear = status === 'sent' || status === 'expired';
     await this.q(`UPDATE bookings SET meta_status=?, meta_last_error=?, meta_fbtrace_id=COALESCE(?, meta_fbtrace_id)
-      ${clear ? ', fbp=NULL, fbc=NULL, client_ip=NULL, em_hash=NULL, ph_hash=NULL' : ''} WHERE id=?`,
+      ${clear ? ', fbp=NULL, fbc=NULL, client_ip=NULL, em_hash=NULL, ph_hash=NULL, fn_hash=NULL, ln_hash=NULL' : ''} WHERE id=?`,
       [status, error ? String(error).slice(0, 500) : null, fbtraceId || null, id]);
   }
 
@@ -295,4 +306,4 @@ function createStore(config) {
   return new FileStore(config.dataDir ? path.join(config.dataDir, 'bookings.json') : null);
 }
 
-module.exports = { createStore, FileStore, MySqlStore, DuplicateRequestKey, META_MAX_ATTEMPTS, META_WINDOW_MS };
+module.exports = { createStore, FileStore, MySqlStore, DuplicateRequestKey, DuplicateBooking, META_MAX_ATTEMPTS, META_WINDOW_MS };

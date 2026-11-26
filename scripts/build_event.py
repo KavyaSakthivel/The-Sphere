@@ -41,6 +41,15 @@ def booking_mode(ev):
  It needs the shared payment_url as well: every button keeps that link, so without JavaScript, or if the
  API is down, guests still reach Razorpay."""
  mode = ev.get('booking_api', 'off')
+ # 'page': the dialog sends guests to the club's Razorpay Payment Page with the ticket count filled in
+ # (data/event.json payment_page). No server involved; Razorpay collects name, email and phone.
+ if mode == 'page':
+  page = ev.get('payment_page') or {}
+  ok = str(page.get('url', '')).startswith('https://') and page.get('quantity_param')
+  if ev['mode'] == 'link' and ok:
+   return 'page'
+  print('booking_api is "page" but payment_page.url or quantity_param is missing: buttons go straight to payment_url.')
+  return 'off'
  if mode not in ('preview', 'on') or ev['mode'] != 'link':
   return 'off'
  if mode == 'on' and ev.get('booking_dialog', {}).get('draft', True):
@@ -196,7 +205,7 @@ TERMS = [
  ('Photography and media', 'The event may be photographed or filmed for documentation and promotion by The Sphere. By attending, you agree that your image may appear in this material. If you prefer not to be photographed, please tell the team at check-in.'),
  ('Conduct', 'Guests are expected to respect others, the venue and its staff. The organisers may ask anyone who behaves disruptively or unsafely to leave without a refund.'),
  ('Belongings', 'The organisers and the venue are not responsible for loss of or damage to personal belongings.'),
- ('Privacy', 'Details shared while booking (name, email, phone) are used only for event registration, entry and event-related communication.'),
+ ('Privacy', 'Details shared while booking (name, email, phone) are used for event registration, entry and event-related communication. If you choose to share your booking with Meta, your name, email and phone are also shared with Meta in an encoded (hashed) form, so we can measure and improve our adverts.'),
  ('Contact', None),
 ]
 TERMS_CONSENT = f'You agree to share information entered on this page with {OWNER} (owner of this page) and Razorpay, adhering to applicable laws.'
@@ -391,8 +400,13 @@ def booking_dialog(ev):
  All of its wording lives in data/event.json (booking_dialog), for the client to approve."""
  c = ev['booking_dialog']
  price = rupees(ev['price_inr'])
+ on_page = ev['booking'] == 'page'
+ # On the Payment Page nothing carries a Meta consent answer through to Razorpay, so the box is left out.
+ consent = '' if on_page else f'<label class="booking-consent"><input type="checkbox" data-booking-consent> <span>{escape(c["consent_label"])}</span></label>'
+ page_attrs = (f' data-page="{a(ev["payment_page"]["url"])}" data-page-qty="{a(ev["payment_page"]["quantity_param"])}"'
+               if on_page else '')
  return f'''<dialog id="booking-dialog" class="booking-dialog" aria-labelledby="booking-title" data-booking-dialog
- data-mode="{ev['booking']}" data-price="{a(ev['price_inr'])}" data-max="{a(ev.get('max_tickets_per_booking', 10))}" data-fallback="{a(ev['payment_url'])}">
+ data-mode="{ev['booking']}" data-price="{a(ev['price_inr'])}" data-max="{a(ev.get('max_tickets_per_booking', 10))}" data-fallback="{a(ev['payment_url'])}"{page_attrs}>
 <form class="booking-form" novalidate>
  <button type="button" class="dialog-close" data-booking-close aria-label="{a(c['close'])}">×</button>
  <h2 id="booking-title">{escape(c['title'])}</h2>
@@ -404,7 +418,7 @@ def booking_dialog(ev):
   <button type="button" data-qty="1" aria-label="{a(c['more'])}">+</button>
  </div>
  <p class="booking-total"><span>{escape(c['total_label'])}</span> <strong data-booking-total>{price}</strong></p>
- <label class="booking-consent"><input type="checkbox" data-booking-consent> <span>{escape(c['consent_label'])}</span></label>
+ {consent}
  <button type="submit" class="cv-button" data-booking-submit>{escape(c['continue'])} <span aria-hidden="true">→</span></button>
  <p class="booking-note">{escape(c['note'])}</p>
  <p class="booking-error" data-booking-error role="alert" hidden>{escape(c['error'])} <a href="{a(ev['payment_url'])}" data-booking-fallback>{escape(c['fallback'])}</a></p>
@@ -459,7 +473,7 @@ def assemble(home, ev, path, title, body):
  head = re.sub(r'<meta name="description"[^>]*>', f'<meta name="description" content="{a(ev["description"])}">', head, count=1)
  head = head.replace('width=device-width,initial-scale=1', 'width=device-width,initial-scale=1,viewport-fit=cover')
  head = re.sub(r'<meta name="theme-color"[^>]*>', '<meta name="theme-color" content="#24302a">', head, count=1)
- head = head.replace('</script>', '</script>\n  <link rel="stylesheet" href="/'+ev['slug']+'/event.css?v=6">\n  <script src="/'+ev['slug']+'/event.js?v=6" defer></script>', 1)
+ head = head.replace('</script>', '</script>\n  <link rel="stylesheet" href="/'+ev['slug']+'/event.css?v=6">\n  <script src="/'+ev['slug']+'/event.js?v=7" defer></script>', 1)
  shell = re.search(r'<a class="skip".*?<main id="main">', home, re.S)[0].removesuffix('<main id="main">')
  # On the event page the header's call to action is the ticket itself.
  shell = shell.replace(f'href="{ev["path"]}" data-event-until', f'href="{ev["path"]}" aria-current="page" data-event-until')

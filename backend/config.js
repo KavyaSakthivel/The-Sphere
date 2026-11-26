@@ -34,6 +34,12 @@ function loadConfig(env = process.env) {
       itemId: `${event.slug}-entry`,
       itemName: `${event.name} – Entry ticket`,
       sourceUrl: `${siteUrl}/${event.slug}/`,
+      // The club's Razorpay Payment Page: its paid sales are reported to Meta too (see handlePagePayment in app.js).
+      paymentPage: event.payment_page && /^pl_[A-Za-z0-9]{6,40}$/.test(event.payment_page.razorpay_page_id || '') ? {
+        id: event.payment_page.razorpay_page_id,
+        metaSharing: event.payment_page.meta_sharing === 'notice' ? 'notice' : 'off',
+        consentField: String(event.payment_page.consent_field || '').trim() || null,
+      } : null,
       // Where Razorpay sends the guest after paying. Only once the client has approved the page's wording.
       confirmationUrl: event.booking_confirmation && event.booking_confirmation.draft === false
         ? `${siteUrl}/${event.slug}/booked/` : null,

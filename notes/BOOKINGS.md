@@ -40,6 +40,52 @@ If the API is unreachable, the dialog offers the shared Razorpay link instead, a
 button keeps that link as its `href`, so without JavaScript booking works exactly as before.
 Those sales are simply not reported to Meta.
 
+## Payment Page sales (26 November 2026)
+
+Since 26 November the Carnival dialog sends guests to the club's Razorpay Payment Page
+(`pages.razorpay.com/thesphere`), where Razorpay asks for name, email and phone. Those sales are reported too:
+
+```
+guest pays on the Payment Page ──payment.captured / order.paid (signed)──▶ backend/ ──Purchase (CAPI)──▶ Meta
+```
+
+- `handlePagePayment` in `backend/app.js`. A payment counts only if its payment or order entity (or notes)
+  contains the page id `payment_page.razorpay_page_id` in `data/event.json`; membership, WhatsApp-link and QR
+  payments are ignored. Each sale is stored as a paid booking `PP-<payment id>`, so delivery, retries and
+  "one Purchase per sale" work exactly as for website links.
+- Ticket count = order total (or amount paid) ÷ ₹2,899, rounded down. Up to 5% over the ticket total is
+  accepted, in case guests pay Razorpay's convenience fee; Meta is told the ticket total. Anything else, not
+  INR or not captured is logged as `payment_page_mismatch` and never sent.
+- Sent to Meta (hashed with SHA-256, as Meta requires): email, phone, first name and surname, plus amount,
+  ticket count and order id. Hashes are deleted once Meta has the event. Nothing about the browser (fbp, fbc,
+  IP), because the guest never passes through our site. Meta never shows the club these details: Events
+  Manager shows purchases, revenue, the ads behind them and match quality. Who bought is in Razorpay.
+- **Consent** (`payment_page.consent_field`, in use): the name of the optional Yes/No question on the
+  Razorpay page. Only guests who answer Yes are sent; everyone else's sale is recorded, not sent. Without a
+  `consent_field`, `meta_sharing` decides: `"off"` sends nothing, `"notice"` sends every sale.
+- **Unverified:** Razorpay does not document where these notices carry the page id. If the first live sale
+  logs `payment_not_page` instead of `booking_paid`, the log line lists the field names present (never
+  values); adjust `mentions()` to match.
+
+### Setup for Payment Page sales (once)
+
+1. Razorpay → Account & Settings → Webhooks → the existing `https://spherewellness.in/api/webhooks/razorpay`
+   webhook → also tick **`payment.captured`** and **`order.paid`**. Same secret.
+2. Payment Page → Settings: after payment, redirect to `https://spherewellness.in/carnival/booked/`.
+3. **Consent: tick box (chosen 26 November 2026).** The club adds an optional field to the Razorpay page
+   (a tick box, or a Yes/No dropdown left on No if Razorpay offers no tick box) and updates Terms clause 9,
+   with wording the client approves. Then read the field's key from the live page
+   (`window.data.payment_link.settings.udf_schema` on pages.razorpay.com/thesphere) and put it in
+   `payment_page.consent_field`. `meta_sharing` stays `"off"`. The site's own Terms page (`TERMS` in
+   `scripts/build_event.py`) repeats clause 9 word for word, so it changes with it.
+   Done 26 November 2026: the Razorpay page has an optional Yes/No dropdown, key
+   `spread_the_calm._we'd_love_to_share_this_booking_with_meta.` (matched ignoring case and punctuation), and
+   the new clause 9. Only "Yes" is sent. The first sale's `booking_paid` log shows `found.consentAnswer`: if
+   false, Razorpay's notice carried the answer under another name.
+4. Deploy (the server adds the `fn_hash` and `ln_hash` columns itself on start-up).
+5. After the first sale: the log shows `booking_paid` with `source: payment_page`, then `meta_purchase_sent`,
+   and Events Manager shows the Purchase.
+
 ## Naveen's requirements, and where each one is met
 
 | Requirement | Where |
