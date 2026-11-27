@@ -27,12 +27,18 @@ the price to answer doubts first), the ticket, questions and the closing invitat
 plain type for quick scanning; the script face is kept for headline accents. The booking bar appears
 once the opening card scrolls away and, on wide screens, also carries the section links.
 
-## Programme (25 November 2026)
+## Programme and artists (24 November 2026)
 
-From the club's December poster: **2:30 PM – 10:00 PM** at **Jenney's Residency**, and the programme is Inauguration &
+From the club's December poster: the evening runs **2:30 PM – 10:00 PM** and the programme is Inauguration &
 Foundation, Yoga & Breathwork, Sound Healing, Wellness Speech, Tribal Fusion Dance, Cacao Ceremony, Ecstatic Dance,
-Dinner. The poster gives no per-item times, so none are shown. Fire Ceremony, the DJ party and the nutrition talk are
-gone. Each item has an illustrated icon (`ILLUSTRATIONS` in `scripts/build_event.py`, colours in `event.css`).
+Dinner (no per-item times, so none are shown). Fire Ceremony, DJ party and the nutrition talk are gone.
+
+Two artists, `PERFORMERS` in `scripts/build_event.py`: **Alena Gukina** (tribal fusion dance with fire, performance and
+workshop) and **Deepa** (cacao ceremony, then ecstatic dance). Their descriptions (the club's wording, 26 November 2026)
+are in `bio`, one string per paragraph. The section has a plain dark background (no glow) and each caption sits under
+its photograph rather than over a dark fade (27 November 2026, at the client's request). Their photographs (from the club, 24 November 2026) are `dist/assets/artists/alena-gukina.jpg` and `deepa.jpg`
+(1200 × 1500, plus `-600` copies for phones); originals `Alena.jpeg` and `Fire Rani.HEIC` in the project folder. For mouse users the page has a glowing circular cursor with a short fading trail (end of `templates/event/event.js`; styles at the end of `event.css`).
+See `research_notes/Carnival artists page/references.md`.
 
 ## Booking modes
 
@@ -44,7 +50,7 @@ The page picks its mode from `data/event.json`:
 | `razorpay_button_id` | **Recommended.** Razorpay's checkout opens on top of the Sphere page |
 | `payment_url` | Every Book button goes to a hosted Razorpay Payment Page |
 | `payment_url` + `booking_api: "preview"` / `"on"` | Book buttons open a ticket-count dialog; our server creates that booking's own Razorpay link so the sale can be reported to Meta. `preview` runs only at `/carnival/?booking=preview`. See `notes/BOOKINGS.md` |
-| `payment_url` + `booking_api: "page"` (**now**, 26 November 2026) | Book buttons open the ticket-count dialog; Continue goes to the club's Razorpay Payment Page (`payment_page.url`) with that count filled in (`?ticket_cost=N`), where Razorpay asks for name, email and phone, and an optional Yes/No question about sharing with Meta. No Meta consent box in our dialog. The server reports sales to Meta from Razorpay's payment notice, for guests who answer Yes (see below) |
+| `payment_url` + `booking_api: "page"` (**now**, 26 November 2026) | Book buttons open the ticket-count dialog; Continue goes to the club's Razorpay Payment Page (`payment_page.url`) with that count filled in (`?ticket_cost=N`), where Razorpay asks for name, email and phone. No server involved and no Meta consent box. Sales are reported to Meta by our server from Razorpay's payment notice, once `meta_sharing` is on (see below) |
 | after 10 PM on the 20th | Automatic: every booking button and the booking bar disappear |
 
 ## Payment Page mode (26 November 2026)
@@ -56,7 +62,7 @@ per-booking link. Notes:
 - `ticket_cost` is Razorpay's name for the page's "Ticket Cost" item. If the item is renamed, update
   `payment_page.quantity_param` or guests arrive with 1 ticket.
 - **Meta:** the server reports Payment Page sales from Razorpay's payment notice, with hashed email, phone
-  and name, for guests who answer Yes to the page's Meta question. See `notes/BOOKINGS.md`, "Payment Page sales".
+  and name, once `payment_page.meta_sharing` is switched on. See `notes/BOOKINGS.md`, "Payment Page sales".
 - **Return to the site:** set in Razorpay (Payment Page → Settings → after payment, redirect to
   `https://spherewellness.in/carnival/booked/`). That page shows a plain thank-you for these guests and
   sends nothing to Meta, because a redirect alone does not prove payment.

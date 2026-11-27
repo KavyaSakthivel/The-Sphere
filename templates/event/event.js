@@ -156,3 +156,105 @@ if (Date.now() > eventEnd) document.body.classList.add('is-past');
   // Continue still marked busy. Let the guest use it again; the same selection returns the same link.
   window.addEventListener('pageshow', e => { if (e.persisted) busy(false); });
 })();
+
+// The glow cursor: a warm orb that trails a short, fading line of light behind the pointer, with a sharp dot
+// exactly on the pointer so clicks stay precise. Mouse and trackpad only; touch screens, keyboard use and
+// visitors who prefer reduced motion keep their normal cursor. It also steps aside while a dialog is open,
+// because dialogs sit above everything else on the page and would hide it.
+(() => {
+  const fine = matchMedia('(hover: hover) and (pointer: fine)');
+  const still = matchMedia('(prefers-reduced-motion: reduce)');
+  if (!fine.matches || still.matches || !document.body.classList.contains('event-page')) return;
+
+  const root = document.documentElement;
+  const canvas = document.createElement('canvas');
+  canvas.className = 'glow-cursor-trail';
+  canvas.setAttribute('aria-hidden', 'true');
+  const dot = document.createElement('div');
+  dot.className = 'glow-cursor-dot';
+  dot.setAttribute('aria-hidden', 'true');
+  document.body.append(canvas, dot);
+  const ctx = canvas.getContext('2d');
+
+  const LIFE = 650;          // how long a point of the trail glows, in ms
+  const points = [];          // {x, y, t}
+  const head = { x: -100, y: -100 };
+  const pointer = { x: -100, y: -100 };
+  let ratio = 1, frame = 0, inside = false, hot = 0, hotTarget = 0;
+
+  const size = () => {
+    ratio = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = innerWidth * ratio;
+    canvas.height = innerHeight * ratio;
+  };
+  size();
+  addEventListener('resize', size, { passive: true });
+
+  const dialogOpen = () => !!document.querySelector('dialog[open]');
+  const setOn = on => {
+    root.classList.toggle('has-glow-cursor', on);
+    root.classList.toggle('glow-cursor-on', on);
+    if (!on) { points.length = 0; ctx.clearRect(0, 0, canvas.width, canvas.height); }
+  };
+
+  const glow = (x, y, r, alpha) => {
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, `rgba(255, 228, 170, ${alpha})`);
+    g.addColorStop(0.35, `rgba(246, 168, 74, ${alpha * 0.7})`);
+    g.addColorStop(0.7, `rgba(217, 87, 43, ${alpha * 0.25})`);
+    g.addColorStop(1, 'rgba(217, 87, 43, 0)');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  };
+
+  const draw = now => {
+    frame = 0;
+    // The orb eases towards the pointer, which gives the trail its soft, slightly lagging sweep.
+    head.x += (pointer.x - head.x) * 0.32;
+    head.y += (pointer.y - head.y) * 0.32;
+    hot += (hotTarget - hot) * 0.18;
+    points.push({ x: head.x, y: head.y, t: now });
+    while (points.length && now - points[0].t > LIFE) points.shift();
+
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    for (const p of points) {
+      const life = 1 - (now - p.t) / LIFE;       // 1 for the newest point, 0 for the oldest
+      glow(p.x, p.y, 6 + 20 * life, 0.3 * Math.pow(life, 1.5));
+    }
+    // The orb itself, which swells a little over links and buttons.
+    glow(head.x, head.y, 30 + 16 * hot, 0.7 + 0.2 * hot);
+    ctx.strokeStyle = `rgba(143, 43, 29, ${0.35 + 0.3 * hot})`;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(head.x, head.y, 11 + 9 * hot, 0, Math.PI * 2);
+    ctx.stroke();
+
+    const settled = Math.abs(pointer.x - head.x) < 0.3 && Math.abs(pointer.y - head.y) < 0.3 && Math.abs(hotTarget - hot) < 0.01;
+    // Keep animating until the trail has faded and the orb has come to rest; then sleep until the next move.
+    if (inside && (!settled || points.length > 1)) frame = requestAnimationFrame(draw);
+    else if (!inside) { points.length = 0; ctx.clearRect(0, 0, innerWidth, innerHeight); }
+  };
+  const wake = () => { if (!frame) frame = requestAnimationFrame(draw); };
+
+  document.addEventListener('pointermove', e => {
+    if (e.pointerType !== 'mouse') return;
+    if (dialogOpen()) { setOn(false); return; }
+    if (!inside) { head.x = e.clientX; head.y = e.clientY; inside = true; }
+    setOn(true);
+    pointer.x = e.clientX; pointer.y = e.clientY;
+    dot.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+    const t = e.target instanceof Element ? e.target : null;
+    hotTarget = t && t.closest('a, button, summary, label, [role="button"]') ? 1 : 0;
+    // Over a text field the normal text cursor takes over.
+    root.classList.toggle('glow-cursor-on', !(t && t.closest('input:not([type=checkbox]):not([type=radio]), textarea, select')));
+    wake();
+  }, { passive: true });
+  document.addEventListener('pointerleave', () => { inside = false; root.classList.remove('glow-cursor-on'); wake(); });
+  document.documentElement.addEventListener('mouseleave', () => { inside = false; root.classList.remove('glow-cursor-on'); wake(); });
+  // Opening a dialog (booking, invitation) brings the normal cursor back at once.
+  document.addEventListener('click', () => setTimeout(() => { if (dialogOpen()) setOn(false); }, 0), true);
+  still.addEventListener?.('change', e => { if (e.matches) { setOn(false); canvas.remove(); dot.remove(); } });
+})();

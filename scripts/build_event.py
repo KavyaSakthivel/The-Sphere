@@ -111,6 +111,14 @@ ICON_PATHS = {
  'music': '<path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/>',
  'flame': '<path d="M12 21c-3.6 0-6-2.4-6-5.6 0-3.4 2.6-5 3.4-8.2 1.9 1.3 3.2 3 3.4 5 1-.7 1.6-1.8 1.7-3.2 2.4 2 3.5 4.2 3.5 6.4 0 3.2-2.4 5.6-6 5.6z"/>',
  'heart': '<path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20z"/>',
+ 'lotus': '<path d="M12 18c-2.6-1.8-3.6-4.4-3-7.6 1.6.7 2.6 1.9 3 3.2.4-1.3 1.4-2.5 3-3.2.6 3.2-.4 5.8-3 7.6z"/><path d="M12 18c-3.4.2-6.4-1.3-8-4.4 2-.5 3.7-.2 5 .7M12 18c3.4.2 6.4-1.3 8-4.4-2-.5-3.7-.2-5 .7M12 13.6V6.5c1.2 1.2 1.8 2.6 1.8 4"/>',
+ 'yoga': '<circle cx="12" cy="5" r="2"/><path d="M12 8v6M6.5 10.5 12 9l5.5 1.5M8 20l4-6 4 6M5 20h14"/>',
+ 'wave': '<path d="M4 10v4M7.5 7v10M11 4.5v15M14.5 7v10M18 9.5v5M21 11v2"/>',
+ 'mic': '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M9 21h6"/>',
+ 'dance': '<circle cx="12" cy="4.5" r="1.8"/><path d="M5 7.5l7 2.5 7-2.5M12 10v4l-4 7M12 14l4 7"/>',
+ 'cacao': '<path d="M12 3c4 2.5 5.5 6 5.5 9S16 19.5 12 21c-4-1.5-5.5-6-5.5-9S8 5.5 12 3z"/><path d="M12 3v18M8.4 7.5c1.2.8 2.4 1.2 3.6 1.2s2.4-.4 3.6-1.2M7.2 12c1.6.9 3.2 1.3 4.8 1.3s3.2-.4 4.8-1.3M8.2 16.5c1.2.7 2.5 1 3.8 1s2.6-.3 3.8-1"/>',
+ 'cloche': '<path d="M3.5 17h17M5 17a7 7 0 0 1 14 0M12 8.5V7M10.5 7h3M3 20h18"/>',
+ 'instagram': '<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r=".6"/>',
 }
 def icon(name): return f'<svg class="event-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">{ICON_PATHS[name]}</svg>'
 
@@ -164,6 +172,24 @@ CARNIVAL = ('Where wellness<br>meets celebration.',
 ARC = [('Come to pause.', 'STILLNESS'), ('Stay to connect.', 'COMMUNITY'), ('Leave with a little more lightness.', 'RENEWAL')]
 # The programme on the club's December 2026 poster.
 CHIPS = ['YOGA &amp; BREATHWORK', 'SOUND HEALING', 'TRIBAL FUSION DANCE', 'CACAO CEREMONY', 'ECSTATIC DANCE', 'DINNER']
+# The two artists, as the club's team described them in chat (24 November 2026). Their own descriptions and
+# photographs (supplied by the client, 24 Nov 2026) are dist/assets/artists/<id>.jpg (1200 x 1500, 4:5) and <id>-600.jpg;
+# a missing photo falls back to the motif. 'bio' is the club's own description, one string per paragraph, word for word (sent by the club, 26 November 2026). Never use pictures taken from Instagram without permission.
+# 'sessions' reuse the poster's own lines for those programme items.
+PERFORMERS = [
+ {'id': 'alena-gukina', 'name': 'Alena Gukina', 'craft': 'Tribal fusion dance with fire', 'motif': 'flame',
+  'instagram': 'lena_gukina',
+  'bio': ('Alena Gukina is a tribal fusion dancer and fire performer who brings together expressive movement, captivating rhythms and the mesmerising art of fire. Her performances celebrate feminine energy, strength, freedom and artistic expression, creating a powerful visual and sensory experience.', 'At The Sphere Wellness Carnival, Lena will take the audience on a captivating journey through tribal fusion dance and fire artistry, celebrating the beauty of movement, the power of self-expression and the untamed spirit within every woman.'),
+  'alt': 'Alena Gukina dancing with fire beside a river at dusk, wearing a crown of flowers',
+  'sessions': [('Performance', 'Tribal fusion dance with fire.'), ('Tribal Fusion Dance workshop', 'A guided expression workshop.')]},
+ {'id': 'deepa', 'name': 'Deepa', 'craft': 'Cacao ceremony &amp; ecstatic dance', 'motif': 'cacao',
+  'instagram': 'fireranii',
+  'bio': ('Deepa, popularly known as Fire Rani, is a DJ and facilitator who brings together music, mindful rituals and free-flowing movement to create immersive experiences of connection and self-expression. Through cacao ceremonies and ecstatic dance, she creates a welcoming space for individuals to explore their emotions, embrace their authentic selves and experience the freedom of movement without judgement.', 'At The Sphere Wellness Carnival, Fire Rani will guide women through a heart-centred cacao ceremony and an uplifting ecstatic dance experience, inviting them to reconnect with themselves, embrace the present moment and discover the joy of moving freely to music.'),
+  'alt': 'Deepa beside a river, holding a DJ controller with one arm raised',
+  'sessions': [('Cacao Ceremony', 'A heart-opening ritual with cacao.'), ('Ecstatic Dance', 'A free-flowing celebration of movement.')]},
+]
+# The poster's closing line.
+ARTISTS_LINE = 'Come for the experiences. Stay for the energy.'
 JOIN = ('One Evening.<br>Many Experiences.<br>One Community.',
  'The Sphere Wellness Carnival brings together a curated community of women, creators, entrepreneurs, wellness enthusiasts and conscious brands.',
  'We invite influencers, collaborators, wellness brands, marketing partners and sponsors to be part of an experience designed to create genuine connection and lasting memories.',
@@ -183,16 +209,17 @@ HOSTED_BY = 'Hosted by The Sphere, founded by Sumi Rengaraj.'
 CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_SHOWN = 'thespherewomen@gmail.com', '+919843133380', '+91 98431 33380'
 OWNER = 'THE SPHERE WELLNESS FOUNDATION'
 # The programme, in order and word for word from the club's December 2026 poster ("Your evening, your
-# experience"). The poster gives no time for each item, so none is shown.
+# experience"). The poster gives no time for each item, so none is shown. The poster's "Led by the instructor"
+# names the instructor the club has since confirmed. The last field links an item to its artist.
 PROGRAMME = [
- ('lotus', 'Inauguration &amp; Foundation', 'Opening the space with a shared intention.'),
- ('yoga', 'Yoga &amp; Breathwork', 'A mindful practice to ground, energize and center.'),
- ('bowl', 'Sound Healing', 'A restorative journey through sound.'),
- ('speech', 'Wellness Speech', 'A conversation on mental wellbeing.'),
- ('tribal', 'Tribal Fusion Dance', 'A guided expression workshop.'),
- ('cacao', 'Cacao Ceremony', 'A heart-opening ritual with cacao.'),
- ('ecstatic', 'Ecstatic Dance', 'A free-flowing celebration of movement.'),
- ('dinner', 'Dinner', 'To nourish, reflect and close the day together.'),
+ ('lotus', 'Inauguration &amp; Foundation', 'Opening the space with a shared intention.', None),
+ ('yoga', 'Yoga &amp; Breathwork', 'A mindful practice to ground, energize and center.', None),
+ ('bowl', 'Sound Healing', 'A restorative journey through sound.', None),
+ ('speech', 'Wellness Speech', 'A conversation on mental wellbeing.', None),
+ ('tribal', 'Tribal Fusion Dance', 'A guided expression workshop.', 'alena-gukina'),
+ ('cacao', 'Cacao Ceremony', 'A heart-opening ritual with cacao.', 'deepa'),
+ ('ecstatic', 'Ecstatic Dance', 'A free-flowing celebration of movement.', 'deepa'),
+ ('dinner', 'Dinner', 'To nourish, reflect and close the day together.', None),
 ]
 # Terms & Conditions: the club's own wording. Section 1 states the event details from data/event.json so the
 # page can never disagree with the rest of the site.
@@ -210,7 +237,7 @@ TERMS = [
 ]
 TERMS_CONSENT = f'You agree to share information entered on this page with {OWNER} (owner of this page) and Razorpay, adhering to applicable laws.'
 # The preview's own header links, reused as a jump row so a reader can go straight to what they need.
-SECTIONS = [('experience', 'Experience'), ('tickets', 'Tickets'), ('faq', 'FAQs')]
+SECTIONS = [('artists', 'Artists'), ('experience', 'Programme'), ('tickets', 'Tickets'), ('faq', 'FAQs')]
 
 
 def faqs(ev):
@@ -266,9 +293,53 @@ def jump_links(): return ''.join(f'<a href="#{i}">{t}</a>' for i, t in SECTIONS)
 
 
 def mobile_links():
- icons = ['clock', 'calendar', 'heart']
+ icons = ['flame', 'clock', 'calendar', 'heart']
  return ''.join(f'<a href="#{section}" tabindex="-1">{icon(symbol)}<span>{label}</span></a>'
   for (section, label), symbol in zip(SECTIONS, icons))
+
+
+def artist_photo(person):
+ path = ROOT/'dist/assets/artists'/f"{person['id']}.jpg"
+ return f"/assets/artists/{person['id']}.jpg" if path.exists() else ''
+
+
+def artist_names(): return ' &amp; '.join(p['name'] for p in PERFORMERS)
+
+
+def artists(ev):
+ """The two artists, near the top of the page. Until the club sends approved portraits, each card carries a
+ quiet motif (an ember glow for the fire dance, a warm cacao tone) instead of a photograph."""
+ book, cards = book_href(ev), []
+ for n, person in enumerate(PERFORMERS, 1):
+  photo = artist_photo(person)
+  small = photo.replace('.jpg', '-600.jpg')
+  media = (f'<img src="{photo}" srcset="{small} 600w, {photo} 1200w" sizes="(max-width: 800px) 88vw, 44vw" '
+   f'alt="{a(person.get("alt") or person["name"])}" width="1200" height="1500" loading="lazy" decoding="async">' if photo
+   else f'<span class="cv-artist-motif" aria-hidden="true">{icon(person["motif"])}</span>')
+  sessions = ''.join(f'<li><h4>{t}</h4><p>{d}</p></li>' for t, d in person['sessions'])
+  bio = ''.join(f'<p class="cv-artist-bio">{escape(para)}</p>' for para in person.get('bio') or ())
+  handle = person['instagram']
+  cards.append(f'''<article class="cv-artist cv-artist-{person['motif']}" id="artist-{person['id']}" aria-labelledby="artist-{person['id']}-name">
+  <figure class="cv-artist-media{' has-photo' if photo else ''}">{media}
+   <figcaption><span class="cv-artist-no">0{n}</span><span class="cv-artist-craft">{person['craft']}</span></figcaption>
+  </figure>
+  <div class="cv-artist-body">
+   <h3 id="artist-{person['id']}-name">{escape(person['name'])}</h3>
+   {bio}<ul class="cv-artist-sessions">{sessions}</ul>
+   <a class="cv-artist-ig" href="https://www.instagram.com/{a(handle)}/" target="_blank" rel="noopener noreferrer">{icon('instagram')}<span>@{escape(handle)}</span><span class="visually-hidden"> on Instagram (opens in a new tab)</span></a>
+  </div>
+ </article>''')
+ cta = (f'<a class="cv-button" href="#tickets">View tickets <span aria-hidden="true">↓</span></a>' if ev['mode'] == 'soon'
+  else f'<a class="cv-button" href="{a(book)}"{new_tab(ev)}>Reserve your spot {arrow()}</a>')
+ return f'''<section id="artists" class="cv-artists" aria-labelledby="artists-title">
+ <div class="cv-artists-head">
+  <div><p class="eyebrow">THE ARTISTS</p>
+  <h2 id="artists-title">Meet the artists<br>of the evening.</h2></div>
+  <p class="cv-artists-line">{ARTISTS_LINE}</p>
+ </div>
+ <div class="cv-artists-grid">{''.join(cards)}</div>
+ <p class="cv-artists-cta" data-book>{cta}</p>
+</section>'''
 
 
 def page(ev):
@@ -283,7 +354,10 @@ def page(ev):
  ticket_note = f'<p class="cv-ticket-note">{escape(ev["ticket_note"])}</p>' if ev.get('ticket_note') else ''
  date, time, place = full_date(ev['start_at']), hours(ev), escape(where(ev))
  audience = escape(ev['audience'])
- timed = ''.join(f'<li><span class="cv-step">{illustration(i)}</span><div><h3>{t}</h3><p>{d}</p></div></li>' for i, t, d in PROGRAMME)
+ names = {p['id']: p['name'] for p in PERFORMERS}
+ def led(who): return f'<a class="cv-led" href="#artist-{who}">Led by {escape(names[who])}</a>' if who else ''
+ timed = ''.join(f'<li{" class=cv-featured" if who else ""}><span class="cv-step">{illustration(i)}</span><div><h3>{t}</h3><p>{d}</p>{led(who)}</div></li>'
+  for i, t, d, who in PROGRAMME)
  arc = ''.join(f'<li><h3>{t}</h3><p>{k}</p></li>' for t, k in ARC)
  chips = ''.join(f'<li>{c}</li>' for c in CHIPS)
  glance_cta = (f'<a class="cv-glance-cta" href="#tickets">View tickets <span aria-hidden="true">↓</span></a>' if ev['mode'] == 'soon'
@@ -294,6 +368,7 @@ def page(ev):
  <div class="event-hero-copy">
   <p class="eyebrow">{escape(ev['name']).upper()}</p>
   <h1 id="event-title"><span>Pause.</span> <span>Connect.</span><br><span>Celebrate.</span></h1>
+  <p class="event-featuring"><a href="#artists"><span>Featuring</span> {artist_names()}</a></p>
   <p class="event-tagline">{date} &nbsp;·&nbsp; Coimbatore<span class="cv-sep"> &nbsp;·&nbsp; </span><span class="cv-hero-time">{time}</span></p>
   <p data-book><a class="cv-button cv-button-light" href="{a(book)}"{new_tab(ev)}>Reserve your spot {arrow()}</a></p>
  </div>
@@ -311,6 +386,8 @@ def page(ev):
 </section>
 
 <nav class="cv-jump" aria-label="On this page">{jump_links()}</nav>
+
+{artists(ev)}
 
 <section class="cv-intro" aria-labelledby="intro-title">
  <div class="cv-intro-copy">
@@ -332,7 +409,7 @@ def page(ev):
 
 <section id="experience" class="cv-schedule" aria-labelledby="experience-title">
  <div class="cv-schedule-side">
-  <p class="eyebrow">THE EXPERIENCE</p><h2 id="experience-title">An evening to<br>experience.</h2>
+  <p class="eyebrow">YOUR EVENING, YOUR EXPERIENCE</p><h2 id="experience-title">An evening to<br>experience.</h2>
   <p class="cv-sub">Where every hour holds something sacred.</p>
   <ul class="cv-facts">
    <li>{icon('calendar')}{date}</li>
@@ -460,7 +537,8 @@ def seo(ev, path, title):
   'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode', 'image': [image], 'url': url(path),
   'location': {'@type': 'Place', 'name': ev['venue'], 'address': {'@type': 'PostalAddress', 'addressLocality': ev['city'],
    'addressRegion': CONFIG['region'], 'addressCountry': CONFIG['country']}},
-  'organizer': {'@id': url('/#organization')}, 'offers': offer}
+  'organizer': {'@id': url('/#organization')}, 'offers': offer,
+  'performer': [{'@type': 'Person', 'name': p['name'], 'sameAs': 'https://www.instagram.com/'+p['instagram']+'/'} for p in PERFORMERS]}
  crumbs = {'@type': 'BreadcrumbList', 'itemListElement': [{'@type': 'ListItem', 'position': 1, 'name': 'The Sphere', 'item': url()},
   {'@type': 'ListItem', 'position': 2, 'name': ev['name'], 'item': url(path)}]}
  data = json.dumps({'@context': 'https://schema.org', '@graph': [org(), event, crumbs]}, ensure_ascii=False).replace('<', r'<')
