@@ -16,6 +16,7 @@ function loadConfig(env = process.env) {
   try { event = readJson('data/event.json'); } catch { /* no event: bookings stay closed */ }
 
   const siteUrl = (env.SITE_URL || site.url).replace(/\/+$/, '');
+  const testMode = flag(env.TEST_MODE);
   const config = {
     siteUrl,
     // The site's own origin, with and without www, may ask for payment links.
@@ -44,12 +45,23 @@ function loadConfig(env = process.env) {
       confirmationUrl: event.booking_confirmation && event.booking_confirmation.draft === false
         ? `${siteUrl}/${event.slug}/booked/` : null,
     },
-    razorpay: {
+    // TEST_MODE=on switches to the RAZORPAY_TEST_* keys for a short trial on the live site, without
+    // touching the live keys (Razorpay shows a live secret only once). Webhooks signed with either secret are
+    // accepted meanwhile, so live notices that arrive during the trial are not refused.
+    razorpay: testMode ? {
+      keyId: env.RAZORPAY_TEST_KEY_ID || '',
+      keySecret: env.RAZORPAY_TEST_KEY_SECRET || '',
+      webhookSecret: env.RAZORPAY_TEST_WEBHOOK_SECRET || '',
+      webhookSecrets: [env.RAZORPAY_TEST_WEBHOOK_SECRET, env.RAZORPAY_WEBHOOK_SECRET].filter(Boolean),
+      apiBase: env.RAZORPAY_API_BASE || 'https://api.razorpay.com/v1',
+    } : {
       keyId: env.RAZORPAY_KEY_ID || '',
       keySecret: env.RAZORPAY_KEY_SECRET || '',
       webhookSecret: env.RAZORPAY_WEBHOOK_SECRET || '',
+      webhookSecrets: [env.RAZORPAY_WEBHOOK_SECRET].filter(Boolean),
       apiBase: env.RAZORPAY_API_BASE || 'https://api.razorpay.com/v1',
     },
+    testMode,
     meta: {
       accessToken: env.META_ACCESS_TOKEN || '',
       datasetId: env.META_DATASET_ID || site.meta_pixel_id || '',
@@ -75,8 +87,11 @@ function problems(config) {
   const blocking = [], warnings = [];
   if (!config.event) blocking.push('data/event.json is missing');
   else if (!(config.event.unitPricePaise > 0)) blocking.push('event price_inr is not a positive number');
-  if (!config.razorpay.keyId || !config.razorpay.keySecret) blocking.push('RAZORPAY_KEY_ID / RAZORPAY_KEY_SECRET not set');
-  if (!config.razorpay.webhookSecret) blocking.push('RAZORPAY_WEBHOOK_SECRET not set');
+  const k = config.testMode ? 'RAZORPAY_TEST_' : 'RAZORPAY_';
+  if (!config.razorpay.keyId || !config.razorpay.keySecret) blocking.push(`${k}KEY_ID / ${k}KEY_SECRET not set`);
+  if (!config.razorpay.webhookSecret) blocking.push(`${k}WEBHOOK_SECRET not set`);
+  if (config.testMode && config.razorpay.mode !== 'test') blocking.push('TEST_MODE is on but RAZORPAY_TEST_KEY_ID is not a rzp_test_ key');
+  if (config.testMode && !config.meta.testEventCode) blocking.push('TEST_MODE is on without META_TEST_EVENT_CODE: test sales would reach the real Meta reports');
   if (!config.db && !config.dataDirExplicit) blocking.push('no database: set DB_HOST, DB_USER, DB_PASSWORD and DB_NAME (or DATA_DIR on disk that survives redeploys)');
   if (!config.meta.accessToken) warnings.push('META_ACCESS_TOKEN not set: Purchase events wait until it is');
   if (!config.meta.datasetId) warnings.push('META_DATASET_ID not set: Purchase events wait until it is');

@@ -584,7 +584,7 @@ test('confirmation: says paid only after the signed webhook, with what the page 
     const paid = await confirm(t, booking.id, link.id);
     assert.equal(paid.status, 200);
     assert.deepEqual(paid.body, { status: 'paid', bookingId: booking.id, quantity: 2, value: 5798, unitPrice: 2899, currency: 'INR',
-      consent: true, itemId: t.config.event.itemId, eventId: `purchase.${booking.id}` });
+      consent: true, itemId: t.config.event.itemId, eventId: `purchase.${booking.id}`, metaTest: true });
     await settle();
     // The browser Purchase uses the same event id as the server's, so Meta keeps one.
     assert.equal(t.metaCalls[0].body.data[0].event_id, paid.body.eventId);
@@ -632,6 +632,32 @@ test('confirmation page: Razorpay is told to return guests to it only once the c
   const draft = loadConfig({});
   assert.equal(draft.event.confirmationUrl, require('../../data/event.json').booking_confirmation?.draft === false
     ? 'https://spherewellness.in/carnival/booked/' : null);
+});
+
+test('test mode: one switch uses the test keys, keeps the live ones, and accepts both webhook secrets', async () => {
+  const live = { RAZORPAY_KEY_ID: 'rzp_live_A', RAZORPAY_KEY_SECRET: 'liveSecret', RAZORPAY_WEBHOOK_SECRET: 'whLive', BOOKINGS_ENABLED: 'true', DATA_DIR: '/tmp/x' };
+  const trial = { ...live, TEST_MODE: 'on', RAZORPAY_TEST_KEY_ID: 'rzp_test_B', RAZORPAY_TEST_KEY_SECRET: 'testSecret', RAZORPAY_TEST_WEBHOOK_SECRET: 'whTest', META_TEST_EVENT_CODE: 'TEST1' };
+  const { problems } = require('../config');
+  const a = loadConfig(live), b = loadConfig(trial);
+  assert.equal(a.razorpay.mode, 'live'); assert.deepEqual(a.razorpay.webhookSecrets, ['whLive']); assert.equal(a.testMode, false);
+  assert.equal(b.razorpay.mode, 'test'); assert.equal(b.razorpay.keySecret, 'testSecret');
+  assert.deepEqual(b.razorpay.webhookSecrets, ['whTest', 'whLive']);
+  assert.deepEqual(problems(b).blocking, []);
+  // Without the Meta test code, test sales would land in the real reports: bookings stay closed.
+  assert.match(problems(loadConfig({ ...trial, META_TEST_EVENT_CODE: '' })).blocking.join(), /META_TEST_EVENT_CODE/);
+  assert.match(problems(loadConfig({ ...trial, RAZORPAY_TEST_KEY_ID: 'rzp_live_A' })).blocking.join(), /rzp_test_/);
+
+  const t = setup({ env: { TEST_MODE: 'on', RAZORPAY_TEST_KEY_ID: 'rzp_test_B', RAZORPAY_TEST_KEY_SECRET: 's', RAZORPAY_TEST_WEBHOOK_SECRET: 'whTest' } });
+  await t.listen();
+  try {
+    const r = await book(t, { quantity: 1, consent: true });
+    const booking = await t.store.getBooking(r.body.bookingId);
+    assert.equal((await webhook(t, paidEvent(t.links[0], booking), { secret: 'whTest' })).status, 200, 'test-mode webhook');
+    const r2 = await book(t, { quantity: 1 });
+    const b2 = await t.store.getBooking(r2.body.bookingId);
+    assert.equal((await webhook(t, paidEvent(t.links[1], b2), { secret: WEBHOOK_SECRET })).status, 200, 'live webhook still accepted');
+    assert.equal((await webhook(t, paidEvent(t.links[1], b2), { secret: 'nope' })).status, 400);
+  } finally { await t.close(); }
 });
 
 // ---------------------------------------------------------------- Payment Page sales

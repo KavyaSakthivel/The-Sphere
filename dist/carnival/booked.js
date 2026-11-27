@@ -20,6 +20,8 @@
 
   const purchase = data => {
     if (!data.consent || typeof window.fbq !== 'function') return;
+    // A trial in Meta test mode: the server's Purchase shows in Test Events; nothing goes to the real reports.
+    if (data.metaTest) { console.info('Meta test mode: browser Purchase not sent', data.eventId); return; }
     const key = 'sphere-purchase-sent-' + data.bookingId;
     try { if (localStorage.getItem(key)) return; } catch {}
     window.fbq('track', 'Purchase', {

@@ -249,14 +249,18 @@ function createApi({ config, store, razorpay, meta, now = () => Date.now(), log 
     const status = booking.status === 'paid' ? 'paid' : ['created', 'review'].includes(booking.status) ? 'pending' : 'closed';
     sendJson(res, 200, status === 'paid'
       ? { status, bookingId: booking.id, quantity: booking.quantity, value: booking.amountPaise / 100, unitPrice: booking.unitPricePaise / 100,
-        currency: 'INR', consent: booking.consent, itemId: event.itemId, eventId: `purchase.${booking.id}` }
+        currency: 'INR', consent: booking.consent, itemId: event.itemId, eventId: `purchase.${booking.id}`,
+        // In Meta test mode the server's Purchase goes to Test Events; the browser pixel has no such switch,
+        // so the page sends nothing rather than put a test sale in the client's real reports.
+        metaTest: !!config.meta.testEventCode }
       : { status });
   }
 
   // ------------------------------------------------------------ POST /api/webhooks/razorpay
   async function webhook(req, res) {
     const raw = await readBody(req, WEBHOOK_BODY_LIMIT);
-    if (!verifyWebhookSignature(raw, req.headers['x-razorpay-signature'], config.razorpay.webhookSecret)) {
+    const secrets = config.razorpay.webhookSecrets || [config.razorpay.webhookSecret];
+    if (!secrets.some(secret => verifyWebhookSignature(raw, req.headers['x-razorpay-signature'], secret))) {
       log('warn', 'webhook_bad_signature', { ip: clientIp(req, config.trustProxy) });
       throw new HttpError(400, 'invalid_signature');
     }
